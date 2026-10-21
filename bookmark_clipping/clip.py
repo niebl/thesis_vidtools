@@ -1,6 +1,7 @@
 from Bookmarks import Bookmarks
 import av
 from pathlib import Path
+import subprocess
 
 class Clips:
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
@@ -43,6 +44,34 @@ class Clip:
     def __str__(self):
         return f"{self.get_duration()}s at {self.start_bookmark.name}"
 
+    def clip_video(self, output_path=None):
+        if len(self.files) > 1:
+            raise NotImplementedError("Clips spanning multiple files are not supported yet")
+
+        start = self.start_bookmark.timestamp
+        end = self.end_bookmark.timestamp
+        if end <= start:
+            raise ValueError("The end timestamp must be after the start timestamp")
+
+        source = Path(self.files[0])
+        output = Path(output_path) if output_path else (
+            Path(self.workdir) / f"{source.stem}_{start:.3f}-{end:.3f}.mp4"
+        )
+        output.parent.mkdir(parents=True, exist_ok=True)
+
+        command = [
+            "ffmpeg", "-hide_banner", "-y",
+            "-ss", str(start),
+            "-i", str(source),
+            "-t", str(end - start),
+            "-c:v", "libx264",
+            "-c:a", "aac",
+            str(output),
+        ]
+        subprocess.run(command, check=True)
+        return output
+
+
     def validate(self):
         same_dir = Path(self.start_bookmark.filepath).parent == Path(self.end_bookmark.filepath).parent
 
@@ -50,8 +79,10 @@ class Clip:
         start_index = files.index(Path(self.start_bookmark.filepath))
         end_index = files.index(Path(self.end_bookmark.filepath))
         direct_follow = abs(end_index - start_index) <= 1
+
+        duration_ok = self.get_duration() < 120
         
-        return same_dir and direct_follow
+        return same_dir and direct_follow and duration_ok
 
     def get_duration(self):
         if self.start_bookmark.filepath == self.end_bookmark.filepath:
@@ -69,7 +100,7 @@ class Clip:
 def main():
     bookmarks = Bookmarks()
     clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage")
-    print(clips)
+    clips.clips[0].clip_video()
 
 if __name__ == "__main__":
     main()
