@@ -1,7 +1,8 @@
 #Procedural code for fixing the bookmarks as i had recorded them
-from parse_bookmarks import Bookmarks
+from Bookmarks import Bookmarks
 from pathlib import Path
 import os
+import av
 
 def main():
     bookmarks = Bookmarks()
