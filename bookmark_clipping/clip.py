@@ -11,6 +11,11 @@ class Clips:
         self.bookmarks = bookmarks
         self.clips = self.get_clips()
 
+    def render_all_clips(self):
+        for clip in self.clips:
+            print(clip)
+            clip.render_clip()
+
     def get_clips(self):
         clips = []
 
@@ -44,25 +49,38 @@ class Clip:
     def __str__(self):
         return f"{self.get_duration()}s at {self.start_bookmark.name}"
 
-    def clip_video(self, output_path=None):
-        if len(self.files) > 1:
-            raise NotImplementedError("Clips spanning multiple files are not supported yet")
-
-        start = self.start_bookmark.timestamp
-        end = self.end_bookmark.timestamp
-        if end <= start:
-            raise ValueError("The end timestamp must be after the start timestamp")
-
-        source = Path(self.files[0])
+    def render_clip(self, output_path=None):
+        source = list(map(lambda c: Path(c), self.files))
+        start = int(self.start_bookmark.timestamp * 1000)/1000
         output = Path(output_path) if output_path else (
-            Path(self.workdir) / f"{source.stem}_{start:.3f}-{end:.3f}.mp4"
+            Path(self.workdir) / f"{source[0].stem}_at_{start:.3f}s.mp4"
         )
         output.parent.mkdir(parents=True, exist_ok=True)
+
+        if len(source) > 1:
+            duration = int(self.get_duration() * 1000)/1000
+            vid1 = source[0]
+            vid2 = source[1]
+            filter_complex = f"[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[midv][mida];[midv]trim=start={start}:duration={duration},setpts=PTS-STARTPTS[outv];[mida]atrim=start={start}:duration={duration},asetpts=PTS-STARTPTS[outa]"
+            command = [
+                "ffmpeg", "-hide_banner", "-y",
+                "-i", str(vid1),
+                "-i", str(vid2),
+                "-filter_complex", filter_complex,
+                "-map", "[outv]", "-map", "[outa]",
+                "-c:v", "libx264", "-c:a", "aac",
+                "-movflags", "+faststart",
+                str(output)
+            ]
+            subprocess.run(command, check=True)
+            return output
+
+        end = self.end_bookmark.timestamp
 
         command = [
             "ffmpeg", "-hide_banner", "-y",
             "-ss", str(start),
-            "-i", str(source),
+            "-i", str(source[0]),
             "-t", str(end - start),
             "-c:v", "libx264",
             "-c:a", "aac",
@@ -99,8 +117,8 @@ class Clip:
 
 def main():
     bookmarks = Bookmarks()
-    clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage")
-    clips.clips[0].clip_video()
+    clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage/clips_zurich")
+    clips.render_all_clips()
 
 if __name__ == "__main__":
     main()
