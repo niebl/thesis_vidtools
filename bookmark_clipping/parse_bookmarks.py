@@ -1,0 +1,63 @@
+import json, textwrap
+from pathlib import Path
+
+# parsing bookmarking files as created by https://github.com/NurioHin/mpv-bookmarker
+
+class Bookmarks:
+    DEFAULT_LOCATION = Path.home() / ".config/mpv/bookmarker.json"
+
+    def __init__(self, location = None):
+        self.location = location or self.DEFAULT_LOCATION
+        self.bookmarks = self.parse_bookmarks()
+
+    def parse_bookmarks(self):
+        with open(self.location, "r") as file:
+            data = json.load(file)
+        bookmarks = map(lambda b: Bookmark(b["pos"], b["path"], b["name"], b["version"]), data)
+        return bookmarks
+
+    #WARNING: overwrites your bookmarks. make sure to have backups
+    def save_bookmarks(self, location=None):
+        save_at = location or self.location
+        with open(save_at, "w") as f:
+            f.write(str(self))
+
+    def map(self, lambda_f):
+        self.bookmarks = map(lambda_f, self.bookmarks)
+
+    #def __str__(self):
+    #    return textwrap.dedent("""\
+    #        {}
+    #        """.format("\n".join(
+    #            map(lambda b: b.filepath + " --- " + str(b), self.bookmarks)
+    #            ))
+    #        )
+
+    def __str__(self):
+        out = """{}""".format("\n".join(
+                map(lambda b: str(b)+",", self.bookmarks)
+                )
+            )
+        out = out[:-1]
+        return f"[{out}]"
+
+
+class Bookmark:
+    def __init__(self, timestamp, filepath, name, ver=2):
+        self.filepath = filepath
+        self.timestamp = timestamp
+        self.name = name
+        self.version = ver
+
+    def update_filename(self):
+        #name = filename @ HH:MM:SS.ms
+        hours = int(self.timestamp / 3600)
+        minutes = int((self.timestamp % 3600) / 60)
+        seconds = int(self.timestamp % 60)
+        ms = int((self.timestamp % 1) * 1000)
+        filename = Path(self.filepath).name
+        self.name = f"{filename} @ {hours:02d}:{minutes:02d}:{seconds:02d}.{ms:03d}"
+        return self
+
+    def __str__(self):
+        return f"{{\"pos\":{self.timestamp},\"name\": \"{self.name}\", \"version\": {self.version}, \"path\": \"{self.filepath}\"}}"
