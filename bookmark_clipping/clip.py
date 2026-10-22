@@ -13,7 +13,6 @@ class Clips:
 
     def render_all_clips(self):
         for clip in self.clips:
-            print(clip)
             clip.render_clip()
 
     def get_clips(self):
@@ -55,6 +54,9 @@ class Clip:
         output = Path(output_path) if output_path else (
             Path(self.workdir) / f"{source[0].stem}_at_{start:.3f}s.mp4"
         )
+        if output.exists():
+            print(f"skipping {str(output)}. already exists")
+            return output
         output.parent.mkdir(parents=True, exist_ok=True)
 
         if len(source) > 1:
