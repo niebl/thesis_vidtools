@@ -2,7 +2,6 @@
 from Bookmarks import Bookmarks
 from pathlib import Path
 import os
-import av
 
 def main():
     bookmarks = Bookmarks()
