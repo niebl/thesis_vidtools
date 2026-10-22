@@ -6,14 +6,15 @@ from pathlib import Path
 class Bookmarks:
     DEFAULT_LOCATION = Path.home() / ".config/mpv/bookmarker.json"
 
-    def __init__(self, location = None):
+    def __init__(self, location = None, bookmarks = None):
         self.location = location or self.DEFAULT_LOCATION
-        self.bookmarks = self.parse_bookmarks()
+        self.bookmarks = bookmarks or self.parse_bookmarks()
 
     @classmethod
     def from_dict(cls, in_dict):
+        #assumes array
         bookmarks = list(map(lambda b: Bookmark(b["pos"], b["path"], b["name"], b["version"]), in_dict))
-        return bookmarks
+        cls(bookmarks=bookmarks)
 
     def parse_bookmarks(self):
         with open(self.location, "r") as file:
@@ -51,6 +52,9 @@ class Bookmarks:
             )
         out = out[:-1]
         return f"[{out}]"
+    
+    def __len__(self):
+        return len(self.bookmarks)
 
 
 class Bookmark:
@@ -59,6 +63,10 @@ class Bookmark:
         self.timestamp = timestamp
         self.name = name
         self.version = ver
+    
+    @classmethod
+    def from_dict(cls, in_dict):
+        return cls(in_dict["pos"], in_dict["path"], in_dict["name"], in_dict["version"])
 
     def update_filename(self):
         #name = filename @ HH:MM:SS.ms
