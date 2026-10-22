@@ -19,6 +19,12 @@ class Bookmarks:
     #WARNING: overwrites your bookmarks. make sure to have backups
     def save_bookmarks(self, location=None):
         save_at = location or self.location
+        if save_at == self.DEFAULT_LOCATION:
+            answer = input("Warning: Overwriting system default location. Continue? [y/N]")
+            if answer.lower() in ["y","yes"]:
+                pass
+            else:
+                return
         with open(save_at, "w") as f:
             f.write(str(self))
 

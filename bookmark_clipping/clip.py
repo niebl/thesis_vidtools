@@ -37,13 +37,14 @@ class Clips:
         return "\n".join(map(str, self.get_clips()))
 
 class Clip:
-    def __init__(self, start_bookmark, end_bookmark, workdir):
+    def __init__(self, start_bookmark, end_bookmark, workdir, videoclip=None):
         self.workdir = workdir
         self.start_bookmark = start_bookmark
         self.end_bookmark = end_bookmark
         self.files = [start_bookmark.filepath]
         #add second file if clip spans 2
         self.files.append(end_bookmark.filepath) if end_bookmark.filepath != start_bookmark.filepath else None
+        self.videoclip = None
 
     def __str__(self):
         return f"{self.get_duration()}s at {self.start_bookmark.name}"
@@ -75,20 +76,22 @@ class Clip:
                 str(output)
             ]
             subprocess.run(command, check=True)
-            return output
+        
+        else:
+            end = self.end_bookmark.timestamp
 
-        end = self.end_bookmark.timestamp
-
-        command = [
-            "ffmpeg", "-hide_banner", "-y",
-            "-ss", str(start),
-            "-i", str(source[0]),
-            "-t", str(end - start),
-            "-c:v", "libx264",
-            "-c:a", "aac",
-            str(output),
-        ]
-        subprocess.run(command, check=True)
+            command = [
+                "ffmpeg", "-hide_banner", "-y",
+                "-ss", str(start),
+                "-i", str(source[0]),
+                "-t", str(end - start),
+                "-c:v", "libx264",
+                "-c:a", "aac",
+                str(output),
+            ]
+            subprocess.run(command, check=True)
+        
+        self.videoclip = output
         return output
 
 
