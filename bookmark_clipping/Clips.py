@@ -18,7 +18,10 @@ class Clips:
         with open(path, "r") as file:
             data = json.load(file)
         bookmarks = Bookmarks.from_dict(data["bookmarks"])
-        clips = list(map(lambda cl: Clip(cl["start"], cl["end"], data["workdir"], cl["videoclip"]), data["clips"]))
+        clips = list(map(lambda cl: 
+            Clip(Bookmark.from_dict(cl["start"]), Bookmark.from_dict(cl["end"]), data["workdir"], cl["videoclip"]), 
+            data["clips"])
+        )
 
         return cls(bookmarks, data["workdir"], clips)
 
@@ -48,6 +51,18 @@ class Clips:
         save_at = location or workdir / "clips.json"
         with open(save_at, "w") as f:
             f.write(str(self))
+    
+    def has_parity(self):
+        # checks that every clip listed is contained in the bookmarks
+        bookmark_set = set((b.filepath, b.timestamp) for b in self.bookmarks.bookmarks)
+        for clip in self.clips:
+            if (clip.start_bookmark.filepath, clip.start_bookmark.timestamp) not in bookmark_set:
+                return False
+            if (clip.end_bookmark.filepath, clip.end_bookmark.timestamp) not in bookmark_set:
+                return False
+        if len(self.clips) * 2 != len(self.bookmarks.bookmarks):
+            return False
+        return True
 
     def __str__(self):
         out = """{}""".format("\n".join(

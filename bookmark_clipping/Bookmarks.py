@@ -13,8 +13,10 @@ class Bookmarks:
     @classmethod
     def from_dict(cls, in_dict):
         #assumes array
-        bookmarks = list(map(lambda b: Bookmark(b["pos"], b["path"], b["name"], b["version"]), in_dict))
-        cls(bookmarks=bookmarks)
+        bookmarks = list(map(
+            lambda b: Bookmark(b["pos"], b["path"], b["name"], b["version"]), 
+            in_dict))
+        return cls(bookmarks=bookmarks)
 
     def parse_bookmarks(self):
         with open(self.location, "r") as file:
