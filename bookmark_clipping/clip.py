@@ -1,15 +1,26 @@
-from Bookmarks import Bookmarks
+from Bookmarks import Bookmarks, Bookmark
 import av
 from pathlib import Path
 import subprocess
+import json
 
 class Clips:
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
 
-    def __init__(self, bookmarks, workdir=None):
+    def __init__(self, bookmarks, workdir=None, clips=None):
         self.workdir = workdir or DEFAULT_WORKDIR
         self.bookmarks = bookmarks
-        self.clips = self.get_clips()
+        self.clips = clips or self.get_clips()
+
+    @classmethod
+    def from_file(cls, filepath=None):
+        path = filepath or cls.DEFAULT_WORKDIR
+        with open(path, "r") as file:
+            data = json.load(file)
+        bookmarks = Bookmarks.from_dict(data["bookmarks"])
+        clips = list(map(lambda cl: Clip(cl["start"], cl["end"], data["workdir"], cl["videoclip"]), data["clips"]))
+
+        return cls(bookmarks, data["workdir"], clips)
 
     def render_all_clips(self):
         for clip in self.clips:
@@ -32,9 +43,19 @@ class Clips:
                 print(f"Invalid clip: {clip.start_bookmark.name} to {clip.end_bookmark.name}")
                 return []
         return clips
+    
+    def save_clip_data(self, location=None):
+        save_at = location or workdir / "clips.json"
+        with open(save_at, "w") as f:
+            f.write(str(self))
 
     def __str__(self):
-        return "\n".join(map(str, self.get_clips()))
+        out = """{}""".format("\n".join(
+                map(lambda b: str(b)+",", self.clips)
+                )
+            )
+        out = out[:-1]
+        return f"{{\"workdir\": \"{self.workdir}\", \"clips\":[{out}], \"bookmarks\":{str(self.bookmarks)}}}"
 
 class Clip:
     def __init__(self, start_bookmark, end_bookmark, workdir, videoclip=None):
@@ -44,10 +65,11 @@ class Clip:
         self.files = [start_bookmark.filepath]
         #add second file if clip spans 2
         self.files.append(end_bookmark.filepath) if end_bookmark.filepath != start_bookmark.filepath else None
-        self.videoclip = None
+        self.videoclip = videoclip or ""
 
     def __str__(self):
-        return f"{self.get_duration()}s at {self.start_bookmark.name}"
+        videoclip = f"\"{self.videoclip}\"" or "\"\""
+        return f"{{\"start\": {self.start_bookmark}, \"end\": {self.end_bookmark}, \"videoclip\": {videoclip}}}"
 
     def render_clip(self, output_path=None):
         source = list(map(lambda c: Path(c), self.files))
@@ -57,6 +79,7 @@ class Clip:
         )
         if output.exists():
             print(f"skipping {str(output)}. already exists")
+            self.videoclip = output
             return output
         output.parent.mkdir(parents=True, exist_ok=True)
 
@@ -124,6 +147,7 @@ def main():
     bookmarks = Bookmarks()
     clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage/clips_zurich")
     clips.render_all_clips()
+    clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
 
 if __name__ == "__main__":
     main()

@@ -10,6 +10,11 @@ class Bookmarks:
         self.location = location or self.DEFAULT_LOCATION
         self.bookmarks = self.parse_bookmarks()
 
+    @classmethod
+    def from_dict(cls, in_dict):
+        bookmarks = list(map(lambda b: Bookmark(b["pos"], b["path"], b["name"], b["version"]), in_dict))
+        return bookmarks
+
     def parse_bookmarks(self):
         with open(self.location, "r") as file:
             data = json.load(file)
