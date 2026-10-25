@@ -82,3 +82,12 @@ class Bookmark:
 
     def __str__(self):
         return f"{{\"pos\":{self.timestamp},\"name\": \"{self.name}\", \"version\": {self.version}, \"path\": \"{self.filepath}\"}}"
+
+    def asdict(self):
+        return {
+            "pos": self.timestamp,
+            "name": self.name,
+            "version": self.version,
+            "path": self.filepath
+        }
+    
