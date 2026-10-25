@@ -117,8 +117,8 @@ class Clip(Serializable):
         videoclip = f"\"{self.videoclip}\"" or "\"\""
 
         return json.dumps({
-            "start": self.start_bookmark, 
-            "end": self.end_bookmark, 
+            "start": self.start_bookmark.asdict(), 
+            "end": self.end_bookmark.asdict(), 
             "videoclip": self.videoclip or "",
             "clip_detections": self.clip_detections
         })
