@@ -1,2 +1,3 @@
 av
 pytest
+open-image-models[onnx-gpu]

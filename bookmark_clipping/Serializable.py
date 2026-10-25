@@ -26,6 +26,12 @@ class SerializableCollection(Serializable):
 
     def __len__(self):
         return len(getattr(self, self.items_attribute))
+
+    def __getitem__(self, key):
+        return getattr(self, self.items_attribute)[key] 
+
+    def __setitem__(self, key, value:DetectionFrame):
+        getattr(self, self.items_attribute)[key] = value
     
     def append(self, item):
         getattr(self, self.items_attribute).append(item)

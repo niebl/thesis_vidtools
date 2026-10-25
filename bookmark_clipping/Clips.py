@@ -8,6 +8,9 @@ import av
 from pathlib import Path
 import subprocess
 import json
+import cv2
+import numpy as np
+from open_image_models import create_detector
 
 class Clips(SerializableCollection):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
@@ -111,7 +114,7 @@ class Clip(Serializable):
         self.observations = observations or {}
         self.discard = discard
         self.uncertain = uncertain
-        self.clip_detections = []
+        self.clip_detections = ClipDetections(self)
 
     def __str__(self):
         videoclip = f"\"{self.videoclip}\"" or "\"\""
@@ -169,6 +172,21 @@ class Clip(Serializable):
         self.videoclip = output
         return output
 
+    def clip_to_frames(self):
+        print(self.videoclip)
+        video = cv2.VideoCapture(self.videoclip)
+        ok, frame = video.read()
+        count = 0
+        frames = []
+        while ok:
+            #cv2.imwrite("frame%04d.jpg".format(count), frame)
+            #print('WRITTEN FRAME:',count)
+            frames.append(frame)
+            count+=1
+            ok, frame = video.read()
+        print(video)
+        video.release()
+        return frames
 
     def validate(self):
         same_dir = Path(self.start_bookmark.filepath).parent == Path(self.end_bookmark.filepath).parent
@@ -195,30 +213,39 @@ class Clip(Serializable):
             return trailing_duration + leading_duration
             return None
 
-class ClipDetections:
+class ClipDetections(SerializableCollection):
+    items_attribute = "detection_frames"
+
     def __init__(self, parent: Clip = None, detection_frames=[]):
-        self.parents = parent
+        self.parent = parent
         self.detection_frames = detection_frames
 
-    def interpolate(self):
-        #TODO
-        pass
+    def run_licenseplate_detections(self):
+        detector = create_detector("yolo-v9-t-640-license-plate-end2end")
+        frames = self.parent.clip_to_frames()
+        frame_detections = []
+
+        for frame in frames:
+            detections = detector.predict(frame)
+            frame_detections.append(detections)
+            if len(detections) > 0:
+                annotated_image = detector.display_predictions(frame)
+                #write to workdir
+                output_path = Path(self.parent.workdir) / "annotated" / f"{self.parent.start_bookmark.name}_to_{self.parent.end_bookmark.name}_frame_{len(frame_detections)}.jpg"
+                cv2.imwrite(str(output_path), annotated_image)
+
+        return frame_detections
 
     def __str__(self):
         return json.dumps({
             "frames": self.objects 
         })
 
-    def __getitem__(self, key):
-        return self.detection_frames[key] 
-
-    def __setitem__(self, key, value:DetectionFrame):
-        self.detection_frames[key] = value
-    
     def push(self, value:DetectionFrame):
         self.detection_frames.push(value)
 
-class DetectionFrame:
+class DetectionFrame(SerializableCollection):
+    items_attribute = "detections"
     def __init__(self, frame_number, parent: ClipDetections = None, detections = []):
         self.parent = parent
         self.frame_number = frame_number
@@ -239,21 +266,12 @@ class DetectionFrame:
     def get_prev_frame(self):
         return self.parent[self.get_index()+1]
 
-    def __getitem__(self, key):
-        return self.detection_frames[key] 
-
-    def __setitem__(self, key, value:Detection):
-        self.detections[key] = value
-    
-    def push(self, value:FrameDetection):
-        self.detections.push(value)
-
-class Detection:
-    def __init__(self, x, y, label, parent:DetectionFrame):
-        self.x = x,
-        self.y = y,
+class Detection(Serializable):
+    def __init__(self, x1, y1, x2, y2, label, confidence, parent:DetectionFrame):
+        self.bbox = {"x1":x1, "y1":y1, "x2":x2, "y2":y2}
         self.label = label
         self.parent = parent
+        self.confidence = confidence
 
     def __str__(self):
         return json.dumps({
