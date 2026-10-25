@@ -111,33 +111,17 @@ class Clip(Serializable):
         self.observations = observations or {}
         self.discard = discard
         self.uncertain = uncertain
-
-    @classmethod
-    def _from_dict(cls, in_dict):
-        start_bookmark = Bookmark.from_dict(in_dict["start"])
-        end_bookmark = Bookmark.from_dict(in_dict["end"])
-        return cls(
-            start_bookmark,
-            end_bookmark,
-            in_dict.get("workdir") or None,
-            in_dict["videoclip"],
-            in_dict["observations"],
-            in_dict["discard"],
-            in_dict["uncertain"],
-        )
-
-    def to_dict(self):
-        return {
-            "start": self.start_bookmark.to_dict(),
-            "end": self.end_bookmark.to_dict(),
-            "videoclip": str(self.videoclip) or "",
-            "observations": self.observations,
-            "discard": self.discard,
-            "uncertain": self.uncertain,
-        }
+        self.clip_detections = []
 
     def __str__(self):
-        return self.to_string()
+        videoclip = f"\"{self.videoclip}\"" or "\"\""
+
+        return json.dumps({
+            "start": self.start_bookmark, 
+            "end": self.end_bookmark, 
+            "videoclip": self.videoclip or "",
+            "clip_detections": self.clip_detections
+        })
 
     def render_clip(self, output_path=None):
         source = list(map(lambda c: Path(c), self.files))
@@ -210,6 +194,74 @@ class Clip(Serializable):
             leading_duration = self.end_bookmark.timestamp
             return trailing_duration + leading_duration
             return None
+
+class ClipDetections:
+    def __init__(self, parent: Clip = None, detection_frames=[]):
+        self.parents = parent
+        self.detection_frames = detection_frames
+
+    def interpolate(self):
+        #TODO
+        pass
+
+    def __str__(self):
+        return json.dumps({
+            "frames": self.objects 
+        })
+
+    def __getitem__(self, key):
+        return self.detection_frames[key] 
+
+    def __setitem__(self, key, value:DetectionFrame):
+        self.detection_frames[key] = value
+    
+    def push(self, value:DetectionFrame):
+        self.detection_frames.push(value)
+
+class DetectionFrame:
+    def __init__(self, frame_number, parent: ClipDetections = None, detections = []):
+        self.parent = parent
+        self.frame_number = frame_number
+        self.detections = []
+
+    def __str__(self):
+        return json.dumps({
+            "frame_number": self.frame_number,
+            "detections": self.detection 
+        })
+
+    def get_index(self):
+        return self.parent.detection_frames.index(self)
+
+    def get_next_frame(self):
+        return self.parent[self.get_index()+1]
+    
+    def get_prev_frame(self):
+        return self.parent[self.get_index()+1]
+
+    def __getitem__(self, key):
+        return self.detection_frames[key] 
+
+    def __setitem__(self, key, value:Detection):
+        self.detections[key] = value
+    
+    def push(self, value:FrameDetection):
+        self.detections.push(value)
+
+class Detection:
+    def __init__(self, x, y, label, parent:DetectionFrame):
+        self.x = x,
+        self.y = y,
+        self.label = label
+        self.parent = parent
+
+    def __str__(self):
+        return json.dumps({
+            "x": self.x,
+            "y": self.y,
+            "label": self.label 
+        })
+
 
 def main():
     bookmarks = Bookmarks()
