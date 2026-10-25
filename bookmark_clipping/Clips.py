@@ -70,6 +70,7 @@ class Clips:
                 )
             )
         out = out[:-1]
+
         return f"{{\"workdir\": \"{self.workdir}\", \"clips\":[{out}], \"bookmarks\":{str(self.bookmarks)}}}"
 
 class Clip:
@@ -84,7 +85,12 @@ class Clip:
 
     def __str__(self):
         videoclip = f"\"{self.videoclip}\"" or "\"\""
-        return f"{{\"start\": {self.start_bookmark}, \"end\": {self.end_bookmark}, \"videoclip\": {videoclip}}}"
+
+        return json.dumps({
+            "start": self.start_bookmark, 
+            "end": self.end_bookmark, 
+            "videoclip": self.videoclip or ""
+        })
 
     def render_clip(self, output_path=None):
         source = list(map(lambda c: Path(c), self.files))
