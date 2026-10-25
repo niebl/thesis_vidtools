@@ -126,7 +126,8 @@ class Clip(Serializable):
             "clip_detections": self.clip_detections,
             "observations": self.observations,
             "discard": self.discard,
-            "uncertain": self.uncertain
+            "uncertain": self.uncertain,
+            "clip_detections": self.clip_detections
         })
 
     def render_clip(self, output_path=None):
@@ -238,6 +239,10 @@ class ClipDetections(SerializableCollection):
                 cv2.imwrite(str(output_path), annotated_image)
 
         return frame_detections
+
+    def interpolate(self):
+        #TODO
+        pass
 
     def __str__(self):
         return json.dumps({
