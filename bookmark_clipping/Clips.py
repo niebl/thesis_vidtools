@@ -19,10 +19,16 @@ class Clips:
             data = json.load(file)
         bookmarks = Bookmarks.from_dict(data["bookmarks"])
         clips = list(map(lambda cl: 
-            Clip(Bookmark.from_dict(cl["start"]), Bookmark.from_dict(cl["end"]), data["workdir"], cl["videoclip"]), 
+            Clip(
+                Bookmark.from_dict(cl["start"]), 
+                Bookmark.from_dict(cl["end"]), 
+                data["workdir"], 
+                cl["videoclip"], 
+                observations=cl["observations"],
+                discard=cl["discard"],
+                uncertain=cl["uncertain"]), 
             data["clips"])
         )
-
         return cls(bookmarks, data["workdir"], clips)
 
     def render_all_clips(self):
@@ -39,7 +45,7 @@ class Clips:
         for i in range(0, len(self.bookmarks.bookmarks), 2):
             start_bookmark = self.bookmarks.bookmarks[i]
             end_bookmark = self.bookmarks.bookmarks[i+1]
-            clips.append(Clip(start_bookmark, end_bookmark, self.workdir))
+            clips.append(Clip(start_bookmark, end_bookmark, self.workdir, parent=self))
 
         for clip in clips:
             if not clip.validate():
@@ -64,6 +70,9 @@ class Clips:
             return False
         return True
 
+    def __iter__(self):
+        return iter(self.clips)
+
     def __str__(self):
         out = """{}""".format("\n".join(
                 map(lambda b: str(b)+",", self.clips)
@@ -74,7 +83,7 @@ class Clips:
         return f"{{\"workdir\": \"{self.workdir}\", \"clips\":[{out}], \"bookmarks\":{str(self.bookmarks)}}}"
 
 class Clip:
-    def __init__(self, start_bookmark, end_bookmark, workdir, videoclip=None):
+    def __init__(self, start_bookmark, end_bookmark, workdir, videoclip=None, parent=None, observations=False, discard=False, uncertain=False):
         self.workdir = workdir
         self.start_bookmark = start_bookmark
         self.end_bookmark = end_bookmark
@@ -82,14 +91,21 @@ class Clip:
         #add second file if clip spans 2
         self.files.append(end_bookmark.filepath) if end_bookmark.filepath != start_bookmark.filepath else None
         self.videoclip = videoclip or ""
+        self.parent = parent
+        self.observations = observations or {}
+        self.discard = discard
+        self.uncertain = uncertain
 
     def __str__(self):
         videoclip = f"\"{self.videoclip}\"" or "\"\""
 
         return json.dumps({
-            "start": self.start_bookmark, 
-            "end": self.end_bookmark, 
-            "videoclip": self.videoclip or ""
+            "start": self.start_bookmark.asdict(), 
+            "end": self.end_bookmark.asdict(), 
+            "videoclip": self.videoclip or "",
+            "observations": self.observations,
+            "discard": self.discard,
+            "uncertain": self.uncertain
         })
 
     def render_clip(self, output_path=None):
