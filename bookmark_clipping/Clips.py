@@ -96,7 +96,10 @@ class Clip:
         return json.dumps({
             "start": self.start_bookmark, 
             "end": self.end_bookmark, 
-            "videoclip": self.videoclip or ""
+            "videoclip": self.videoclip or "",
+            "observations" self.observations,
+            "discard": self.discard,
+            "uncertain": self.uncertain
         })
 
     def render_clip(self, output_path=None):

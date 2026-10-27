@@ -7,11 +7,10 @@ import mpv
 import queue
 
 def main():
-    clips = Clips.from_file(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
+    clips = Clips.from_file(Path.home() / "Projects/Bike Footage/clips_zurich/clips_rated.json")
     print("Clips parity to Bookmarks:", clips.has_parity())
     player = Player()
-    clips.clips = clips.clips[0:5]
-    player.play_clips(clips)
+    player.rate_clips(clips)
     
 
 class Player(mpv.MPV):
@@ -74,26 +73,42 @@ class Player(mpv.MPV):
                 results.append(result)
                 return True
 
-        if not append_result(self.count("how many lanes are crossed?: ", "lanes crossed")):
+        if not append_result(self.ask("is there a traffic light? (y / n): ", ["y", "n"])):
             return results
-        elif not append_result(self.ask("is there a traffic light? (y / n): ", ["y", "n"])):
+        elif not append_result(self.count("how many lanes are crossed or passed?: ", "lanes", 1)):
             return results
         elif not append_result(self.ask("does the cyclist cross or pass a median? (y / n): ", ["y", "n"])):
             return results
         elif not append_result(self.count("How many cars cross the rider's path or pass adjacently?: ", "cars")):
             return results
 
+        clip.observations = {
+            "lanes_crossed": results[0],
+            "traffic_light": results[1],
+            "crosses_median": results[2],
+            "cars": results[3],
+            "clip_length": clip.get_duration(),
+            "traffic_index": (results[3] / results[0]) / clip.get_duration()
+        }
         return results
         #stop playback and return results once answers are collected
 
-    def play_clips(self, clips):
+    def rate_clips(self, clips, save_to=Path.home() / "Projects/Bike Footage/clips_zurich/clips_rated.json"):
         for clip in clips:
             if clip.discard:
                 continue
+            
+            #skip if results populated
+            if (clip.observations.get("lanes_crossed") is not None and
+                clip.observations.get("traffic_light") is not None and
+                clip.observations.get("crosses_median") is not None and
+                clip.observations.get("cars") is not None):
+                continue
+
             print(f"clip: {clip.start_bookmark.name} to {clip.end_bookmark.name}, uncertain: {clip.uncertain}")
             self.play_clip(clip)
-            #collect results for each clip
-            #stop playback and return results once answers are collected
+            
+            clips.save_clip_data(save_to)
         self.stop()
 
     def ask(self, question, options=None, user_input=False, timeout=None):
@@ -130,8 +145,8 @@ class Player(mpv.MPV):
                 print(f"            {key}")
                 return key
 
-    def count(self, question, object="count"):
-        count = 0
+    def count(self, question, object="count", start = 0):
+        count = start
         print(question)
 
         def display_count():
