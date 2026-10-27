@@ -39,7 +39,7 @@ class Clips:
         for i in range(0, len(self.bookmarks.bookmarks), 2):
             start_bookmark = self.bookmarks.bookmarks[i]
             end_bookmark = self.bookmarks.bookmarks[i+1]
-            clips.append(Clip(start_bookmark, end_bookmark, self.workdir))
+            clips.append(Clip(start_bookmark, end_bookmark, self.workdir, parent=self))
 
         for clip in clips:
             if not clip.validate():
@@ -64,6 +64,9 @@ class Clips:
             return False
         return True
 
+    def __iter__(self):
+        return iter(self.clips)
+
     def __str__(self):
         out = """{}""".format("\n".join(
                 map(lambda b: str(b)+",", self.clips)
@@ -74,7 +77,7 @@ class Clips:
         return f"{{\"workdir\": \"{self.workdir}\", \"clips\":[{out}], \"bookmarks\":{str(self.bookmarks)}}}"
 
 class Clip:
-    def __init__(self, start_bookmark, end_bookmark, workdir, videoclip=None):
+    def __init__(self, start_bookmark, end_bookmark, workdir, videoclip=None, parent=None):
         self.workdir = workdir
         self.start_bookmark = start_bookmark
         self.end_bookmark = end_bookmark
@@ -82,6 +85,10 @@ class Clip:
         #add second file if clip spans 2
         self.files.append(end_bookmark.filepath) if end_bookmark.filepath != start_bookmark.filepath else None
         self.videoclip = videoclip or ""
+        self.parent = parent
+        self.observations = {}
+        self.discard = False
+        self.uncertain = False
 
     def __str__(self):
         videoclip = f"\"{self.videoclip}\"" or "\"\""
