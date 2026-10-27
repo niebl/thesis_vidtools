@@ -25,7 +25,9 @@ class Player(mpv.MPV):
             def enqueue_key():
                 self._pressed_keys.put(key)
 
-        for key in [str(number) for number in range(10)] + ['y', 'n', 'ESC', 'DEL', '?']:
+        for key in [str(number) for number in range(10)] + [
+            'y', 'n', 'ESC', 'DEL', '?', 'UP', 'DOWN', 'ENTER'
+        ]:
             capture_key(key)
 
         @self.on_key_press('LEFT')
@@ -72,13 +74,13 @@ class Player(mpv.MPV):
                 results.append(result)
                 return True
 
-        if not append_result(self.ask("how many lanes are crossed?: ", clip=clip)):
+        if not append_result(self.count("how many lanes are crossed?: ", "lanes crossed")):
             return results
-        elif not append_result(self.ask("is there a traffic light? (y / n): ", ["y", "n"], clip=clip)):
+        elif not append_result(self.ask("is there a traffic light? (y / n): ", ["y", "n"])):
             return results
-        elif not append_result(self.ask("does the cyclist cross or pass a median? (y / n): ", ["y", "n"], clip=clip)):
+        elif not append_result(self.ask("does the cyclist cross or pass a median? (y / n): ", ["y", "n"])):
             return results
-        elif not append_result(self.ask("how many cars cross the riders path, or pass the driver adjacently?: ", user_input=True, clip=clip)):
+        elif not append_result(self.count("How many cars cross the rider's path or pass adjacently?: ", "cars")):
             return results
 
         return results
@@ -94,7 +96,7 @@ class Player(mpv.MPV):
             #stop playback and return results once answers are collected
         self.stop()
 
-    def ask(self, question, options=None, user_input=False, timeout=None, clip=None):
+    def ask(self, question, options=None, user_input=False, timeout=None):
         if user_input:
             print(question)
             user_input = input()
@@ -127,6 +129,37 @@ class Player(mpv.MPV):
             if key in accepted_keys:
                 print(f"            {key}")
                 return key
+
+    def count(self, question, object="count"):
+        count = 0
+        print(question)
+
+        def display_count():
+            print(f"\r\033[K{object}: {count}  (Up/Down, Enter), ('2'/'1', '4')", end="", flush=True)
+            self.command("show-text", f"{object}: {count}", "30000")
+
+        display_count()
+        while True:
+            key = self._pressed_keys.get()
+            if key == "UP" or key == "2":
+                count += 1
+                display_count()
+            elif key == "DOWN" or key == "1":
+                count = max(0, count - 1)
+                display_count()
+            elif key == "ENTER" or key == "4":
+                print()
+                self.command("show-text", f"Cars counted: {count}", "3000")
+                return count
+            elif key == "DEL":
+                print("\nclip marked DISCARD")
+                return "DISCARD"
+            elif key == "ESC":
+                print()
+                return None
+            elif key == "?":
+                print("\nclip marked UNCERTAIN")
+                return "UNCERTAIN"
 
 
 if __name__ == "__main__":
