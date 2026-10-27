@@ -19,10 +19,16 @@ class Clips:
             data = json.load(file)
         bookmarks = Bookmarks.from_dict(data["bookmarks"])
         clips = list(map(lambda cl: 
-            Clip(Bookmark.from_dict(cl["start"]), Bookmark.from_dict(cl["end"]), data["workdir"], cl["videoclip"]), 
+            Clip(
+                Bookmark.from_dict(cl["start"]), 
+                Bookmark.from_dict(cl["end"]), 
+                data["workdir"], 
+                cl["videoclip"], 
+                observations=cl["observations"],
+                discard=cl["discard"],
+                uncertain=cl["uncertain"]), 
             data["clips"])
         )
-
         return cls(bookmarks, data["workdir"], clips)
 
     def render_all_clips(self):
@@ -77,7 +83,7 @@ class Clips:
         return f"{{\"workdir\": \"{self.workdir}\", \"clips\":[{out}], \"bookmarks\":{str(self.bookmarks)}}}"
 
 class Clip:
-    def __init__(self, start_bookmark, end_bookmark, workdir, videoclip=None, parent=None):
+    def __init__(self, start_bookmark, end_bookmark, workdir, videoclip=None, parent=None, observations=False, discard=False, uncertain=False):
         self.workdir = workdir
         self.start_bookmark = start_bookmark
         self.end_bookmark = end_bookmark
@@ -86,18 +92,18 @@ class Clip:
         self.files.append(end_bookmark.filepath) if end_bookmark.filepath != start_bookmark.filepath else None
         self.videoclip = videoclip or ""
         self.parent = parent
-        self.observations = {}
-        self.discard = False
-        self.uncertain = False
+        self.observations = observations or {}
+        self.discard = discard
+        self.uncertain = uncertain
 
     def __str__(self):
         videoclip = f"\"{self.videoclip}\"" or "\"\""
 
         return json.dumps({
-            "start": self.start_bookmark, 
-            "end": self.end_bookmark, 
+            "start": self.start_bookmark.asdict(), 
+            "end": self.end_bookmark.asdict(), 
             "videoclip": self.videoclip or "",
-            "observations" self.observations,
+            "observations": self.observations,
             "discard": self.discard,
             "uncertain": self.uncertain
         })

@@ -83,12 +83,12 @@ class Player(mpv.MPV):
             return results
 
         clip.observations = {
-            "lanes_crossed": results[0],
-            "traffic_light": results[1],
+            "traffic_light": results[0],
+            "lanes_crossed": results[1],
             "crosses_median": results[2],
             "cars": results[3],
             "clip_length": clip.get_duration(),
-            "traffic_index": (results[3] / results[0]) / clip.get_duration()
+            "traffic_index": (results[3] / results[1]) / clip.get_duration()
         }
         return results
         #stop playback and return results once answers are collected
@@ -96,6 +96,7 @@ class Player(mpv.MPV):
     def rate_clips(self, clips, save_to=Path.home() / "Projects/Bike Footage/clips_zurich/clips_rated.json"):
         for clip in clips:
             if clip.discard:
+                print("skipping discarded clip")
                 continue
             
             #skip if results populated
