@@ -1,4 +1,7 @@
-from Bookmarks import Bookmarks, Bookmark
+if __package__:
+    from .Bookmarks import Bookmarks, Bookmark
+else:
+    from Bookmarks import Bookmarks, Bookmark
 import av
 from pathlib import Path
 import subprocess
