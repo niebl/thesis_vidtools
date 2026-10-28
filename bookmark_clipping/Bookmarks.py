@@ -18,6 +18,10 @@ class Bookmarks:
             in_dict))
         return cls(bookmarks=bookmarks)
 
+    @classmethod
+    def from_string(cls, in_str):
+        return cls.from_dict(json.loads(in_str))
+
     def parse_bookmarks(self):
         with open(self.location, "r") as file:
             data = json.load(file)
@@ -69,6 +73,10 @@ class Bookmark:
     @classmethod
     def from_dict(cls, in_dict):
         return cls(in_dict["pos"], in_dict["path"], in_dict["name"], in_dict["version"])
+
+    @classmethod
+    def from_string(cls, in_str):
+        return cls.from_dict(json.loads(in_str))
 
     def update_filename(self):
         #name = filename @ HH:MM:SS.ms
