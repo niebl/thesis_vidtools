@@ -122,8 +122,11 @@ class Clip(Serializable):
         return json.dumps({
             "start": self.start_bookmark.asdict(), 
             "end": self.end_bookmark.asdict(), 
-            "videoclip": self.videoclip or "",
-            "clip_detections": self.clip_detections
+            "videoclip": str(self.videoclip) or "",
+            "clip_detections": self.clip_detections,
+            "observations": self.observations,
+            "discard": self.discard,
+            "uncertain": self.uncertain
         })
 
     def render_clip(self, output_path=None):
