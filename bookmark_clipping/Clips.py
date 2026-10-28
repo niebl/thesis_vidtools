@@ -102,7 +102,7 @@ class Clip:
         return json.dumps({
             "start": self.start_bookmark.asdict(), 
             "end": self.end_bookmark.asdict(), 
-            "videoclip": self.videoclip or "",
+            "videoclip": str(self.videoclip) or "",
             "observations": self.observations,
             "discard": self.discard,
             "uncertain": self.uncertain
