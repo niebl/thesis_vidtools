@@ -20,19 +20,28 @@ class Clips:
         path = filepath or cls.DEFAULT_WORKDIR
         with open(path, "r") as file:
             data = json.load(file)
-        bookmarks = Bookmarks.from_dict(data["bookmarks"])
+        return cls.from_dict(data)
+
+    @classmethod
+    def from_string(cls, in_str):
+        return cls.from_dict(json.loads(in_str))
+
+    @classmethod
+    def from_dict(cls, in_dict):
+        bookmarks = Bookmarks.from_dict(in_dict["bookmarks"])
         clips = list(map(lambda cl: 
             Clip(
                 Bookmark.from_dict(cl["start"]), 
                 Bookmark.from_dict(cl["end"]), 
-                data["workdir"], 
+                in_dict["workdir"], 
                 cl["videoclip"], 
                 observations=cl["observations"],
                 discard=cl["discard"],
                 uncertain=cl["uncertain"]), 
-            data["clips"])
+            in_dict["clips"])
         )
-        return cls(bookmarks, data["workdir"], clips)
+        return cls(bookmarks, in_dict["workdir"], clips)
+
 
     def render_all_clips(self):
         for clip in self.clips:
@@ -86,7 +95,8 @@ class Clips:
         return f"{{\"workdir\": \"{self.workdir}\", \"clips\":[{out}], \"bookmarks\":{str(self.bookmarks)}}}"
 
 class Clip:
-    def __init__(self, start_bookmark, end_bookmark, workdir, videoclip=None, parent=None, observations=False, discard=False, uncertain=False):
+    DEFAULT_WORKDIR = Path.home() / "Videos/clips"
+    def __init__(self, start_bookmark, end_bookmark, workdir=None, videoclip=None, parent=None, observations=False, discard=False, uncertain=False):
         self.workdir = workdir
         self.start_bookmark = start_bookmark
         self.end_bookmark = end_bookmark
@@ -98,6 +108,24 @@ class Clip:
         self.observations = observations or {}
         self.discard = discard
         self.uncertain = uncertain
+
+    @classmethod
+    def from_dict(cls, in_dict):
+        start_bookmark = Bookmark.from_dict(in_dict["start"])
+        end_bookmark = Bookmark.from_dict(in_dict["end"])
+        return cls(
+            start_bookmark,
+            end_bookmark,
+            in_dict.get("workdir") or None,
+            in_dict["videoclip"],
+            in_dict["observations"],
+            in_dict["discard"],
+            in_dict["uncertain"],
+        )
+
+    @classmethod
+    def from_string(cls, in_str):
+        return cls.from_dict(json.loads(in_str))
 
     def __str__(self):
         videoclip = f"\"{self.videoclip}\"" or "\"\""

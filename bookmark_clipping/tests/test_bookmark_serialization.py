@@ -13,9 +13,11 @@ BOOKMARK_FIXTURE = "{\"pos\":19.019,\"name\": \"848_0008_D_003.mp4 @ 00:00:19.01
 
 class TestBookmark:
     ### HELPERS:
-    def bookmark_conditions(self, bookmark):
+    @staticmethod
+    def bookmark_conditions(bookmark, bookmark_fixture=BOOKMARK_FIXTURE):
+        data = json.loads(bookmark_fixture)
         cond1 = type(bookmark) == Bookmark
-        cond2 = bookmark.filepath == "/home/user/Projects/Videos/848_0008_D_003.mp4" and bookmark.version == 2 and bookmark.name == "848_0008_D_003.mp4 @ 00:00:19.018" and bookmark.timestamp == 19.019 
+        cond2 = bookmark.filepath == data["path"] and bookmark.version == data["version"] and bookmark.name == data["name"] and bookmark.timestamp == data["pos"]
         return cond1 and cond2
 
     ### TESTS:
@@ -34,7 +36,8 @@ class TestBookmark:
 
 class TestBookmarks:
     ### HELPERS:
-    def bookmarks_conditions(self, bookmarks):
+    @staticmethod
+    def bookmarks_conditions(bookmarks):
         cond1 = type(bookmarks) == Bookmarks
         cond2 = bookmarks.location == Bookmarks.DEFAULT_LOCATION 
         cond3 = type(bookmarks.bookmarks[0]) == Bookmark
