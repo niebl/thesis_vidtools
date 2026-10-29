@@ -75,3 +75,29 @@ class TestClips:
     def test_clips_to_string(self):
         clips = Clips.from_string(CLIPS_FIXTURE)
         assert json.loads(str(clips)) == json.loads(CLIPS_FIXTURE)
+
+    def test_map(self):
+        data = json.loads(CLIPS_FIXTURE)
+        collections = [
+            Bookmarks.from_dict(data["bookmarks"]),
+            Clips.from_dict(data),
+        ]
+
+        for collection in collections:
+            items = list(collection)
+            assert len(collection) == len(items)
+            collection.map(lambda item: "mapped")
+            assert list(collection) == ["mapped"] * len(items)
+
+    def test_index_pop(self):
+        data = json.loads(CLIPS_FIXTURE)
+        collection = Bookmarks.from_dict(data["bookmarks"])
+        first = collection.bookmarks[0]
+        second = collection.bookmarks[1]
+        last = collection.bookmarks[-1]
+
+        assert collection.index(first) == 0
+        assert collection.index(first, 0, 1) == 0
+        assert collection.index(second, 1, 2) == 1
+        assert collection.pop() == last
+        assert collection.pop(0) == first

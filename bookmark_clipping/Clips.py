@@ -1,19 +1,22 @@
 if __package__:
     from .Bookmarks import Bookmarks, Bookmark
+    from .Serializable import Serializable, SerializableCollection
 else:
     from Bookmarks import Bookmarks, Bookmark
+    from Serializable import Serializable, SerializableCollection
 import av
 from pathlib import Path
 import subprocess
 import json
 
-class Clips:
+class Clips(SerializableCollection):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
+    items_attribute = "clips"
 
     def __init__(self, bookmarks, workdir=None, clips=None):
         self.workdir = workdir or DEFAULT_WORKDIR
         self.bookmarks = bookmarks
-        self.clips = clips or self.get_clips()
+        self.clips = self.get_clips() if clips is None else clips
 
     @classmethod
     def from_file(cls, filepath=None):
@@ -23,11 +26,7 @@ class Clips:
         return cls.from_dict(data)
 
     @classmethod
-    def from_string(cls, in_str):
-        return cls.from_dict(json.loads(in_str))
-
-    @classmethod
-    def from_dict(cls, in_dict):
+    def _from_dict(cls, in_dict):
         bookmarks = Bookmarks.from_dict(in_dict["bookmarks"])
         clips = list(map(lambda cl: 
             Clip(
@@ -41,6 +40,13 @@ class Clips:
             in_dict["clips"])
         )
         return cls(bookmarks, in_dict["workdir"], clips)
+
+    def to_dict(self):
+        return {
+            "workdir": str(self.workdir),
+            "clips": [clip.to_dict() for clip in self.clips],
+            "bookmarks": self.bookmarks.to_dict(),
+        }
 
 
     def render_all_clips(self):
@@ -82,9 +88,6 @@ class Clips:
             return False
         return True
 
-    def __iter__(self):
-        return iter(self.clips)
-
     def __str__(self):
         out = """{}""".format("\n".join(
                 map(lambda b: str(b)+",", self.clips)
@@ -94,7 +97,7 @@ class Clips:
 
         return f"{{\"workdir\": \"{self.workdir}\", \"clips\":[{out}], \"bookmarks\":{str(self.bookmarks)}}}"
 
-class Clip:
+class Clip(Serializable):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
     def __init__(self, start_bookmark, end_bookmark, workdir=None, videoclip=None, parent=None, observations=False, discard=False, uncertain=False):
         self.workdir = workdir
@@ -110,7 +113,7 @@ class Clip:
         self.uncertain = uncertain
 
     @classmethod
-    def from_dict(cls, in_dict):
+    def _from_dict(cls, in_dict):
         start_bookmark = Bookmark.from_dict(in_dict["start"])
         end_bookmark = Bookmark.from_dict(in_dict["end"])
         return cls(
@@ -123,21 +126,18 @@ class Clip:
             in_dict["uncertain"],
         )
 
-    @classmethod
-    def from_string(cls, in_str):
-        return cls.from_dict(json.loads(in_str))
-
-    def __str__(self):
-        videoclip = f"\"{self.videoclip}\"" or "\"\""
-
-        return json.dumps({
-            "start": self.start_bookmark.asdict(), 
-            "end": self.end_bookmark.asdict(), 
+    def to_dict(self):
+        return {
+            "start": self.start_bookmark.to_dict(),
+            "end": self.end_bookmark.to_dict(),
             "videoclip": str(self.videoclip) or "",
             "observations": self.observations,
             "discard": self.discard,
-            "uncertain": self.uncertain
-        })
+            "uncertain": self.uncertain,
+        }
+
+    def __str__(self):
+        return self.to_string()
 
     def render_clip(self, output_path=None):
         source = list(map(lambda c: Path(c), self.files))

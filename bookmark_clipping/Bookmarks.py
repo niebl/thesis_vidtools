@@ -1,26 +1,31 @@
 import json, textwrap
 from pathlib import Path
+from .Serializable import Serializable, SerializableCollection
 
 # parsing bookmarking files as created by https://github.com/NurioHin/mpv-bookmarker
 
-class Bookmarks:
+class Bookmarks(SerializableCollection):
     DEFAULT_LOCATION = Path.home() / ".config/mpv/bookmarker.json"
+    items_attribute = "bookmarks"
 
     def __init__(self, location = None, bookmarks = None):
         self.location = location or self.DEFAULT_LOCATION
-        self.bookmarks = bookmarks or self.parse_bookmarks()
+        self.bookmarks = self.parse_bookmarks() if bookmarks is None else bookmarks
 
     @classmethod
-    def from_dict(cls, in_dict):
+    def _from_dict(cls, in_dict):
+        location = None
+        if isinstance(in_dict, dict):
+            location = in_dict.get("location")
+            in_dict = in_dict["bookmarks"]
         #assumes array
         bookmarks = list(map(
             lambda b: Bookmark(b["pos"], b["path"], b["name"], b["version"]), 
             in_dict))
-        return cls(bookmarks=bookmarks)
+        return cls(location=location, bookmarks=bookmarks)
 
-    @classmethod
-    def from_string(cls, in_str):
-        return cls.from_dict(json.loads(in_str))
+    def to_dict(self):
+        return [bookmark.to_dict() for bookmark in self.bookmarks]
 
     def parse_bookmarks(self):
         with open(self.location, "r") as file:
@@ -40,9 +45,6 @@ class Bookmarks:
         with open(save_at, "w") as f:
             f.write(str(self))
 
-    def map(self, lambda_f):
-        self.bookmarks = list(map(lambda_f, self.bookmarks))
-
     #def __str__(self):
     #    return textwrap.dedent("""\
     #        {}
@@ -59,11 +61,7 @@ class Bookmarks:
         out = out[:-1]
         return f"[{out}]"
     
-    def __len__(self):
-        return len(self.bookmarks)
-
-
-class Bookmark:
+class Bookmark(Serializable):
     def __init__(self, timestamp, filepath, name, ver=2):
         self.filepath = filepath
         self.timestamp = timestamp
@@ -71,12 +69,8 @@ class Bookmark:
         self.version = ver
     
     @classmethod
-    def from_dict(cls, in_dict):
+    def _from_dict(cls, in_dict):
         return cls(in_dict["pos"], in_dict["path"], in_dict["name"], in_dict["version"])
-
-    @classmethod
-    def from_string(cls, in_str):
-        return cls.from_dict(json.loads(in_str))
 
     def update_filename(self):
         #name = filename @ HH:MM:SS.ms
@@ -91,7 +85,7 @@ class Bookmark:
     def __str__(self):
         return f"{{\"pos\":{self.timestamp},\"name\": \"{self.name}\", \"version\": {self.version}, \"path\": \"{self.filepath}\"}}"
 
-    def asdict(self):
+    def to_dict(self):
         return {
             "pos": self.timestamp,
             "name": self.name,
