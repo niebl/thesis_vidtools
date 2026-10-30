@@ -16,7 +16,7 @@ class Serializable:
 
     def __str__(self):
         return self.to_string()
-        
+
 
 class SerializableCollection(Serializable):
     items_attribute = None
@@ -26,6 +26,9 @@ class SerializableCollection(Serializable):
 
     def __len__(self):
         return len(getattr(self, self.items_attribute))
+    
+    def __getitem__(self, item):
+         return getattr(self, self.items_attribute)[item]
     
     def append(self, item):
         getattr(self, self.items_attribute).append(item)

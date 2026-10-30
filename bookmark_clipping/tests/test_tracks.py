@@ -1,31 +1,136 @@
 import pytest
+import json
 from pathlib import Path
-from .Tracks import Track#, Tracks
+from datetime import datetime, timezone
+from xml.etree import ElementTree
 
-GPS_FIXTURE = "./fixtures/Bike_ride.gpx"
+import pandas as pd
+
+from ..Tracks import Track, Video
+
+FIXTURES = Path(__file__).parent / "fixtures"
+GPS_FIXTURE = FIXTURES / "Bike_ride.gpx"
+VIDEO_FIXTURE = FIXTURES / "DJI_20240901110552_0007_D_001.mp4"
+VIDEO_FIXTURES = [
+    FIXTURES / "DJI_20240901110505_0007_D_003.mp4",
+    FIXTURES / "DJI_20240901110505_0007_D_004.mp4",
+    VIDEO_FIXTURE,
+]
+
+
+def unix_timestamp(value):
+    return datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp()
 
 class TestVideo:
 
     def test_timestamp(self):
-        #the video should correclty extract the UNIX start_timestamp from a DJI_YYMMDDHHmmSS_000*_D_00N.mp4 formatted video
+        video = Video(VIDEO_FIXTURE, offset=0)
+        expected = datetime(2024, 9, 1, 11, 1, 40).timestamp()
+        assert video.get_timestamp() == expected
 
     def test_serialize(self):
-        #turning a video to a string should return all the relevant metadata
+        video = Video(VIDEO_FIXTURE, offset=-12.5)
+        serialized = video.to_dict()
+
+        assert serialized["path"] == str(VIDEO_FIXTURE)
+        assert serialized["offset"] == -12.5
+        assert serialized["start_timestamp"] == video.start_timestamp
+        assert serialized["duration"] == pytest.approx(6.006, abs=0.05)
+        assert str(video) == video.to_string()
 
     def test_get_duration(self):
-        #should get the duration in seconds
+        video = Video(VIDEO_FIXTURE, offset=0)
+
+        assert video.get_duration() == pytest.approx(6.006, abs=0.05)
+
+    def test_get_prev_next(self):
+        track = Track(Track.from_gpx_file(GPS_FIXTURE))
+        for path in VIDEO_FIXTURES:
+            track.add_video(Video(path, offset=0, parent_track=track))
+
+        assert track.videos[0].get_prev() is False
+        assert track.videos[0].get_next() is track.videos[1]
+        assert track.videos[1].get_prev() is track.videos[0]
+        assert track.videos[1].get_next() is track.videos[2]
+        assert track.videos[2].get_prev() is track.videos[1]
+        assert track.videos[2].get_next() is False
     
 class TestTrack:
 
-    def test_read_file(self):
-        #reading an xml formatted file should return a valid DataFrame object
-        pass
+    def test_from_gpx(self):
+        track = Track.from_gpx_file(GPS_FIXTURE)
 
-    def test_serializa(self):
-        #tutning a Track to a string should return a valid XML string with correct track content
+        assert isinstance(track, Track)
+        assert not not track.track
+        assert "lat" and "lon" and "ele" and "time" in track[0]
+        assert track[0]["lat"] == pytest.approx(47.414008)
+        assert track[0]["lon"] == pytest.approx(8.550946)
 
-    def test_get_point_at_time(self):
-        #the method get_point_at_time should return a track point corresponding to the given unix time stamp 
+    def test_serialize(self):
+        track = Track.from_gpx_file(GPS_FIXTURE)
+        serialized = str(track)
+        data = json.loads(serialized)
+        first_point = data["track"][0]
 
-    def test_get_timestamp(self):
-        #the method get_timestamp should return the unix timestamp for a track point at a given index
+        assert data["videos"] == []
+        assert first_point is not None
+        print(type(first_point))
+        assert float(first_point.get("lat")) == pytest.approx(47.414008)
+        assert float(first_point.get("lon")) == pytest.approx(8.550946)
+
+        track.videos = [Video(VIDEO_FIXTURES[0], offset=0, parent_track=track)]
+        serialized_with_video = json.loads(str(track))
+        assert len(serialized_with_video["videos"]) == 1
+        assert serialized_with_video["videos"][0]["path"] == str(VIDEO_FIXTURES[0])
+
+    def test_get_point_by_timestamp(self):
+        track = Track(Track.from_gpx_file(GPS_FIXTURE))
+        timestamp = unix_timestamp("2024-09-01T09:03:40Z")
+        point = track.get_point_by_timestamp(timestamp)
+
+        assert point["lat"] == pytest.approx(47.414017)
+        assert point["lon"] == pytest.approx(8.550942)
+        assert point["time"] == timestamp
+
+    def test_get_point_timestamp(self):
+        track_data = Track.from_gpx_file(GPS_FIXTURE)
+        track = Track(track_data)
+        expected = unix_timestamp("2024-09-01T09:03:40Z")
+
+        assert track.get_point_timestamp(4) == expected
+
+    def test_get_video(self):
+        track = Track(Track.from_gpx_file(GPS_FIXTURE))
+        videos = [Video(path, offset=0, parent_track=track) for path in VIDEO_FIXTURES]
+        track.videos = videos
+
+        assert track.get_video(lambda video: video.filepath == VIDEO_FIXTURES[1]) is videos[1]
+        assert track.get_video(lambda video: video.filepath.name.endswith("missing.mp4")) is None
+
+    def test_get_video_by_title(self):
+        track = Track.from_gpx_file(GPS_FIXTURE)
+        videos = [Video(path, offset=0, parent_track=track) for path in VIDEO_FIXTURES]
+        track.videos = videos
+
+        assert track.get_video_by_title(VIDEO_FIXTURES[1].stem) is videos[1]
+        assert track.get_video_by_title("not_a_video.mp4") is False
+
+    def test_update_start_times(self):
+        track = Track.from_gpx_file(GPS_FIXTURE)
+        videos = [Video(path, offset=None, parent_track=track) for path in VIDEO_FIXTURES]
+        videos[0].offset = 0
+        videos[2].offset = -5
+        track.videos = videos
+
+        track.update_start_times()
+        track.update_offsets()
+        track_start = track.get_point_by_timestamp(videos[0].start_timestamp + videos[0].offset)
+
+        assert videos[0].start_timestamp == track_start["time"]
+        assert videos[1].start_timestamp == pytest.approx(
+            videos[0].start_timestamp + videos[0].duration
+        )
+        assert videos[1].offset == pytest.approx(
+            videos[1].start_timestamp - track_start["time"]
+        )
+        assert videos[2].start_timestamp == pytest.approx(track_start["time"] - 5)
