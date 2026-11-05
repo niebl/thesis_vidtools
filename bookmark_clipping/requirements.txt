@@ -1,2 +1,6 @@
 av
 pytest
+pandas
+ffprobe-python
+lxml
+gpxo
