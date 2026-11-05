@@ -1,6 +1,10 @@
 import pandas
 from pathlib import Path
-from .Serializable import Serializable, SerializableCollection
+if __package__:
+    from .Serializable import Serializable, SerializableCollection
+else:
+    from Serializable import Serializable, SerializableCollection
+
 import subprocess
 from datetime import datetime
 from dateutil import parser
@@ -8,6 +12,8 @@ import re
 import gpxo
 import json
 from zoneinfo import ZoneInfo
+import warnings
+import traceback
 
 class Track(SerializableCollection):
     items_attribute = "track"
@@ -17,15 +23,18 @@ class Track(SerializableCollection):
         self.videos = videos
 
     @classmethod
-    def from_gpx_file(cls, file_path):
-        df = gpxo.Track(file_path)
+    def from_gpx_file(cls, file_path, global_offset=0):
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                category=UserWarning,
+                )
+            df = gpxo.Track(file_path)
+
         data = df.data.copy()
         timestamps = pandas.to_datetime(data["time"], utc=True)
-        print("THE gpx TIMESTAMPS")
-        print(timestamps[0])
-        print(timestamps[0].timestamp())
         data["time"] = timestamps.map(
-            lambda value: value.timestamp() if pandas.notna(value) else None
+            lambda value: value.timestamp()-global_offset if pandas.notna(value) else None
         )
         
 
@@ -39,6 +48,7 @@ class Track(SerializableCollection):
             data[column] = pandas.Series(values, index=data.index, dtype=object)
 
         track = cls(cls.df_to_track(data))
+        print("read track from", track[0]["time"], "to", track[-1]["time"])
         return track
 
     @classmethod
@@ -102,14 +112,8 @@ class Track(SerializableCollection):
             if not video.start_timestamp: video.start_timestamp = video.get_timestamp()
 
     def update_offsets(self):
-        if self.videos[0].offset is None:
-            raise Exception("First video has no offset")
-        for video in self.videos[1:]:
-            if video.get_file_timestamp() == video.get_prev().get_file_timestamp():
-                video.offset = video.get_prev().offset + video.get_duration()
-            else:
-                duration = video.get_timestamp() - video.get_prev().get_timestamp()
-                video.offset = video.get_prev().offset + duration
+        for video in self.videos:
+            if not video.offset: video.offset = video.get_offset()
 
     def get_video(self, lambda_f):
         for video in self.videos:
@@ -118,23 +122,43 @@ class Track(SerializableCollection):
         return None
 
     def get_video_by_title(self, title):
-        return self.get_video(lambda v: v.filepath.stem == title) or False
+        return self.get_video(lambda v: v.filepath.stem == title)
 
     def get_point_timestamp(self, index):
         return self.track[index]["time"]
 
+    def contains_time(self, ts, ts_format="unix"):
+        try:
+            return self.track[0]["time"] <= ts and self.track[-1]["time"] >= ts
+        except Exception as e:
+            print(f"Error in contains, using timestamp {ts}", self.track[0]["time"],self.track[-1]["time"])
+            return False
+
     def get_point_by_timestamp(self, ts, ts_format="unix"):
-        def ts_filter(p, ts):
-            diff = p["time"] - ts
-            if diff > 5 or diff < 0:
-                return 99999999999999999 #TODO: use something more elegant
-            else: 
-                return diff
+        try:
+            if not self.track:
+                raise ValueError("track is empty")
+            closest_dist = float("inf")
+            closest = None
+            for p in self.track:
+                dist = abs(p["time"] - ts)
+                if dist < closest_dist:
+                    closest = p
+                    closest_dist = dist 
             
-        if ts_format is "unix":
-            return min(self.track,
-                key = lambda p: ts_filter(p, ts)
-                )
+            #point = min(
+            #    (p for p in self.track if 0 <= p["time"] - ts <= 2),
+            #    key=lambda point: point["time"] - ts,
+            #    default=None,
+            #)
+            print(closest_dist)
+            if closest_dist < 5:
+                return closest
+            else:
+                return None
+        except Exception as e:
+            raise e
+            return None
 
     def get_points_by_timestamp_range(self, start_ts, end_ts, ts_format="unix"):
         points = []
@@ -144,7 +168,7 @@ class Track(SerializableCollection):
 class Video(Serializable):
     def __init__(self, filepath: Path, offset=None, start_timestamp = None, parent_track = None ):
         self.filepath = filepath
-        self.offset = offset # track-strart - video start
+        self.offset = offset
         self.duration = self.get_duration()
         self.parent = parent_track
         self.start_timestamp = start_timestamp
@@ -164,23 +188,51 @@ class Video(Serializable):
     def get_timestamp(self):
         if self.start_timestamp:
             return self.start_timestamp
-        offset_from_first = 0
         prev = self.get_prev()
+        file_timestamp = self.get_file_timestamp()
         if prev:
-            if prev.get_file_timestamp() == self.get_file_timestamp():
+            if prev.get_file_timestamp() == file_timestamp:
                 return prev.get_timestamp() + prev.get_duration()
-        return self.get_file_timestamp()
+        return file_timestamp
+
+    def get_offset(self):
+        if self.offset is not None:
+            return self.offset
+        
+        prev = self.get_prev()
+
+        if self.offset is None and not prev:
+            #raise Exception("First video has no offset")
+            seg_id = self.get_snippet_index()
+            return (seg_id-1)*-180 #A video segment is almost exactly 3 minutes
+
+        if prev:
+            return prev.get_offset()
 
     def get_file_timestamp(self):
         filename = self.filepath.stem
         title_stamp = re.search(r"\d+", filename).group()
         if len(title_stamp) != 14:
             #something went wrong
+            raise Exception(f"filename contains wrong timestamp: {filename}")
             return None
         timestamp = datetime.strptime(title_stamp, '%Y%m%d%H%M%S').replace(tzinfo=ZoneInfo("Europe/Berlin"))
-        print(str(timestamp))
         return timestamp.timestamp()
+
+    def get_snippet_index(self):
+        filename = self.filepath.stem
+        try:
+            return int(filename[-3:])
+        except:
+            raise ValueError(f"Unexpected filename: {self.filepath.name}")
     
+    def get_recording_index(self):
+        filename = self.filepath.stem
+        try:
+            return int(filename[-10:-6])
+        except:
+            raise ValueError(f"Unexpected filename: {self.filepath.name}")
+
     def get_duration(self):
         if not hasattr(self, "duration") or not self.duration:
             result = subprocess.run(
@@ -209,21 +261,27 @@ class Video(Serializable):
         pass
 
     def get_index(self):
-        if not self.parent:
-            return 0
-        return self.parent.videos.index(self)
+        try:
+            if not self.parent:
+                return 0
+            return self.parent.videos.index(self)
+        except Exception:
+            return False
 
     def get_prev(self):
-        i = self.get_index() - 1
-        if i < 0:
-            print("no prev found")
+        try:
+            i = self.get_index() - 1
+            if i < 0:
+                return False
+            return self.parent.videos[i]
+        except Exception:
             return False
-        print("prev found")
-        print(self.parent.videos[i])
-        return self.parent.videos[i]
 
     def get_next(self):
-        i = self.get_index() + 1
-        if i >= len(self.parent.videos):
+        try:
+            i = self.get_index() + 1
+            if i >= len(self.parent.videos):
+                return False
+            return self.parent.videos[i]
+        except Exception:
             return False
-        return self.parent.videos[i]
