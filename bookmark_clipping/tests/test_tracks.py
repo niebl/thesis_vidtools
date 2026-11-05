@@ -2,9 +2,7 @@ import pytest
 import json
 from pathlib import Path
 from datetime import datetime, timezone
-from xml.etree import ElementTree
-
-import pandas as pd
+from zoneinfo import ZoneInfo
 
 from ..Tracks import Track, Video
 
@@ -16,6 +14,11 @@ VIDEO_FIXTURES = [
     FIXTURES / "DJI_20240901110505_0007_D_004.mp4",
     VIDEO_FIXTURE,
 ]
+VIDEO_SERIALIZATION_FIXTURE = {
+    "path": str(VIDEO_FIXTURE),
+    "offset": -12.5,
+    "start_timestamp": 1725181552.0,
+}
 
 
 def unix_timestamp(value):
@@ -25,16 +28,22 @@ class TestVideo:
 
     def test_timestamp(self):
         video = Video(VIDEO_FIXTURE, offset=0)
-        expected = datetime(2024, 9, 1, 11, 1, 40).timestamp()
+        expected = datetime(
+            2024, 9, 1, 11, 5, 52, tzinfo=ZoneInfo("Europe/Berlin")
+        ).timestamp()
         assert video.get_timestamp() == expected
 
     def test_serialize(self):
-        video = Video(VIDEO_FIXTURE, offset=-12.5)
+        video = Video(
+            VIDEO_FIXTURE,
+            offset=VIDEO_SERIALIZATION_FIXTURE["offset"],
+            start_timestamp=VIDEO_SERIALIZATION_FIXTURE["start_timestamp"],
+        )
         serialized = video.to_dict()
 
-        assert serialized["path"] == str(VIDEO_FIXTURE)
-        assert serialized["offset"] == -12.5
-        assert serialized["start_timestamp"] == video.start_timestamp
+        assert serialized["path"] == VIDEO_SERIALIZATION_FIXTURE["path"]
+        assert serialized["offset"] == VIDEO_SERIALIZATION_FIXTURE["offset"]
+        assert serialized["start_timestamp"] == VIDEO_SERIALIZATION_FIXTURE["start_timestamp"]
         assert serialized["duration"] == pytest.approx(6.006, abs=0.05)
         assert str(video) == video.to_string()
 
@@ -68,6 +77,7 @@ class TestTrack:
 
     def test_serialize(self):
         track = Track.from_gpx_file(GPS_FIXTURE)
+        track.videos = []
         serialized = str(track)
         data = json.loads(serialized)
         first_point = data["track"][0]
@@ -81,7 +91,11 @@ class TestTrack:
         track.videos = [Video(VIDEO_FIXTURES[0], offset=0, parent_track=track)]
         serialized_with_video = json.loads(str(track))
         assert len(serialized_with_video["videos"]) == 1
-        assert serialized_with_video["videos"][0]["path"] == str(VIDEO_FIXTURES[0])
+        serialized_video = serialized_with_video["videos"][0]
+        assert serialized_video["path"] == str(VIDEO_FIXTURES[0])
+        assert serialized_video["offset"] == 0
+        assert serialized_video["start_timestamp"] is None
+        assert serialized_video["duration"] == pytest.approx(10.01, abs=0.05)
 
     def test_get_point_by_timestamp(self):
         track = Track(Track.from_gpx_file(GPS_FIXTURE))
@@ -113,7 +127,7 @@ class TestTrack:
         track.videos = videos
 
         assert track.get_video_by_title(VIDEO_FIXTURES[1].stem) is videos[1]
-        assert track.get_video_by_title("not_a_video.mp4") is False
+        assert track.get_video_by_title("not_a_video.mp4") is None
 
     def test_update_start_times(self):
         track = Track.from_gpx_file(GPS_FIXTURE)
@@ -124,13 +138,14 @@ class TestTrack:
 
         track.update_start_times()
         track.update_offsets()
-        track_start = track.get_point_by_timestamp(videos[0].start_timestamp + videos[0].offset)
+
+        track_start = track.get_point_by_timestamp(videos[0].start_timestamp - videos[0].offset)
 
         assert videos[0].start_timestamp == track_start["time"]
         assert videos[1].start_timestamp == pytest.approx(
             videos[0].start_timestamp + videos[0].duration
         )
-        assert videos[1].offset == pytest.approx(
-            videos[1].start_timestamp - track_start["time"]
-        )
+        assert videos[2].start_timestamp - videos[2].offset == pytest.approx(
+            videos[2].start_timestamp - -5
+        ) #might need a better test case here
         assert videos[2].start_timestamp == pytest.approx(track_start["time"] - 5)

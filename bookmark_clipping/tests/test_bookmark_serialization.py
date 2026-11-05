@@ -18,7 +18,7 @@ class TestBookmark:
         data = json.loads(bookmark_fixture)
         cond1 = type(bookmark) == Bookmark
         cond2 = bookmark.filepath == data["path"] and bookmark.version == data["version"] and bookmark.name == data["name"] and bookmark.timestamp == data["pos"]
-        return cond1 and cond2
+        return cond1 and cond2 and bookmark.to_dict() == data
 
     ### TESTS:
     def test_bookmark_from_dict(self):
@@ -32,7 +32,7 @@ class TestBookmark:
 
     def test_bookmark_to_string(self):
         bookmark = Bookmark.from_string(BOOKMARK_FIXTURE)
-        assert str(bookmark) == BOOKMARK_FIXTURE
+        assert json.loads(str(bookmark)) == json.loads(BOOKMARK_FIXTURE)
 
 class TestBookmarks:
     ### HELPERS:
@@ -55,4 +55,5 @@ class TestBookmarks:
 
     def test_bookmarks_to_string(self):
         bookmarks = Bookmarks.from_string(BOOKMARKS_FIXTURE)
-        assert str(bookmarks) == BOOKMARKS_FIXTURE
+        assert json.loads(str(bookmarks)) == json.loads(BOOKMARKS_FIXTURE)
+        assert bookmarks.to_dict() == json.loads(BOOKMARKS_FIXTURE)

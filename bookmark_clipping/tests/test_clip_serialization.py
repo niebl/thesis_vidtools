@@ -3,6 +3,7 @@ import pytest
 import json
 from ..Bookmarks import Bookmark, Bookmarks
 from ..Clips import Clip, Clips
+from ..Tracks import Track
 from .test_bookmark_serialization import TestBookmark
 
 CLIPS_FIXTURE = """{\"workdir\": \"/home/user/Projects/Videos\", \"clips\":[{\"start\": {\"pos\": 40.5405, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:40.540\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"end\": {\"pos\": 48.782067, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:48.782\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_20240901110117_0007_D_003_at_40.540s.mp4\", \"observations\": {}, \"discard\": false, \"uncertain\": false},
@@ -15,6 +16,13 @@ CLIPS_FIXTURE = """{\"workdir\": \"/home/user/Projects/Videos\", \"clips\":[{\"s
 CLIP_FIXTURE = "{\"start\": {\"pos\": 65.2692, \"name\": \"DJI_806_0009_D_002.mp4 @ 00:01:05.269\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/DJI_806_0009_D_002.mp4\"}, \"end\": {\"pos\": 87.520767, \"name\": \"DJI_806_0009_D_002.mp4 @ 00:01:27.520\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/DJI_806_0009_D_002.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_806_0009_D_002_at_65.269s.mp4\", \"observations\": {}, \"discard\": false, \"uncertain\": false}"
 
 WORKDIR = "/home/user/Projects/Videos"
+CLIPS_FIXTURE = json.dumps({
+    **json.loads(CLIPS_FIXTURE),
+    "tracks": [{
+        "track": [{"time": 1725181416.0, "lat": 47.414008, "lon": 8.550946}],
+        "videos": [],
+    }],
+})
 
 
 class TestClip:
@@ -61,6 +69,10 @@ class TestClips:
             and TestClip.clip_conditions(clips.clips[0], json.dumps(data['clips'][0]))
             and len(clips.bookmarks.bookmarks) == len(data["bookmarks"])
             and type(clips.bookmarks.bookmarks[0]) == Bookmark
+            and len(clips.tracks) == len(data["tracks"])
+            and type(clips.tracks[0]) == Track
+            and clips.tracks[0].track == data["tracks"][0]["track"]
+            and clips.tracks[0].videos == []
         )
 
     def test_clips_from_dict(self):
