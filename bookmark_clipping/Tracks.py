@@ -109,14 +109,8 @@ class Track(SerializableCollection):
         for video in self.videos:
             if not video.offset: video.offset = video.get_offset()
 
-    def get_video(self, lambda_f):
-        for video in self.videos:
-            if lambda_f(video):
-                return video
-        return None
-
     def get_video_by_title(self, title):
-        return self.get_video(lambda v: v.path.stem == title)
+        return self.find_item(lambda v: v.path.stem == title, "videos")
 
     def get_point_timestamp(self, index):
         return self.track[index]["time"]

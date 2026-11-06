@@ -114,13 +114,13 @@ class TestTrack:
 
         assert track.get_point_timestamp(4) == expected
 
-    def test_get_video(self):
+    def test_find_items_video(self):
         track = Track(Track.from_gpx_file(GPS_FIXTURE))
         videos = [Video(path, offset=0, parent_track=track) for path in VIDEO_FIXTURES]
         track.videos = videos
 
-        assert track.get_video(lambda video: video.path == VIDEO_FIXTURES[1]) is videos[1]
-        assert track.get_video(lambda video: video.path.name.endswith("missing.mp4")) is None
+        assert track.find_item(lambda video: video.path == VIDEO_FIXTURES[1], "videos") is videos[1]
+        assert track.find_item(lambda video: video.path.name.endswith("missing.mp4"), "videos") is None
 
     def test_get_video_by_title(self):
         track = Track.from_gpx_file(GPS_FIXTURE)

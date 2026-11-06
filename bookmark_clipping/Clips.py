@@ -34,8 +34,8 @@ class Clips(SerializableCollection):
     @classmethod
     def from_dict(cls, data):
         data["bookmarks"] = Bookmarks.from_dict(data["bookmarks"])
-        data["clips"] = list(map(lambda c: Clip.from_dict(c), data["clips"]))
-        data["tracks"] = list(map(lambda t: Track.from_dict(t), data["tracks"]))
+        data["clips"] = list(map(lambda c: Clip.from_dict(c), data.get("clips", [])))
+        data["tracks"] = list(map(lambda t: Track.from_dict(t), data.get("tracks", [])))
         return cls._from_dict(data)
 
     def read_clips(self):
