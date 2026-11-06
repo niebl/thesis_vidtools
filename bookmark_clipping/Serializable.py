@@ -41,9 +41,23 @@ class Serializable:
                 inspect.Parameter.KEYWORD_ONLY,
             )
         }
-
+    
     def to_dict(self):
-        raise NotImplementedError(f"{type(self).__name__} must implement to_dict")
+        return self._to_dict()
+
+    def _to_dict(self, exclude_keys=["parent"]):
+        data = self.__dict__
+        for key in data:
+            if isinstance(data[key], Serializable):
+                data[key] = data[key].to_dict()
+            if isinstance(data[key], list):
+                for i, entry in enumerate(data[key]):
+                    if isinstance(entry, Serializable):
+                        data[key][i] = entry.to_dict()
+             
+        for key in exclude_keys:
+            data.pop(key, None)
+        return data
 
     def to_string(self):
         return json.dumps(self.to_dict())

@@ -45,6 +45,13 @@ class TestClip:
         clip = Clip.from_dict(in_dict)
         assert self.clip_conditions(clip)
 
+    def test_clip_to_dict(self):
+        clip = Clip.from_dict(json.loads(CLIP_FIXTURE))
+        dic = Clip.to_dict(clip)
+        assert type(dic) is dict
+        assert len(dic) == 4
+        assert not "parent" in dic
+
     def test_clip_from_string(self):
         clip = Clip.from_string(CLIP_FIXTURE)
         assert self.clip_conditions(clip)
@@ -79,6 +86,12 @@ class TestClips:
         in_dict = json.loads(CLIPS_FIXTURE)
         clips = Clips.from_dict(in_dict)
         assert self.clips_conditions(clips)
+    
+    def test_clips_to_dict(self):
+        clips = Clips.from_dict(json.loads(CLIPS_FIXTURE))
+        dic = Clips.to_dict(clips)
+        assert type(dic) is dict
+        assert len(dic) == 4
 
     def test_clips_from_string(self):
         clips = Clips.from_string(CLIPS_FIXTURE)

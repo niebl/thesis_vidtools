@@ -73,12 +73,3 @@ class Bookmark(Serializable):
         filename = Path(self.path).name
         self.name = f"{filename} @ {hours:02d}:{minutes:02d}:{seconds:02d}.{ms:03d}"
         return self
-
-    def to_dict(self):
-        out_dict = {
-            "pos": self.pos,
-            "name": self.name,
-            "ver": self.ver,
-            "path": self.path,
-        }
-        return out_dict

@@ -94,12 +94,6 @@ class Track(SerializableCollection):
             }, inplace=True)
         return df
 
-    def to_dict(self):
-        return {
-            "track": self.track,
-            "videos": [video.to_dict() for video in self.videos],
-        }
-
     def add_video(self, video):
         self.videos.append(video)
         if not self == video.parent:
@@ -235,14 +229,6 @@ class Video(Serializable):
             return float(result.stdout)
         else:
             return self.duration
-
-    def to_dict(self):
-        return {
-            "path": str(self.path),
-            "offset": self.offset,
-            "start_timestamp": self.start_timestamp,
-            "duration": self.duration
-        }
 
     def get_track_points(self):
         #gets the GPS track points coinciding with the given video

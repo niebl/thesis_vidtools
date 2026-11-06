@@ -34,6 +34,12 @@ class TestBookmark:
         bookmark = Bookmark.from_string(BOOKMARK_FIXTURE)
         assert json.loads(str(bookmark)) == json.loads(BOOKMARK_FIXTURE)
 
+    def test_bookmark_to_dict(self):
+        bookmark = Bookmark.from_string(BOOKMARK_FIXTURE)
+        dic = Bookmark.to_dict(bookmark)
+        assert type(dic) is dict
+        assert len(dic) == 4
+
 class TestBookmarks:
     ### HELPERS:
     @staticmethod

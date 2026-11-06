@@ -17,10 +17,10 @@ class Clips(SerializableCollection):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
     items_attribute = "clips"
 
+    # workdir, clips, tracks, bookmark
     def __init__(self, bookmarks=None, workdir=DEFAULT_WORKDIR, clips=None, tracks=None):
         super().__init__(workdir=workdir, collection=clips, items_attribute=self.items_attribute)
         self.clips = self.read_clips() if clips is None else clips
-        print(self.clips)
         self.tracks = tracks
         self.bookmarks = bookmarks
 
@@ -37,14 +37,6 @@ class Clips(SerializableCollection):
         data["clips"] = list(map(lambda c: Clip.from_dict(c), data["clips"]))
         data["tracks"] = list(map(lambda t: Track.from_dict(t), data["tracks"]))
         return cls._from_dict(data)
-
-    def to_dict(self):
-        return {
-            "workdir": str(self.workdir),
-            "clips": [clip.to_dict() for clip in self.clips] if self.clips else [],
-            "bookmarks": self.bookmarks.to_dict() if type(self.bookmarks) == Bookmarks else self.bookmarks,
-            "tracks": [track.to_dict() for track in self.tracks] if self.tracks else []
-        }
 
     def read_clips(self):
         clips = []
@@ -249,15 +241,13 @@ class Clip(Serializable):
         return cls._from_dict(data)
 
     def to_dict(self):
-        out = {
-            "start": self.start.to_dict(),
-            "end": self.end.to_dict(),
-            "videoclip": str(self.videoclip) or "",
-            "observations": self.observations,
-            "discard": self.discard,
-            "uncertain": self.uncertain,
-        }
-        return out
+        data = self._to_dict(exclude_keys=[
+            "geometry",
+            "files",
+            "parent",
+            "workdir"
+        ])
+        return data
 
     def has_bookmarks(self):
         return (type(self.start) == Bookmark and type(self.end) == Bookmark)
