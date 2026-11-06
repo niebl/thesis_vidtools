@@ -52,8 +52,8 @@ class Track(SerializableCollection):
         return track
 
     @classmethod
-    def from_file(cls, filepath=None):
-        path = filepath or cls.DEFAULT_WORKDIR
+    def from_file(cls, path=None):
+        path = path or cls.DEFAULT_WORKDIR
         with open(path, "r") as file:
             data = json.load(file)
         return cls.from_dict(data)
@@ -122,7 +122,7 @@ class Track(SerializableCollection):
         return None
 
     def get_video_by_title(self, title):
-        return self.get_video(lambda v: v.filepath.stem == title)
+        return self.get_video(lambda v: v.path.stem == title)
 
     def get_point_timestamp(self, index):
         return self.track[index]["time"]
@@ -166,8 +166,8 @@ class Track(SerializableCollection):
             points.append(self.get_point_by_timestamp)
 
 class Video(Serializable):
-    def __init__(self, filepath: Path, offset=None, start_timestamp = None, parent_track = None ):
-        self.filepath = filepath
+    def __init__(self, path: Path, offset=None, start_timestamp = None, parent_track = None ):
+        self.path = path
         self.offset = offset
         self.duration = self.get_duration()
         self.parent = parent_track
@@ -210,7 +210,7 @@ class Video(Serializable):
             return prev.get_offset()
 
     def get_file_timestamp(self):
-        filename = self.filepath.stem
+        filename = self.path.stem
         title_stamp = re.search(r"\d+", filename).group()
         if len(title_stamp) != 14:
             #something went wrong
@@ -220,25 +220,25 @@ class Video(Serializable):
         return timestamp.timestamp()
 
     def get_snippet_index(self):
-        filename = self.filepath.stem
+        filename = self.path.stem
         try:
             return int(filename[-3:])
         except:
-            raise ValueError(f"Unexpected filename: {self.filepath.name}")
+            raise ValueError(f"Unexpected filename: {self.path.name}")
     
     def get_recording_index(self):
-        filename = self.filepath.stem
+        filename = self.path.stem
         try:
             return int(filename[-10:-6])
         except:
-            raise ValueError(f"Unexpected filename: {self.filepath.name}")
+            raise ValueError(f"Unexpected filename: {self.path.name}")
 
     def get_duration(self):
         if not hasattr(self, "duration") or not self.duration:
             result = subprocess.run(
                 ["ffprobe", "-v", "error", "-show_entries",
                 "format=duration", "-of",
-                "default=noprint_wrappers=1:nokey=1", str(self.filepath)],
+                "default=noprint_wrappers=1:nokey=1", str(self.path)],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT)
             return float(result.stdout)
@@ -247,7 +247,7 @@ class Video(Serializable):
 
     def to_dict(self):
         return {
-            "path": str(self.filepath),
+            "path": str(self.path),
             "offset": self.offset,
             "start_timestamp": self.start_timestamp,
             "duration": self.duration

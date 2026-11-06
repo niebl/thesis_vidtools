@@ -41,6 +41,7 @@ class TestVideo:
         )
         serialized = video.to_dict()
 
+        assert str(video.path) == VIDEO_SERIALIZATION_FIXTURE["path"]
         assert serialized["path"] == VIDEO_SERIALIZATION_FIXTURE["path"]
         assert serialized["offset"] == VIDEO_SERIALIZATION_FIXTURE["offset"]
         assert serialized["start_timestamp"] == VIDEO_SERIALIZATION_FIXTURE["start_timestamp"]
@@ -118,8 +119,8 @@ class TestTrack:
         videos = [Video(path, offset=0, parent_track=track) for path in VIDEO_FIXTURES]
         track.videos = videos
 
-        assert track.get_video(lambda video: video.filepath == VIDEO_FIXTURES[1]) is videos[1]
-        assert track.get_video(lambda video: video.filepath.name.endswith("missing.mp4")) is None
+        assert track.get_video(lambda video: video.path == VIDEO_FIXTURES[1]) is videos[1]
+        assert track.get_video(lambda video: video.path.name.endswith("missing.mp4")) is None
 
     def test_get_video_by_title(self):
         track = Track.from_gpx_file(GPS_FIXTURE)

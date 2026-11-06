@@ -17,7 +17,7 @@ class TestBookmark:
     def bookmark_conditions(bookmark, bookmark_fixture=BOOKMARK_FIXTURE):
         data = json.loads(bookmark_fixture)
         cond1 = type(bookmark) == Bookmark
-        cond2 = bookmark.filepath == data["path"] and bookmark.version == data["version"] and bookmark.name == data["name"] and bookmark.timestamp == data["pos"]
+        cond2 = bookmark.path == data["path"] and bookmark.version == data["version"] and bookmark.name == data["name"] and bookmark.pos == data["pos"]
         return cond1 and cond2 and bookmark.to_dict() == data
 
     ### TESTS:

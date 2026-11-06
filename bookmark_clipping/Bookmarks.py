@@ -59,7 +59,7 @@ class Bookmarks(SerializableCollection):
     #    return textwrap.dedent("""\
     #        {}
     #        """.format("\n".join(
-    #            map(lambda b: b.filepath + " --- " + str(b), self.bookmarks)
+    #            map(lambda b: b.path + " --- " + str(b), self.bookmarks)
     #            ))
     #        )
 
@@ -72,9 +72,9 @@ class Bookmarks(SerializableCollection):
         return f"[{out}]"
     
 class Bookmark(Serializable):
-    def __init__(self, timestamp, filepath, name, ver=2):
-        self.filepath = filepath
-        self.timestamp = timestamp
+    def __init__(self, timestamp, path, name, ver=2):
+        self.path = path
+        self.pos = timestamp
         self.name = name
         self.version = ver
     
@@ -93,7 +93,7 @@ class Bookmark(Serializable):
         minutes = int((self.timestamp % 3600) / 60)
         seconds = int(self.timestamp % 60)
         ms = int((self.timestamp % 1) * 1000)
-        filename = Path(self.filepath).name
+        filename = Path(self.path).name
         self.name = f"{filename} @ {hours:02d}:{minutes:02d}:{seconds:02d}.{ms:03d}"
         return self
 
@@ -102,9 +102,9 @@ class Bookmark(Serializable):
 
     def to_dict(self):
         out_dict = {
-            "pos": self.timestamp,
+            "pos": self.pos,
             "name": self.name,
             "version": self.version,
-            "path": self.filepath,
+            "path": self.path,
         }
         return out_dict

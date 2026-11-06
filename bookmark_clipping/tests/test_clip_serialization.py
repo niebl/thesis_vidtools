@@ -32,8 +32,8 @@ class TestClip:
         data = json.loads(clip_fixture)
         return (
             type(clip) == Clip
-            and TestBookmark.bookmark_conditions(clip.start_bookmark, json.dumps(data["start"]))
-            and TestBookmark.bookmark_conditions(clip.end_bookmark, json.dumps(data["end"]))
+            and TestBookmark.bookmark_conditions(clip.start, json.dumps(data["start"]))
+            and TestBookmark.bookmark_conditions(clip.end, json.dumps(data["end"]))
             and clip.videoclip == data["videoclip"]
             and clip.observations == data["observations"]
             and clip.discard == data["discard"]
@@ -64,8 +64,8 @@ class TestClips:
             and clips.workdir == data["workdir"]
             and len(clips.clips) == len(data["clips"])
             and type(clips.clips[0]) == Clip
-            and TestBookmark.bookmark_conditions(clips.clips[0].start_bookmark, json.dumps(data['clips'][0]["start"]))
-            and TestBookmark.bookmark_conditions(clips.clips[0].end_bookmark,   json.dumps(data['clips'][0]["end"]))
+            and TestBookmark.bookmark_conditions(clips.clips[0].start, json.dumps(data['clips'][0]["start"]))
+            and TestBookmark.bookmark_conditions(clips.clips[0].end,   json.dumps(data['clips'][0]["end"]))
             and TestClip.clip_conditions(clips.clips[0], json.dumps(data['clips'][0]))
             and len(clips.bookmarks.bookmarks) == len(data["bookmarks"])
             and type(clips.bookmarks.bookmarks[0]) == Bookmark
