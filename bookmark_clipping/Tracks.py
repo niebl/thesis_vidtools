@@ -59,9 +59,9 @@ class Track(SerializableCollection):
         return cls.from_dict(data)
     
     @classmethod
-    def _from_dict(self, in_dict):
-        videos = list(map(lambda v: Video.from_dict(v), in_dict["videos"]))
-        return Track(in_dict["track"], videos)
+    def from_dict(cls, data):
+        data["videos"] = list(map(lambda v: Video.from_dict(v), data["videos"]))
+        return cls._from_dict(data)
 
     @staticmethod
     def df_to_track(df):
@@ -175,15 +175,6 @@ class Video(Serializable):
         # this is a problem before video is added to track. better call such methods from parent after creation
         #if not self.start_timestamp and self.get_index() == 0:
         #    self.start_timestamp = self.get_timestamp() #infer from title or calculate from other videos
-
-    @classmethod
-    def _from_dict(cls, in_dict):
-        return cls(
-            Path(in_dict["path"]),
-            in_dict.get("offset"),
-            in_dict.get("start_timestamp"),
-            None
-        )
 
     def get_timestamp(self):
         if self.start_timestamp:

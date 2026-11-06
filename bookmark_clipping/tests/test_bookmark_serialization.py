@@ -3,13 +3,13 @@ import json
 
 from ..Bookmarks import Bookmark, Bookmarks
 
-BOOKMARKS_FIXTURE = """[{\"pos\":40.5405,\"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:40.540\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
-{\"pos\":48.782067,\"name\": \"117_0007_D_003.mp4 @ 00:00:48.782\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
-{\"pos\":60.927533,\"name\": \"117_0007_D_003.mp4 @ 00:01:00.927\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
-{\"pos\":11.878533,\"name\": \"848_0008_D_001.mp4 @ 00:00:11.878\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_001.mp4\"},
-{\"pos\":32.298933,\"name\": \"848_0008_D_002.mp4 @ 00:00:32.298\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_002.mp4\"},
-{\"pos\":47.714333,\"name\": \"848_0008_D_002.mp4 @ 00:00:47.714\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_002.mp4\"}]"""
-BOOKMARK_FIXTURE = "{\"pos\":19.019,\"name\": \"848_0008_D_003.mp4 @ 00:00:19.018\", \"version\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_003.mp4\"}"
+BOOKMARKS_FIXTURE = """[{\"pos\":40.5405,\"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:40.540\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
+{\"pos\":48.782067,\"name\": \"117_0007_D_003.mp4 @ 00:00:48.782\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
+{\"pos\":60.927533,\"name\": \"117_0007_D_003.mp4 @ 00:01:00.927\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
+{\"pos\":11.878533,\"name\": \"848_0008_D_001.mp4 @ 00:00:11.878\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_001.mp4\"},
+{\"pos\":32.298933,\"name\": \"848_0008_D_002.mp4 @ 00:00:32.298\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_002.mp4\"},
+{\"pos\":47.714333,\"name\": \"848_0008_D_002.mp4 @ 00:00:47.714\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_002.mp4\"}]"""
+BOOKMARK_FIXTURE = "{\"pos\":19.019,\"name\": \"848_0008_D_003.mp4 @ 00:00:19.018\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_003.mp4\"}"
 
 class TestBookmark:
     ### HELPERS:
@@ -17,7 +17,7 @@ class TestBookmark:
     def bookmark_conditions(bookmark, bookmark_fixture=BOOKMARK_FIXTURE):
         data = json.loads(bookmark_fixture)
         cond1 = type(bookmark) == Bookmark
-        cond2 = bookmark.path == data["path"] and bookmark.version == data["version"] and bookmark.name == data["name"] and bookmark.pos == data["pos"]
+        cond2 = bookmark.path == data["path"] and bookmark.ver == data["ver"] and bookmark.name == data["name"] and bookmark.pos == data["pos"]
         return cond1 and cond2 and bookmark.to_dict() == data
 
     ### TESTS:

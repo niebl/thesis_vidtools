@@ -32,29 +32,11 @@ class Clips(SerializableCollection):
         return cls.from_dict(data)
 
     @classmethod
-    def _from_dict(cls, in_dict):
-        try:
-            bookmarks = Bookmarks.from_dict(in_dict["bookmarks"])
-        except AttributeError as e:
-            bookmarks = Bookmarks(in_dict["bookmarks"])
-
-        try:
-            clips = list(map(lambda cl: 
-                Clip(
-                    start=Bookmark.from_dict(cl["start"]), 
-                    end=Bookmark.from_dict(cl["end"]), 
-                    workdir=in_dict["workdir"], 
-                    videoclip=cl["videoclip"], 
-                    observations=cl["observations"],
-                    discard=cl["discard"],
-                    uncertain=cl["uncertain"]),
-                in_dict["clips"])
-            )
-        except Exception as e:
-            print(e)
-            clips = []
-        tracks = list(map(lambda tr: Track.from_dict(tr), in_dict.get("tracks", [])))
-        return cls(bookmarks, in_dict["workdir"], clips, tracks)
+    def from_dict(cls, data):
+        data["bookmarks"] = Bookmarks.from_dict(data["bookmarks"])
+        data["clips"] = list(map(lambda c: Clip.from_dict(c), data["clips"]))
+        data["tracks"] = list(map(lambda t: Track.from_dict(t), data["tracks"]))
+        return cls._from_dict(data)
 
     def to_dict(self):
         return {
@@ -261,18 +243,10 @@ class Clip(Serializable):
         self.uncertain = uncertain
 
     @classmethod
-    def _from_dict(cls, in_dict):
-        start = Bookmark.from_dict(in_dict["start"])
-        end = Bookmark.from_dict(in_dict["end"])
-        return cls(
-            start=start,
-            end=end,
-            workdir=in_dict.get("workdir", None),
-            videoclip=in_dict["videoclip"],
-            observations=in_dict["observations"],
-            discard=in_dict["discard"],
-            uncertain=in_dict["uncertain"],
-        )
+    def from_dict(cls, data):
+        data["start"] = Bookmark.from_dict(data["start"])
+        data["end"] = Bookmark.from_dict(data["end"])
+        return cls._from_dict(data)
 
     def to_dict(self):
         out = {

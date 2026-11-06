@@ -1,4 +1,6 @@
 import json
+import inspect
+
 class Serializable:
     def __init__(self, workdir=None, parent=None):
         self.workdir = workdir
@@ -9,8 +11,36 @@ class Serializable:
         return cls._from_dict(data)
 
     @classmethod
+    def _from_dict(cls, data):
+        #filter so not too many args are passed
+        args = cls.filter_kwargs(cls, data)
+        #TODO: some way to handle references to parents?
+        return cls(**args)
+
+    @classmethod
     def from_string(cls, in_str):
         return cls.from_dict(json.loads(in_str))
+
+    @staticmethod
+    def filter_kwargs(func, data):
+        sig = inspect.signature(func)
+        params = sig.parameters
+        # if **kwargs accepted, pass all
+        if any(
+            p.kind == inspect.Parameter.VAR_KEYWORD
+            for p in params.values()
+        ):
+            return data
+        # keep only keys that are valid keyword parameters
+        return {
+            key: value
+            for key, value in data.items()
+            if key in params
+            and params[key].kind in (
+                inspect.Parameter.POSITIONAL_OR_KEYWORD,
+                inspect.Parameter.KEYWORD_ONLY,
+            )
+        }
 
     def to_dict(self):
         raise NotImplementedError(f"{type(self).__name__} must implement to_dict")
