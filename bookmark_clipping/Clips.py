@@ -17,11 +17,12 @@ class Clips(SerializableCollection):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
     items_attribute = "clips"
 
-    def __init__(self, bookmarks, workdir=None, clips=None, tracks=None):
-        self.workdir = workdir or DEFAULT_WORKDIR
-        self.bookmarks = bookmarks
-        self.clips = self.get_clips() if clips is None else clips
+    def __init__(self, bookmarks=None, workdir=DEFAULT_WORKDIR, clips=None, tracks=None):
+        super().__init__(workdir=workdir, collection=clips, items_attribute=self.items_attribute)
+        self.clips = self.read_clips() if clips is None else clips
+        print(self.clips)
         self.tracks = tracks
+        self.bookmarks = bookmarks
 
     @classmethod
     def from_file(cls, filepath=None):
@@ -40,10 +41,10 @@ class Clips(SerializableCollection):
         try:
             clips = list(map(lambda cl: 
                 Clip(
-                    Bookmark.from_dict(cl["start"]), 
-                    Bookmark.from_dict(cl["end"]), 
-                    in_dict["workdir"], 
-                    cl["videoclip"], 
+                    start_bookmark=Bookmark.from_dict(cl["start"]), 
+                    end_bookmark=Bookmark.from_dict(cl["end"]), 
+                    workdir=in_dict["workdir"], 
+                    videoclip=cl["videoclip"], 
                     observations=cl["observations"],
                     discard=cl["discard"],
                     uncertain=cl["uncertain"]),
@@ -62,6 +63,24 @@ class Clips(SerializableCollection):
             "bookmarks": self.bookmarks.to_dict() if type(self.bookmarks) == Bookmarks else self.bookmarks,
             "tracks": [track.to_dict() for track in self.tracks] if self.tracks else []
         }
+
+        def read_clips(self):
+            clips = []
+
+            if len(self.bookmarks.bookmarks) % 2 != 0:
+                print("odd number of bookmarks")
+                return clips
+
+            for i in range(0, len(self.bookmarks.bookmarks), 2):
+                start_bookmark = self.bookmarks.bookmarks[i]
+                end_bookmark = self.bookmarks.bookmarks[i+1]
+                clips.append(Clip(start_bookmark, end_bookmark, self.workdir, parent=self))
+
+            for clip in clips:
+                if not clip.validate():
+                    print(f"Invalid clip: {clip.start_bookmark.name} to {clip.end_bookmark.name}")
+                    return []
+            return clips
 
     def read_tracks(self, track_dir:Path = None, global_offset = 0):
         if track_dir is None:
@@ -197,24 +216,6 @@ class Clips(SerializableCollection):
     def render_all_clips(self):
         for clip in self.clips:
             clip.render_clip()
-
-    def get_clips(self):
-        clips = []
-
-        if len(self.bookmarks.bookmarks) % 2 != 0:
-            print("odd number of bookmarks")
-            return clips
-
-        for i in range(0, len(self.bookmarks.bookmarks), 2):
-            start_bookmark = self.bookmarks.bookmarks[i]
-            end_bookmark = self.bookmarks.bookmarks[i+1]
-            clips.append(Clip(start_bookmark, end_bookmark, self.workdir, parent=self))
-
-        for clip in clips:
-            if not clip.validate():
-                print(f"Invalid clip: {clip.start_bookmark.name} to {clip.end_bookmark.name}")
-                return []
-        return clips
     
     def save_clip_data(self, location=None):
         save_at = location or workdir / "clips.json"
@@ -233,22 +234,20 @@ class Clips(SerializableCollection):
             return False
         return True
 
-    def __str__(self):
-        return json.dumps(self.to_dict())
-
 class Clip(Serializable):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
-    def __init__(self, 
+    def __init__(
+            self, 
             start_bookmark:Bookmark, 
             end_bookmark:Bookmark, 
             workdir:Path=None, 
             videoclip=None, 
-            parent=None, 
             observations:dict=False, 
             discard=False, 
-            uncertain=False
+            uncertain=False,
+            parent=None 
         ):
-        self.workdir = workdir
+        super().__init__(workdir=workdir, parent=parent)
         self.start_bookmark = start_bookmark
         self.end_bookmark = end_bookmark
         self.files = [start_bookmark.filepath]
@@ -266,17 +265,17 @@ class Clip(Serializable):
         start_bookmark = Bookmark.from_dict(in_dict["start"])
         end_bookmark = Bookmark.from_dict(in_dict["end"])
         return cls(
-            start_bookmark,
-            end_bookmark,
-            in_dict.get("workdir") or None,
-            in_dict["videoclip"],
-            in_dict["observations"],
-            in_dict["discard"],
-            in_dict["uncertain"],
+            start_bookmark=start_bookmark,
+            end_bookmark=end_bookmark,
+            workdir=in_dict.get("workdir", None),
+            videoclip=in_dict["videoclip"],
+            observations=in_dict["observations"],
+            discard=in_dict["discard"],
+            uncertain=in_dict["uncertain"],
         )
 
     def to_dict(self):
-        return {
+        out = {
             "start": self.start_bookmark.to_dict(),
             "end": self.end_bookmark.to_dict(),
             "videoclip": str(self.videoclip) or "",
@@ -284,9 +283,7 @@ class Clip(Serializable):
             "discard": self.discard,
             "uncertain": self.uncertain,
         }
-
-    def __str__(self):
-        return self.to_string()
+        return out
 
     def has_bookmarks(self):
         return (type(self.start_bookmark) == Bookmark and type(self.end_bookmark) == Bookmark)
@@ -351,12 +348,6 @@ class Clip(Serializable):
             return same_dir and direct_follow and duration_ok and self.has_bookmarks()
         except:
             return False
-
-    def set_geometry(self):
-        # get video for bookmarks from parent
-        self.parent.tracks
-        
-        #
 
     def get_duration(self):
         if self.start_bookmark.filepath == self.end_bookmark.filepath:

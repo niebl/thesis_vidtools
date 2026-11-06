@@ -1,5 +1,9 @@
 import json
 class Serializable:
+    def __init__(self, workdir=None, parent=None):
+        self.workdir = workdir
+        self.parent = parent
+
     @classmethod
     def from_dict(cls, data):
         return cls._from_dict(data)
@@ -19,7 +23,13 @@ class Serializable:
 
 
 class SerializableCollection(Serializable):
-    items_attribute = None
+    items_attribute = "collection"
+
+    def __init__(self, workdir=None, parent=None, collection = None, items_attribute=items_attribute):
+        super().__init__(workdir=workdir, parent=parent)
+        if items_attribute is None:
+            items_attribute = self.items_attribute
+        setattr(self, items_attribute, collection)
 
     def __iter__(self):
         return iter(getattr(self, self.items_attribute))
