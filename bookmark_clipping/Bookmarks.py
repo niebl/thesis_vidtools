@@ -1,14 +1,19 @@
 import json, textwrap
 from pathlib import Path
-from .Serializable import Serializable, SerializableCollection
-
+if __package__:
+    from .Serializable import Serializable, SerializableCollection
+else:
+    from Serializable import Serializable, SerializableCollection
 # parsing bookmarking files as created by https://github.com/NurioHin/mpv-bookmarker
 
 class Bookmarks(SerializableCollection):
     DEFAULT_LOCATION = Path.home() / ".config/mpv/bookmarker.json"
     items_attribute = "bookmarks"
 
-    def __init__(self, location = None, bookmarks = None):
+    def __init__(self, 
+            location:Path=None, 
+            bookmarks=None
+        ):
         self.location = location or self.DEFAULT_LOCATION
         self.bookmarks = self.parse_bookmarks() if bookmarks is None else bookmarks
 
@@ -20,7 +25,12 @@ class Bookmarks(SerializableCollection):
             in_dict = in_dict["bookmarks"]
         #assumes array
         bookmarks = list(map(
-            lambda b: Bookmark(b["pos"], b["path"], b["name"], b["version"]), 
+            lambda b: Bookmark(
+                b["pos"], 
+                b["path"], 
+                b["name"], 
+                b["version"]
+            ), 
             in_dict))
         return cls(location=location, bookmarks=bookmarks)
 
@@ -70,7 +80,12 @@ class Bookmark(Serializable):
     
     @classmethod
     def _from_dict(cls, in_dict):
-        return cls(in_dict["pos"], in_dict["path"], in_dict["name"], in_dict["version"])
+        return cls(
+            in_dict["pos"], 
+            in_dict["path"], 
+            in_dict["name"], 
+            in_dict["version"], 
+            )
 
     def update_filename(self):
         #name = filename @ HH:MM:SS.ms
@@ -83,13 +98,13 @@ class Bookmark(Serializable):
         return self
 
     def __str__(self):
-        return f"{{\"pos\":{self.timestamp},\"name\": \"{self.name}\", \"version\": {self.version}, \"path\": \"{self.filepath}\"}}"
+        return self.to_string()
 
     def to_dict(self):
-        return {
+        out_dict = {
             "pos": self.timestamp,
             "name": self.name,
             "version": self.version,
-            "path": self.filepath
+            "path": self.filepath,
         }
-    
+        return out_dict

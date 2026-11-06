@@ -1,3 +1,7 @@
 av
 pytest
 open-image-models[onnx-gpu]
+pandas
+ffprobe-python
+lxml
+gpxo

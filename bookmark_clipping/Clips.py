@@ -1,9 +1,11 @@
 if __package__:
     from .Bookmarks import Bookmarks, Bookmark
     from .Serializable import Serializable, SerializableCollection
+    from .Tracks import Track, Video
 else:
     from Bookmarks import Bookmarks, Bookmark
     from Serializable import Serializable, SerializableCollection
+    from Tracks import Track, Video
 import av
 from pathlib import Path
 import subprocess
@@ -11,15 +13,18 @@ import json
 import cv2
 import numpy as np
 from open_image_models import create_detector
+import traceback
+import re
 
 class Clips(SerializableCollection):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
     items_attribute = "clips"
 
-    def __init__(self, bookmarks, workdir=None, clips=None):
+    def __init__(self, bookmarks, workdir=None, clips=None, tracks=None):
         self.workdir = workdir or DEFAULT_WORKDIR
         self.bookmarks = bookmarks
         self.clips = self.get_clips() if clips is None else clips
+        self.tracks = tracks
 
     @classmethod
     def from_file(cls, filepath=None):
@@ -30,27 +35,167 @@ class Clips(SerializableCollection):
 
     @classmethod
     def _from_dict(cls, in_dict):
-        bookmarks = Bookmarks.from_dict(in_dict["bookmarks"])
-        clips = list(map(lambda cl: 
-            Clip(
-                Bookmark.from_dict(cl["start"]), 
-                Bookmark.from_dict(cl["end"]), 
-                in_dict["workdir"], 
-                cl["videoclip"], 
-                observations=cl["observations"],
-                discard=cl["discard"],
-                uncertain=cl["uncertain"]), 
-            in_dict["clips"])
-        )
-        return cls(bookmarks, in_dict["workdir"], clips)
+        try:
+            bookmarks = Bookmarks.from_dict(in_dict["bookmarks"])
+        except AttributeError as e:
+            bookmarks = Bookmarks(in_dict["bookmarks"])
+
+        try:
+            clips = list(map(lambda cl: 
+                Clip(
+                    Bookmark.from_dict(cl["start"]), 
+                    Bookmark.from_dict(cl["end"]), 
+                    in_dict["workdir"], 
+                    cl["videoclip"], 
+                    observations=cl["observations"],
+                    discard=cl["discard"],
+                    uncertain=cl["uncertain"]),
+                in_dict["clips"])
+            )
+        except Exception as e:
+            print(e)
+            clips = []
+        tracks = list(map(lambda tr: Track.from_dict(tr), in_dict.get("tracks", [])))
+        return cls(bookmarks, in_dict["workdir"], clips, tracks)
 
     def to_dict(self):
         return {
             "workdir": str(self.workdir),
-            "clips": [clip.to_dict() for clip in self.clips],
-            "bookmarks": self.bookmarks.to_dict(),
+            "clips": [clip.to_dict() for clip in self.clips] if self.clips else [],
+            "bookmarks": self.bookmarks.to_dict() if type(self.bookmarks) == Bookmarks else self.bookmarks,
+            "tracks": [track.to_dict() for track in self.tracks] if self.tracks else []
         }
 
+    def read_tracks(self, track_dir:Path = None, global_offset = 0):
+        if track_dir is None:
+            #TODO: raise exception
+            return
+        if self.tracks is None or self.tracks == []:
+            self.tracks = []
+        else:
+            #TODO: raise warning?
+            print("tracks are already read. Not checking for duplicates")
+        #read track dir and parse each track.gpx file
+        ls = Path(track_dir).glob("**/*.gpx")
+        for track in ls:
+            self.tracks.append(Track.from_gpx_file(track, global_offset=global_offset))
+
+    def read_videos(self, video_dir:Path = None):
+        if not self.tracks:
+            return False #todo: raise exceptions
+        if not video_dir:
+            return False #TODO: see above
+
+        videos = []
+        videos_ls = [
+            video_path
+            for video_path in Path(video_dir).glob("**/*.mp4")
+            if re.fullmatch(r"DJI_\d{14}_\d{4}_D_\d{3}", video_path.stem)
+        ]
+
+        #2 step process. 
+        #   1. assigns all videos to tracks based on title timestamps
+        for video_path in videos_ls:
+            video = Video(video_path)
+            videos.append(video)
+            if self.tracks:
+                parent_track = self.get_track_for_timestamp(video.get_file_timestamp())
+                if parent_track:
+                    print(parent_track[0]["time"], parent_track[-1]["time"], video)
+                    video.parent = parent_track
+                    parent_track.videos.append(video)
+            else:
+                return False #TODO: see above
+
+        #   2. infers unix timestamp of videos... 
+        for track in self.tracks:
+            track.videos[0].start_timestamp = track.videos[0].get_timestamp() #?
+            for video in track.videos[1:]:
+                #assumption is that index cutoffs are only at the beginning of recording days
+                video.start_timestamp = video.get_timestamp()
+                #assumption is also that offset is constant between gps and camera across recordings
+                video.offset = video.get_offset()
+        
+        #...and rearrange
+        for video in videos:
+            if not video.start_timestamp:
+                #this one fell outside the tracks
+                continue
+            if self.get_track_for_timestamp(video.start_timestamp) != video.parent:
+                video.parent.videos.remove(video)
+                video.parent = self.get_track_for_timestamp(video.get_timestamp())
+                if not video.parent:
+                    continue
+                video.parent.videos.append(video)
+                video.parent.videos.sort(key=lambda v: v.filepath.name)
+                
+    def get_track_for_timestamp(self, ts):
+        if not self.tracks:
+            return None
+        results = list(filter(
+            lambda t: t.contains_time(ts), 
+            self.tracks
+        ))
+        if len(results) == 1:
+            return results[0]
+        elif len(results) > 1:
+            raise ValueError("more than 1 track match timestamp. Do you have duplicates?")
+        return None
+
+    def get_track_for_clip(self, clip):
+        if not self.tracks:
+            return None
+        #it might be possible otherwise, but we assume that there is only one track per clip
+        if not clip.validate:
+            raise Exception("clip invalid", clip)
+        start = Path(clip.start_bookmark.filepath)
+        end = Path(clip.end_bookmark.filepath)
+
+        # search all tracks for a video name
+        for track in self.tracks:
+            start_video = track.get_video_by_title(start.stem)
+            end_video = track.get_video_by_title(end.stem)
+            if start_video and end_video:
+                start_offset = start_video.get_offset() or 0
+                end_offset = end_video.get_offset() or 0
+                if (track.contains_time(start_video.get_timestamp() - start_offset) or 
+                    track.contains_time(end_video.get_timestamp() - end_offset) or
+                    track.contains_time(start_video.get_timestamp() + start_video.get_duration() - start_offset) or
+                    track.contains_time(end_video.get_timestamp() + end_video.get_duration() - end_offset)
+                    ):
+                    return track 
+        return None
+
+    def get_track_subsegment_for_clip(self, clip):
+        track = self.get_track_for_clip(clip)
+        if not track:
+            raise Exception(f"getting subsegment failed: No track for clip {clip}")
+            return None
+        
+        start_video = track.get_video_by_title(
+            Path(clip.start_bookmark.filepath).stem
+        )
+        end_video = track.get_video_by_title(
+            Path(clip.end_bookmark.filepath).stem
+        )
+        if not start_video or not end_video:
+            raise Exception(f"getting subsegment failed: start or end video failed")
+            return None
+
+        start_timestamp = start_video.get_timestamp() - start_video.get_offset() + clip.start_bookmark.timestamp
+        end_timestamp = end_video.get_timestamp() - end_video.get_offset() + clip.end_bookmark.timestamp
+        if not start_timestamp or not end_timestamp:
+            raise Exception(f"getting subsegment failed: start or end timestamp failed")
+            return None
+
+        start_point = track.get_point_by_timestamp(start_timestamp)
+        end_point = track.get_point_by_timestamp(end_timestamp)
+        if not start_point or not end_point:
+            raise Exception(f"getting subsegment failed: start or end point failed {start_point}, {end_point}, using {start_timestamp} and {end_timestamp} as arguments")
+            return None
+        start_index = track.track.index(start_point)
+        end_index = track.track.index(end_point)
+        return track.track[start_index:end_index+1]
 
     def render_all_clips(self):
         for clip in self.clips:
@@ -92,17 +237,20 @@ class Clips(SerializableCollection):
         return True
 
     def __str__(self):
-        out = """{}""".format("\n".join(
-                map(lambda b: str(b)+",", self.clips)
-                )
-            )
-        out = out[:-1]
-
-        return f"{{\"workdir\": \"{self.workdir}\", \"clips\":[{out}], \"bookmarks\":{str(self.bookmarks)}}}"
+        return json.dumps(self.to_dict())
 
 class Clip(Serializable):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
-    def __init__(self, start_bookmark, end_bookmark, workdir=None, videoclip=None, parent=None, observations=False, discard=False, uncertain=False):
+    def __init__(self, 
+            start_bookmark:Bookmark, 
+            end_bookmark:Bookmark, 
+            workdir:Path=None, 
+            videoclip=None, 
+            parent=None, 
+            observations:dict=False, 
+            discard=False, 
+            uncertain=False
+        ):
         self.workdir = workdir
         self.start_bookmark = start_bookmark
         self.end_bookmark = end_bookmark
@@ -111,6 +259,7 @@ class Clip(Serializable):
         self.files.append(end_bookmark.filepath) if end_bookmark.filepath != start_bookmark.filepath else None
         self.videoclip = videoclip or ""
         self.parent = parent
+        self.geometry = None
         self.observations = observations or {}
         self.discard = discard
         self.uncertain = uncertain
@@ -129,6 +278,9 @@ class Clip(Serializable):
             "uncertain": self.uncertain,
             "clip_detections": self.clip_detections
         })
+
+    def has_bookmarks(self):
+        return (type(self.start_bookmark) == Bookmark and type(self.end_bookmark) == Bookmark)
 
     def render_clip(self, output_path=None):
         source = list(map(lambda c: Path(c), self.files))
@@ -193,16 +345,25 @@ class Clip(Serializable):
         return frames
 
     def validate(self):
-        same_dir = Path(self.start_bookmark.filepath).parent == Path(self.end_bookmark.filepath).parent
+        try:
+            same_dir = Path(self.start_bookmark.filepath).parent == Path(self.end_bookmark.filepath).parent
 
-        files= sorted(Path(self.start_bookmark.filepath).parent.glob("*"))
-        start_index = files.index(Path(self.start_bookmark.filepath))
-        end_index = files.index(Path(self.end_bookmark.filepath))
-        direct_follow = abs(end_index - start_index) <= 1
+            files= sorted(Path(self.start_bookmark.filepath).parent.glob("*"))
+            start_index = files.index(Path(self.start_bookmark.filepath))
+            end_index = files.index(Path(self.end_bookmark.filepath))
+            direct_follow = abs(end_index - start_index) <= 1
 
-        duration_ok = self.get_duration() < 120
+            duration_ok = self.get_duration() < 120
+
+            return same_dir and direct_follow and duration_ok and self.has_bookmarks()
+        except:
+            return False
+
+    def set_geometry(self):
+        # get video for bookmarks from parent
+        self.parent.tracks
         
-        return same_dir and direct_follow and duration_ok
+        #
 
     def get_duration(self):
         if self.start_bookmark.filepath == self.end_bookmark.filepath:
@@ -216,6 +377,16 @@ class Clip(Serializable):
             leading_duration = self.end_bookmark.timestamp
             return trailing_duration + leading_duration
             return None
+
+    def geometry_geojson(self):
+        #TODO: probably needs more work to work
+        coordinates = []
+        for point in self.geometry:
+            coordinates.append([point["lon"], point["lat"]])
+        return {
+            "type": "LineString",
+            "coordinates": coordinates
+        }
 
 class ClipDetections(SerializableCollection):
     items_attribute = "detection_frames"
@@ -288,12 +459,51 @@ class Detection(Serializable):
             "label": self.label 
         })
 
-
 def main():
-    bookmarks = Bookmarks()
-    clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage/clips_zurich")
-    clips.render_all_clips()
-    clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
+    #bookmarks = Bookmarks(Path.home() / "Projects/Bike Footage/bookmarker.json")
+    #clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage/clips_zurich")
+    #clips.render_all_clips()
+    
+    clips = Clips.from_file(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
+    clips.workdir = Path.home() / "Projects/Bike Footage/clips_zurich"
+    clips.read_tracks(
+        track_dir=Path.home() / "Projects/Bike Footage/clips_zurich/gps_traces",
+        global_offset=-133
+    )
+    print("read tracks")
+    clips.read_videos(
+        video_dir=Path.home() / "Projects/Bike Footage"
+    )
+    print("read videos")
+
+    #clips.bookmarks = []
+
+    #for each clip, save track geojson for the clip
+    print("getting geometries")
+    for clip in clips.clips:
+        try:
+            if not clip.validate():
+                raise Exception("clip not valid:", str(clip))
+            if not clip.has_bookmarks():
+                raise Exception("clip has no bookmarks:", str(clip))
+            clip.geometry = clips.get_track_subsegment_for_clip(clip)
+            if clip.geometry:
+                geojson = clip.geometry_geojson()
+                start = int(clip.start_bookmark.timestamp * 1000)/1000
+                output_path = Path(clips.workdir) / "clip_tracks" / f"{Path(clip.start_bookmark.filepath).stem}_at_{start:.3f}s.geojson"
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                print(output_path)
+                with open(output_path, "w") as f:
+                    json.dump(geojson, f)
+        except Exception as e:
+            traceback.print_exc()
+            print(e)
+            #break
+    
+    clips.tracks = []
+
+    # TODO: deserialization with the correct references and preventing endless loops
+    #clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
 
 if __name__ == "__main__":
     main()
