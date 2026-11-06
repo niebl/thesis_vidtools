@@ -1,5 +1,6 @@
 import json
 import inspect
+from pathlib import Path
 
 class Serializable:
     def __init__(self, workdir=None, parent=None):
@@ -41,22 +42,31 @@ class Serializable:
                 inspect.Parameter.KEYWORD_ONLY,
             )
         }
+
+    def find_item(self, lambda_f, attr):
+        for item in getattr(self, attr):
+            if lambda_f(item):
+                return item
+        return None
     
     def to_dict(self):
         return self._to_dict()
 
     def _to_dict(self, exclude_keys=["parent"]):
         data = self.__dict__
+        print(self.__dict__.keys())
+        for key in exclude_keys:
+            data.pop(key, None)
         for key in data:
             if isinstance(data[key], Serializable):
                 data[key] = data[key].to_dict()
             if isinstance(data[key], list):
                 for i, entry in enumerate(data[key]):
                     if isinstance(entry, Serializable):
-                        data[key][i] = entry.to_dict()
-             
-        for key in exclude_keys:
-            data.pop(key, None)
+                        data[key][i] = data[key][i].to_dict()
+            #if isinstance(data[key], Path):
+            #    data[key] = str(data[key])
+
         return data
 
     def to_string(self):
@@ -84,6 +94,10 @@ class SerializableCollection(Serializable):
     def __getitem__(self, item):
          return getattr(self, self.items_attribute)[item]
     
+    def find_item(self, lambda_f, attr=None):
+        collection = attr or self.items_attribute
+        return super().find_item(lambda_f, collection)
+
     def append(self, item):
         getattr(self, self.items_attribute).append(item)
 

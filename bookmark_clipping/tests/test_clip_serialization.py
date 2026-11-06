@@ -49,7 +49,7 @@ class TestClip:
         clip = Clip.from_dict(json.loads(CLIP_FIXTURE))
         dic = Clip.to_dict(clip)
         assert type(dic) is dict
-        assert len(dic) == 4
+        assert len(dic) == 6
         assert not "parent" in dic
 
     def test_clip_from_string(self):
