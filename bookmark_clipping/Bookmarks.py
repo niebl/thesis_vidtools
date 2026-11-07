@@ -1,8 +1,10 @@
 import json, textwrap
 from pathlib import Path
 if __package__:
+    from .Bookmark import Bookmark
     from .Serializable import Serializable, SerializableCollection
 else:
+    from Bookmark import Bookmark
     from Serializable import Serializable, SerializableCollection
 # parsing bookmarking files as created by https://github.com/NurioHin/mpv-bookmarker
 
@@ -16,23 +18,17 @@ class Bookmarks(SerializableCollection):
         ):
         self.location = location or self.DEFAULT_LOCATION
         self.bookmarks = self.parse_bookmarks() if bookmarks is None else bookmarks
-
+    
     @classmethod
-    def _from_dict(cls, in_dict):
-        location = None
-        if isinstance(in_dict, dict):
-            location = in_dict.get("location")
-            in_dict = in_dict["bookmarks"]
-        #assumes array
-        bookmarks = list(map(
-            lambda b: Bookmark(
-                b["pos"], 
-                b["path"], 
-                b["name"], 
-                b["version"]
-            ), 
-            in_dict))
-        return cls(location=location, bookmarks=bookmarks)
+    def from_dict(cls, data):
+        if isinstance(data, dict):
+            in_dict = data
+            in_dict["bookmarks"] = list(map(lambda b: Bookmark.from_dict(b), in_dict["bookmarks"]))
+        else:
+            in_dict = {}
+        in_dict["bookmarks"] = list(map(lambda b: Bookmark.from_dict(b), data))
+        in_dict["location"] = None
+        return cls._from_dict(in_dict)
 
     def to_dict(self):
         return [bookmark.to_dict() for bookmark in self.bookmarks]
@@ -40,7 +36,7 @@ class Bookmarks(SerializableCollection):
     def parse_bookmarks(self):
         with open(self.location, "r") as file:
             data = json.load(file)
-        bookmarks = list(map(lambda b: Bookmark(b["pos"], b["path"], b["name"], b["version"]), data))
+        bookmarks = list(map(lambda b: Bookmark(b["pos"], b["path"], b["name"], b["ver"]), data))
         return bookmarks
 
     #WARNING: overwrites your bookmarks. make sure to have backups
@@ -55,56 +51,10 @@ class Bookmarks(SerializableCollection):
         with open(save_at, "w") as f:
             f.write(str(self))
 
-    #def __str__(self):
-    #    return textwrap.dedent("""\
-    #        {}
-    #        """.format("\n".join(
-    #            map(lambda b: b.filepath + " --- " + str(b), self.bookmarks)
-    #            ))
-    #        )
-
-    def __str__(self):
+    def to_string(self):
         out = """{}""".format("\n".join(
                 map(lambda b: str(b)+",", self.bookmarks)
                 )
             )
         out = out[:-1]
         return f"[{out}]"
-    
-class Bookmark(Serializable):
-    def __init__(self, timestamp, filepath, name, ver=2):
-        self.filepath = filepath
-        self.timestamp = timestamp
-        self.name = name
-        self.version = ver
-    
-    @classmethod
-    def _from_dict(cls, in_dict):
-        return cls(
-            in_dict["pos"], 
-            in_dict["path"], 
-            in_dict["name"], 
-            in_dict["version"], 
-            )
-
-    def update_filename(self):
-        #name = filename @ HH:MM:SS.ms
-        hours = int(self.timestamp / 3600)
-        minutes = int((self.timestamp % 3600) / 60)
-        seconds = int(self.timestamp % 60)
-        ms = int((self.timestamp % 1) * 1000)
-        filename = Path(self.filepath).name
-        self.name = f"{filename} @ {hours:02d}:{minutes:02d}:{seconds:02d}.{ms:03d}"
-        return self
-
-    def __str__(self):
-        return self.to_string()
-
-    def to_dict(self):
-        out_dict = {
-            "pos": self.timestamp,
-            "name": self.name,
-            "version": self.version,
-            "path": self.filepath,
-        }
-        return out_dict

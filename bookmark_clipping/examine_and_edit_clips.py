@@ -1,5 +1,6 @@
 from Bookmarks import Bookmarks, Bookmark
-from Clips import Clip, Clips
+from Clips import Clips
+from Clip import Clip
 import json
 from pathlib import Path
 import tkinter as tk

@@ -2,9 +2,10 @@ import pandas
 from pathlib import Path
 if __package__:
     from .Serializable import Serializable, SerializableCollection
+    from .Video import Video
 else:
     from Serializable import Serializable, SerializableCollection
-
+    from Video import Video
 import subprocess
 from datetime import datetime
 from dateutil import parser
@@ -18,7 +19,8 @@ import traceback
 class Track(SerializableCollection):
     items_attribute = "track"
 
-    def __init__(self, track=[], videos = []):
+    def __init__(self, track=[], videos = [], oid:str = None):
+        super().__init__(oid=oid)
         self.track = track #Dataframe as read from GPX
         self.videos = videos
 
@@ -52,16 +54,16 @@ class Track(SerializableCollection):
         return track
 
     @classmethod
-    def from_file(cls, filepath=None):
-        path = filepath or cls.DEFAULT_WORKDIR
+    def from_file(cls, path=None):
+        path = path or cls.DEFAULT_WORKDIR
         with open(path, "r") as file:
             data = json.load(file)
         return cls.from_dict(data)
     
     @classmethod
-    def _from_dict(self, in_dict):
-        videos = list(map(lambda v: Video.from_dict(v), in_dict["videos"]))
-        return Track(in_dict["track"], videos)
+    def from_dict(cls, data):
+        data["videos"] = list(map(lambda v: Video.from_dict(v), data["videos"]))
+        return cls._from_dict(data)
 
     @staticmethod
     def df_to_track(df):
@@ -94,12 +96,6 @@ class Track(SerializableCollection):
             }, inplace=True)
         return df
 
-    def to_dict(self):
-        return {
-            "track": self.track,
-            "videos": [video.to_dict() for video in self.videos],
-        }
-
     def add_video(self, video):
         self.videos.append(video)
         if not self == video.parent:
@@ -115,14 +111,8 @@ class Track(SerializableCollection):
         for video in self.videos:
             if not video.offset: video.offset = video.get_offset()
 
-    def get_video(self, lambda_f):
-        for video in self.videos:
-            if lambda_f(video):
-                return video
-        return None
-
     def get_video_by_title(self, title):
-        return self.get_video(lambda v: v.filepath.stem == title)
+        return self.find_item(lambda v: v.path.stem == title, "videos")
 
     def get_point_timestamp(self, index):
         return self.track[index]["time"]
@@ -166,24 +156,30 @@ class Track(SerializableCollection):
             points.append(self.get_point_by_timestamp)
 
 class Video(Serializable):
-    def __init__(self, filepath: Path, offset=None, start_timestamp = None, parent_track = None ):
-        self.filepath = filepath
+    def __init__(self, path: Path, offset=None, start_timestamp = None, parent = None, oid:str=None, prev_vid=None, next_vid=None ):
+        super().__init__(parent=parent, oid=oid)
+        self.path = path if type(path) is Path else Path(path)
         self.offset = offset
         self.duration = self.get_duration()
-        self.parent = parent_track
         self.start_timestamp = start_timestamp
-        # this is a problem before video is added to track. better call such methods from parent after creation
+        self.prev_vid = prev_vid
+        self.next_vid = next_vid
+        # this is a problem before video is added to track. better call such methods from parent after creation:
         #if not self.start_timestamp and self.get_index() == 0:
         #    self.start_timestamp = self.get_timestamp() #infer from title or calculate from other videos
 
-    @classmethod
-    def _from_dict(cls, in_dict):
-        return cls(
-            Path(in_dict["path"]),
-            in_dict.get("offset"),
-            in_dict.get("start_timestamp"),
-            None
-        )
+    def to_dict(self):
+        data = self._to_dict(exclude_keys=["parent", "prev_vid", "next_vid"])
+        data["path"] = str(data["path"])
+        if hasattr(self, "prev_vid") and self.prev_vid:
+            data["prev_vid"] = str(self.prev_vid)
+        if hasattr(self, "next_vid") and self.next_vid:
+            data["next_vid"] = str(self.next_vid)
+        return data
+    
+    def to_string(self):
+        data = self.to_dict()
+        return json.dumps(data)
 
     def get_timestamp(self):
         if self.start_timestamp:
@@ -210,7 +206,9 @@ class Video(Serializable):
             return prev.get_offset()
 
     def get_file_timestamp(self):
-        filename = self.filepath.stem
+        if type(self.path) is not Path:
+            path = Path(self.path) #TODO: decide. is it string or 
+        filename = path.stem
         title_stamp = re.search(r"\d+", filename).group()
         if len(title_stamp) != 14:
             #something went wrong
@@ -220,38 +218,32 @@ class Video(Serializable):
         return timestamp.timestamp()
 
     def get_snippet_index(self):
-        filename = self.filepath.stem
+        if type(self.path) is not Path:
+            path = Path(self.path) #TODO: decide. is it string or PAth?
+        filename = path.stem
         try:
             return int(filename[-3:])
         except:
-            raise ValueError(f"Unexpected filename: {self.filepath.name}")
+            raise ValueError(f"Unexpected filename: {self.path.name}")
     
     def get_recording_index(self):
-        filename = self.filepath.stem
+        filename = self.path.stem
         try:
             return int(filename[-10:-6])
         except:
-            raise ValueError(f"Unexpected filename: {self.filepath.name}")
+            raise ValueError(f"Unexpected filename: {self.path.name}")
 
     def get_duration(self):
         if not hasattr(self, "duration") or not self.duration:
             result = subprocess.run(
                 ["ffprobe", "-v", "error", "-show_entries",
                 "format=duration", "-of",
-                "default=noprint_wrappers=1:nokey=1", str(self.filepath)],
+                "default=noprint_wrappers=1:nokey=1", str(self.path)],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT)
             return float(result.stdout)
         else:
             return self.duration
-
-    def to_dict(self):
-        return {
-            "path": str(self.filepath),
-            "offset": self.offset,
-            "start_timestamp": self.start_timestamp,
-            "duration": self.duration
-        }
 
     def get_track_points(self):
         #gets the GPS track points coinciding with the given video
@@ -270,6 +262,7 @@ class Video(Serializable):
 
     def get_prev(self):
         try:
+            if hasattr(self, "prev_vid") and self.prev_vid: return self.prev_vid
             i = self.get_index() - 1
             if i < 0:
                 return False
@@ -279,6 +272,7 @@ class Video(Serializable):
 
     def get_next(self):
         try:
+            if hasattr(self, "next_vid") and self.next_vid: return self.next_vid
             i = self.get_index() + 1
             if i >= len(self.parent.videos):
                 return False
