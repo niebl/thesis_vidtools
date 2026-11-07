@@ -2,9 +2,10 @@ import pandas
 from pathlib import Path
 if __package__:
     from .Serializable import Serializable, SerializableCollection
+    from .Video import Video
 else:
     from Serializable import Serializable, SerializableCollection
-
+    from Video import Video
 import subprocess
 from datetime import datetime
 from dateutil import parser
