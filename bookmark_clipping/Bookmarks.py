@@ -58,11 +58,19 @@ class Bookmarks(SerializableCollection):
         return f"[{out}]"
     
 class Bookmark(Serializable):
-    def __init__(self, pos, path, name, ver=2):
+    def __init__(self, pos, path, name, ver=2, oid=None):
+        super().__init__(oid=oid)
         self.path = path
         self.pos = pos
         self.name = name
         self.ver = ver
+
+    def to_dict(self):
+        data = self._to_dict(exclude_keys=[
+            "workdir",
+            "parent"
+        ])
+        return data
 
     def update_filename(self):
         #name = filename @ HH:MM:SS.ms

@@ -18,8 +18,8 @@ class Clips(SerializableCollection):
     items_attribute = "clips"
 
     # workdir, clips, tracks, bookmark
-    def __init__(self, bookmarks=None, workdir=DEFAULT_WORKDIR, clips=None, tracks=None):
-        super().__init__(workdir=workdir, collection=clips, items_attribute=self.items_attribute)
+    def __init__(self, bookmarks=None, workdir=DEFAULT_WORKDIR, clips=None, tracks=None, oid:str=None):
+        super().__init__(workdir=workdir, collection=clips, items_attribute=self.items_attribute, oid=oid)
         self.clips = self.read_clips() if clips is None else clips
         self.tracks = tracks
         self.bookmarks = bookmarks
@@ -219,9 +219,10 @@ class Clip(Serializable):
             observations:dict=False, 
             discard=False, 
             uncertain=False,
-            parent=None 
+            parent=None,
+            oid:str=None
         ):
-        super().__init__(workdir=workdir, parent=parent)
+        super().__init__(workdir=workdir, parent=parent, oid=oid)
         self.start = start
         self.end = end
         self.files = [start.path]

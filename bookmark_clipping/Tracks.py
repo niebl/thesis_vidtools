@@ -18,7 +18,8 @@ import traceback
 class Track(SerializableCollection):
     items_attribute = "track"
 
-    def __init__(self, track=[], videos = []):
+    def __init__(self, track=[], videos = [], oid:str = None):
+        super().__init__(oid=oid)
         self.track = track #Dataframe as read from GPX
         self.videos = videos
 
@@ -154,15 +155,20 @@ class Track(SerializableCollection):
             points.append(self.get_point_by_timestamp)
 
 class Video(Serializable):
-    def __init__(self, path: Path, offset=None, start_timestamp = None, parent_track = None ):
+    def __init__(self, path: Path, offset=None, start_timestamp = None, parent = None, oid:str=None ):
+        super().__init__(parent=parent, oid=oid)
         self.path = path
         self.offset = offset
         self.duration = self.get_duration()
-        self.parent = parent_track
         self.start_timestamp = start_timestamp
         # this is a problem before video is added to track. better call such methods from parent after creation
         #if not self.start_timestamp and self.get_index() == 0:
         #    self.start_timestamp = self.get_timestamp() #infer from title or calculate from other videos
+
+    def to_dict(self):
+        data = self._to_dict()
+        data["path"] = str(data["path"])
+        return data
 
     def get_timestamp(self):
         if self.start_timestamp:
@@ -189,7 +195,9 @@ class Video(Serializable):
             return prev.get_offset()
 
     def get_file_timestamp(self):
-        filename = self.path.stem
+        if type(self.path) is not Path:
+            path = Path(self.path) #TODO: decide. is it string or 
+        filename = path.stem
         title_stamp = re.search(r"\d+", filename).group()
         if len(title_stamp) != 14:
             #something went wrong
@@ -199,7 +207,9 @@ class Video(Serializable):
         return timestamp.timestamp()
 
     def get_snippet_index(self):
-        filename = self.path.stem
+        if type(self.path) is not Path:
+            path = Path(self.path) #TODO: decide. is it string or PAth?
+        filename = path.stem
         try:
             return int(filename[-3:])
         except:

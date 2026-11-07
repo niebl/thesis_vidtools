@@ -1,11 +1,23 @@
 import json
 import inspect
+import nanoid
 from pathlib import Path
+import nanoid
+
+class OID:
+    def __init__(self, oid:String=None):
+        if not oid:
+            oid = nanoid.generate(size=10)
+        self.oid = oid    
+    
+    def __str__(self):
+        return self.id
 
 class Serializable:
-    def __init__(self, workdir=None, parent=None):
+    def __init__(self, workdir=None, parent=None, oid:str=None):
         self.workdir = workdir
         self.parent = parent
+        self.oid = str(oid) or OID()
 
     @classmethod
     def from_dict(cls, data):
@@ -54,12 +66,13 @@ class Serializable:
 
     def _to_dict(self, exclude_keys=["parent"]):
         data = self.__dict__
-        print(self.__dict__.keys())
         for key in exclude_keys:
             data.pop(key, None)
         for key in data:
             if isinstance(data[key], Serializable):
                 data[key] = data[key].to_dict()
+            if isinstance(data[key], OID):
+                data[key] = str(data[key])
             if isinstance(data[key], list):
                 for i, entry in enumerate(data[key]):
                     if isinstance(entry, Serializable):
@@ -67,6 +80,7 @@ class Serializable:
             #if isinstance(data[key], Path):
             #    data[key] = str(data[key])
 
+        print(data)
         return data
 
     def to_string(self):
@@ -79,8 +93,8 @@ class Serializable:
 class SerializableCollection(Serializable):
     items_attribute = "collection"
 
-    def __init__(self, workdir=None, parent=None, collection = None, items_attribute=items_attribute):
-        super().__init__(workdir=workdir, parent=parent)
+    def __init__(self, workdir=None, parent=None, collection = None, items_attribute=items_attribute, oid:str=None):
+        super().__init__(workdir=workdir, parent=parent, oid=oid)
         if items_attribute is None:
             items_attribute = self.items_attribute
         setattr(self, items_attribute, collection)
