@@ -2,7 +2,8 @@ import pytest
 
 import json
 from ..Bookmarks import Bookmark, Bookmarks
-from ..Clips import Clip, Clips
+from ..Clips import Clips
+from ..Clip import Clip
 from ..Tracks import Track
 from .test_bookmark_serialization import TestBookmark
 
