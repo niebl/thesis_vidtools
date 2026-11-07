@@ -1,9 +1,6 @@
-from Bookmarks import Bookmarks, Bookmark
-from Clips import Clips
-from Clip import Clip
+from Clipping import Bookmarks, Bookmark, Clips, Clip
 import json
 from pathlib import Path
-import tkinter as tk
 import mpv
 import queue
 
