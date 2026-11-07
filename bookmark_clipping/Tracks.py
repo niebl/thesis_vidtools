@@ -169,7 +169,7 @@ class Video(Serializable):
 
     def to_dict(self):
         data = self._to_dict(exclude_keys=["parent", "prev_vid", "next_vid"])
-        data["path"] = data["path"]
+        data["path"] = str(data["path"])
         if hasattr(self, "prev_vid") and self.prev_vid:
             data["prev_vid"] = str(self.prev_vid)
         if hasattr(self, "next_vid") and self.next_vid:

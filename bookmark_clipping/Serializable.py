@@ -66,21 +66,23 @@ class Serializable:
 
     def _to_dict(self, exclude_keys=["parent"]):
         data = self.__dict__
+        out_data = {}
         for key in exclude_keys:
             data.pop(key, None)
         for key in data:
             if isinstance(data[key], Serializable):
-                data[key] = data[key].to_dict()
-            if isinstance(data[key], OID):
-                data[key] = str(data[key])
-            if isinstance(data[key], list):
+                out_data[key] = data[key].to_dict()
+            elif isinstance(data[key], OID):
+                out_data[key] = str(data[key])
+            elif isinstance(data[key], list):
                 for i, entry in enumerate(data[key]):
                     if isinstance(entry, Serializable):
                         data[key][i] = data[key][i].to_dict()
-            #if isinstance(data[key], Path):
-            #    data[key] = str(data[key])
-
-        return data
+            elif isinstance(data[key], Path):
+                out_data[key] = str(data[key])
+            else:
+                out_data[key] = data[key]
+        return out_data
 
     def to_string(self):
         return json.dumps(self.to_dict())
