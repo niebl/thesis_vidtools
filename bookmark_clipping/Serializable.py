@@ -75,9 +75,10 @@ class Serializable:
             elif isinstance(data[key], OID):
                 out_data[key] = str(data[key])
             elif isinstance(data[key], list):
+                out_data[key] = data[key]
                 for i, entry in enumerate(data[key]):
                     if isinstance(entry, Serializable):
-                        data[key][i] = data[key][i].to_dict()
+                        out_data[key][i] = data[key][i].to_dict()
             elif isinstance(data[key], Path):
                 out_data[key] = str(data[key])
             else:
