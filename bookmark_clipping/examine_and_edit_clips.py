@@ -107,7 +107,7 @@ class Player(mpv.MPV):
                 clip.observations.get("cars") is not None):
                 continue
 
-            print(f"clip: {clip.start_bookmark.name} to {clip.end_bookmark.name}, uncertain: {clip.uncertain}")
+            print(f"clip: {clip.start.name} to {clip.end.name}, uncertain: {clip.uncertain}")
             self.play_clip(clip)
             
             clips.save_clip_data(save_to)
