@@ -18,8 +18,8 @@ class Clips(SerializableCollection):
     items_attribute = "clips"
 
     # workdir, clips, tracks, bookmark
-    def __init__(self, bookmarks=None, workdir=DEFAULT_WORKDIR, clips=None, tracks=None):
-        super().__init__(workdir=workdir, collection=clips, items_attribute=self.items_attribute)
+    def __init__(self, bookmarks=None, workdir=DEFAULT_WORKDIR, clips=None, tracks=None, oid:str=None):
+        super().__init__(workdir=workdir, collection=clips, items_attribute=self.items_attribute, oid=oid)
         self.clips = self.read_clips() if clips is None else clips
         self.tracks = tracks
         self.bookmarks = bookmarks
@@ -34,8 +34,8 @@ class Clips(SerializableCollection):
     @classmethod
     def from_dict(cls, data):
         data["bookmarks"] = Bookmarks.from_dict(data["bookmarks"])
-        data["clips"] = list(map(lambda c: Clip.from_dict(c), data["clips"]))
-        data["tracks"] = list(map(lambda t: Track.from_dict(t), data["tracks"]))
+        data["clips"] = list(map(lambda c: Clip.from_dict(c), data.get("clips", [])))
+        data["tracks"] = list(map(lambda t: Track.from_dict(t), data.get("tracks", [])))
         return cls._from_dict(data)
 
     def read_clips(self):
@@ -83,41 +83,26 @@ class Clips(SerializableCollection):
             if re.fullmatch(r"DJI_\d{14}_\d{4}_D_\d{3}", video_path.stem)
         ]
 
-        #2 step process. 
-        #   1. assigns all videos to tracks based on title timestamps
-        for video_path in videos_ls:
-            video = Video(video_path)
+        for i, video_path in enumerate(videos_ls):
+            video = Video(Path(video_path))
             videos.append(video)
-            if self.tracks:
-                parent_track = self.get_track_for_timestamp(video.get_file_timestamp())
-                if parent_track:
-                    print(parent_track[0]["time"], parent_track[-1]["time"], video)
-                    video.parent = parent_track
-                    parent_track.videos.append(video)
+            if i == 0 or video.get_file_timestamp() != videos[i-1].get_file_timestamp():
+                #if first in array or first in recording session, always get file timestamp
+                video.timestamp = video.get_file_timestamp()
+                video.offset = video.get_offset() #get offset, in case it doesnt start at 001
+            # assign next and prev, infer timestamps and offset
             else:
-                return False #TODO: see above
-
-        #   2. infers unix timestamp of videos... 
-        for track in self.tracks:
-            track.videos[0].start_timestamp = track.videos[0].get_timestamp() #?
-            for video in track.videos[1:]:
-                #assumption is that index cutoffs are only at the beginning of recording days
-                video.start_timestamp = video.get_timestamp()
-                #assumption is also that offset is constant between gps and camera across recordings
+                videos[i-1].next_vid = video
+                video.prev_vid = videos[i-1]
+                video.timestamp = video.get_timestamp()
                 video.offset = video.get_offset()
-        
-        #...and rearrange
-        for video in videos:
-            if not video.start_timestamp:
-                #this one fell outside the tracks
-                continue
-            if self.get_track_for_timestamp(video.start_timestamp) != video.parent:
-                video.parent.videos.remove(video)
-                video.parent = self.get_track_for_timestamp(video.get_timestamp())
-                if not video.parent:
-                    continue
-                video.parent.videos.append(video)
-                video.parent.videos.sort(key=lambda v: v.filepath.name)
+
+            parent_track = self.get_track_for_timestamp(video.timestamp)
+            if parent_track:
+                print(type(video.path))
+                print(parent_track[0]["time"], parent_track[-1]["time"], video)
+                video.parent = parent_track
+                parent_track.videos.append(video)
                 
     def get_track_for_timestamp(self, ts):
         if not self.tracks:
@@ -172,8 +157,8 @@ class Clips(SerializableCollection):
             raise Exception(f"getting subsegment failed: start or end video failed")
             return None
 
-        start_timestamp = start_video.get_timestamp() - start_video.get_offset() + clip.start.timestamp
-        end_timestamp = end_video.get_timestamp() - end_video.get_offset() + clip.end.timestamp
+        start_timestamp = start_video.get_timestamp() - start_video.get_offset() + clip.start.pos
+        end_timestamp = end_video.get_timestamp() - end_video.get_offset() + clip.end.pos
         if not start_timestamp or not end_timestamp:
             raise Exception(f"getting subsegment failed: start or end timestamp failed")
             return None
@@ -219,9 +204,10 @@ class Clip(Serializable):
             observations:dict=False, 
             discard=False, 
             uncertain=False,
-            parent=None 
+            parent=None,
+            oid:str=None
         ):
-        super().__init__(workdir=workdir, parent=parent)
+        super().__init__(workdir=workdir, parent=parent, oid=oid)
         self.start = start
         self.end = end
         self.files = [start.path]
@@ -254,7 +240,7 @@ class Clip(Serializable):
 
     def render_clip(self, output_path=None):
         source = list(map(lambda c: Path(c), self.files))
-        start = int(self.start.timestamp * 1000)/1000
+        start = int(self.start.pos * 1000)/1000
         output = Path(output_path) if output_path else (
             Path(self.workdir) / f"{source[0].stem}_at_{start:.3f}s.mp4"
         )
@@ -282,7 +268,7 @@ class Clip(Serializable):
             subprocess.run(command, check=True)
         
         else:
-            end = self.end.timestamp
+            end = self.end.pos
 
             command = [
                 "ffmpeg", "-hide_banner", "-y",
@@ -301,28 +287,31 @@ class Clip(Serializable):
     def validate(self):
         try:
             same_dir = Path(self.start.path).parent == Path(self.end.path).parent
-
+            if not same_dir:
+                raise Exception("clip invalid, not same dir {self}")
             files= sorted(Path(self.start.path).parent.glob("*"))
             start_index = files.index(Path(self.start.path))
             end_index = files.index(Path(self.end.path))
             direct_follow = abs(end_index - start_index) <= 1
-
+            if not same_dir:
+                raise Exception("clip invalid, direct follow not fulfilled {self}")
             duration_ok = self.get_duration() < 120
+            if not same_dir:
+                raise Exception("clip invalid, duration not okay {self}")
 
             return same_dir and direct_follow and duration_ok and self.has_bookmarks()
-        except:
-            return False
+        except Exception as e: print(e)
 
     def get_duration(self):
         if self.start.path == self.end.path:
-            return self.end.timestamp - self.start.timestamp
+            return self.end.pos - self.start.pos
         else:
             # get video duration of start file
             start_file = av.open(self.start.path)
             start_duration = start_file.duration / av.time_base
             start_file.close() 
-            trailing_duration = start_duration - self.start.timestamp
-            leading_duration = self.end.timestamp
+            trailing_duration = start_duration - self.start.pos
+            leading_duration = self.end.pos
             return trailing_duration + leading_duration
             return None
 
@@ -343,15 +332,16 @@ def main():
     
     clips = Clips.from_file(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
     clips.workdir = Path.home() / "Projects/Bike Footage/clips_zurich"
-    clips.read_tracks(
-        track_dir=Path.home() / "Projects/Bike Footage/clips_zurich/gps_traces",
-        global_offset=-133
-    )
-    print("read tracks")
+    if not clips.tracks:
+        clips.read_tracks(
+            track_dir=Path.home() / "Projects/Bike Footage/clips_zurich/gps_traces",
+            global_offset=-133
+        )
+    print("done reading tracks")
     clips.read_videos(
         video_dir=Path.home() / "Projects/Bike Footage"
     )
-    print("read videos")
+    print("done reading videos")
 
     #clips.bookmarks = []
 
@@ -359,14 +349,16 @@ def main():
     print("getting geometries")
     for clip in clips.clips:
         try:
-            if not clip.validate():
-                raise Exception("clip not valid:", str(clip))
-            if not clip.has_bookmarks():
-                raise Exception("clip has no bookmarks:", str(clip))
+            try:
+                if not clip.validate():
+                    break
+            except Exception as e:
+                raise(e)
+
             clip.geometry = clips.get_track_subsegment_for_clip(clip)
             if clip.geometry:
                 geojson = clip.geometry_geojson()
-                start = int(clip.start.timestamp * 1000)/1000
+                start = int(clip.start.pos * 1000)/1000
                 output_path = Path(clips.workdir) / "clip_tracks" / f"{Path(clip.start.path).stem}_at_{start:.3f}s.geojson"
                 output_path.parent.mkdir(parents=True, exist_ok=True)
                 print(output_path)

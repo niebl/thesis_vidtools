@@ -15,6 +15,7 @@ VIDEO_FIXTURES = [
     VIDEO_FIXTURE,
 ]
 VIDEO_SERIALIZATION_FIXTURE = {
+    "oid": "video-001",
     "path": str(VIDEO_FIXTURE),
     "offset": -12.5,
     "start_timestamp": 1725181552.0,
@@ -36,6 +37,7 @@ class TestVideo:
     def test_serialize(self):
         video = Video(
             VIDEO_FIXTURE,
+            oid="video-001",
             offset=VIDEO_SERIALIZATION_FIXTURE["offset"],
             start_timestamp=VIDEO_SERIALIZATION_FIXTURE["start_timestamp"],
         )
@@ -43,6 +45,7 @@ class TestVideo:
 
         assert str(video.path) == VIDEO_SERIALIZATION_FIXTURE["path"]
         assert serialized["path"] == VIDEO_SERIALIZATION_FIXTURE["path"]
+        assert serialized["oid"] == VIDEO_SERIALIZATION_FIXTURE["oid"]
         assert serialized["offset"] == VIDEO_SERIALIZATION_FIXTURE["offset"]
         assert serialized["start_timestamp"] == VIDEO_SERIALIZATION_FIXTURE["start_timestamp"]
         assert serialized["duration"] == pytest.approx(6.006, abs=0.05)
@@ -56,7 +59,7 @@ class TestVideo:
     def test_get_prev_next(self):
         track = Track(Track.from_gpx_file(GPS_FIXTURE))
         for path in VIDEO_FIXTURES:
-            track.add_video(Video(path, offset=0, parent_track=track))
+            track.add_video(Video(path, offset=0, parent=track))
 
         assert track.videos[0].get_prev() is False
         assert track.videos[0].get_next() is track.videos[1]
@@ -89,7 +92,7 @@ class TestTrack:
         assert float(first_point.get("lat")) == pytest.approx(47.414008)
         assert float(first_point.get("lon")) == pytest.approx(8.550946)
 
-        track.videos = [Video(VIDEO_FIXTURES[0], offset=0, parent_track=track)]
+        track.videos = [Video(VIDEO_FIXTURES[0], offset=0, parent=track)]
         serialized_with_video = json.loads(str(track))
         assert len(serialized_with_video["videos"]) == 1
         serialized_video = serialized_with_video["videos"][0]
@@ -116,7 +119,7 @@ class TestTrack:
 
     def test_find_items_video(self):
         track = Track(Track.from_gpx_file(GPS_FIXTURE))
-        videos = [Video(path, offset=0, parent_track=track) for path in VIDEO_FIXTURES]
+        videos = [Video(path, offset=0, parent=track) for path in VIDEO_FIXTURES]
         track.videos = videos
 
         assert track.find_item(lambda video: video.path == VIDEO_FIXTURES[1], "videos") is videos[1]
@@ -124,7 +127,7 @@ class TestTrack:
 
     def test_get_video_by_title(self):
         track = Track.from_gpx_file(GPS_FIXTURE)
-        videos = [Video(path, offset=0, parent_track=track) for path in VIDEO_FIXTURES]
+        videos = [Video(path, offset=0, parent=track) for path in VIDEO_FIXTURES]
         track.videos = videos
 
         assert track.get_video_by_title(VIDEO_FIXTURES[1].stem) is videos[1]
@@ -132,7 +135,7 @@ class TestTrack:
 
     def test_update_start_times(self):
         track = Track.from_gpx_file(GPS_FIXTURE)
-        videos = [Video(path, offset=None, parent_track=track) for path in VIDEO_FIXTURES]
+        videos = [Video(path, offset=None, parent=track) for path in VIDEO_FIXTURES]
         videos[0].offset = 0
         videos[2].offset = -5
         track.videos = videos

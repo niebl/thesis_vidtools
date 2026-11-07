@@ -18,7 +18,8 @@ import traceback
 class Track(SerializableCollection):
     items_attribute = "track"
 
-    def __init__(self, track=[], videos = []):
+    def __init__(self, track=[], videos = [], oid:str = None):
+        super().__init__(oid=oid)
         self.track = track #Dataframe as read from GPX
         self.videos = videos
 
@@ -154,15 +155,30 @@ class Track(SerializableCollection):
             points.append(self.get_point_by_timestamp)
 
 class Video(Serializable):
-    def __init__(self, path: Path, offset=None, start_timestamp = None, parent_track = None ):
-        self.path = path
+    def __init__(self, path: Path, offset=None, start_timestamp = None, parent = None, oid:str=None, prev_vid=None, next_vid=None ):
+        super().__init__(parent=parent, oid=oid)
+        self.path = path if type(path) is Path else Path(path)
         self.offset = offset
         self.duration = self.get_duration()
-        self.parent = parent_track
         self.start_timestamp = start_timestamp
-        # this is a problem before video is added to track. better call such methods from parent after creation
+        self.prev_vid = prev_vid
+        self.next_vid = next_vid
+        # this is a problem before video is added to track. better call such methods from parent after creation:
         #if not self.start_timestamp and self.get_index() == 0:
         #    self.start_timestamp = self.get_timestamp() #infer from title or calculate from other videos
+
+    def to_dict(self):
+        data = self._to_dict(exclude_keys=["parent", "prev_vid", "next_vid"])
+        data["path"] = data["path"]
+        if hasattr(self, "prev_vid") and self.prev_vid:
+            data["prev_vid"] = str(self.prev_vid)
+        if hasattr(self, "next_vid") and self.next_vid:
+            data["next_vid"] = str(self.next_vid)
+        return data
+    
+    def to_string(self):
+        data = self.to_dict()
+        return json.dumps(data)
 
     def get_timestamp(self):
         if self.start_timestamp:
@@ -189,7 +205,9 @@ class Video(Serializable):
             return prev.get_offset()
 
     def get_file_timestamp(self):
-        filename = self.path.stem
+        if type(self.path) is not Path:
+            path = Path(self.path) #TODO: decide. is it string or 
+        filename = path.stem
         title_stamp = re.search(r"\d+", filename).group()
         if len(title_stamp) != 14:
             #something went wrong
@@ -199,7 +217,9 @@ class Video(Serializable):
         return timestamp.timestamp()
 
     def get_snippet_index(self):
-        filename = self.path.stem
+        if type(self.path) is not Path:
+            path = Path(self.path) #TODO: decide. is it string or PAth?
+        filename = path.stem
         try:
             return int(filename[-3:])
         except:
@@ -241,6 +261,7 @@ class Video(Serializable):
 
     def get_prev(self):
         try:
+            if hasattr(self, "prev_vid") and self.prev_vid: return self.prev_vid
             i = self.get_index() - 1
             if i < 0:
                 return False
@@ -250,6 +271,7 @@ class Video(Serializable):
 
     def get_next(self):
         try:
+            if hasattr(self, "next_vid") and self.next_vid: return self.next_vid
             i = self.get_index() + 1
             if i >= len(self.parent.videos):
                 return False
