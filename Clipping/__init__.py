@@ -4,4 +4,4 @@ from .Clips import *
 from .Clip import *
 from .Serializable import *
 from .Tracks import *
-from .Vide import *
+from .Video import *

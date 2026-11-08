@@ -1,6 +1,5 @@
 #Procedural code for fixing the bookmarks as i had recorded them
-from Bookmarks import *
-from Clips import *
+from Clipping import *
 from pathlib import Path
 import os
 

@@ -6,3 +6,4 @@ ffprobe-python
 lxml
 gpxo
 nanoid
+mpv
