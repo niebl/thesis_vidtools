@@ -13,10 +13,11 @@ class OID:
         return self.id
 
 class Serializable:
-    def __init__(self, workdir=None, parent=None, oid:str=None):
+    def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False):
         self.workdir = workdir
         self.parent = parent
         self.oid = str(oid) or OID()
+        self.verbose = verbose
 
     @classmethod
     def from_dict(cls, data):
@@ -53,6 +54,14 @@ class Serializable:
                 inspect.Parameter.KEYWORD_ONLY,
             )
         }
+    
+    def log(self, *args):
+        if self.is_verbose: print(*args)
+
+    def is_verbose(self):
+        if not hasattr(self, "verbose"):
+            return False
+        return self.verbose or self.parent.is_verbose()
 
     def find_item(self, lambda_f, attr):
         for item in getattr(self, attr):
@@ -94,8 +103,15 @@ class Serializable:
 class SerializableCollection(Serializable):
     items_attribute = "collection"
 
-    def __init__(self, workdir=None, parent=None, collection = None, items_attribute=items_attribute, oid:str=None):
-        super().__init__(workdir=workdir, parent=parent, oid=oid)
+    def __init__(self, 
+            workdir=None, 
+            parent=None, 
+            collection = None, 
+            items_attribute=items_attribute, 
+            oid:str=None,
+            verbose:bool=False
+            ):
+        super().__init__(workdir=workdir, parent=parent, oid=oid, verbose=verbose)
         if items_attribute is None:
             items_attribute = self.items_attribute
         setattr(self, items_attribute, collection)

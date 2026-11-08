@@ -19,31 +19,39 @@ class Clips(SerializableCollection):
     items_attribute = "clips"
 
     # workdir, clips, tracks, bookmark
-    def __init__(self, bookmarks=None, workdir=DEFAULT_WORKDIR, clips=None, tracks=None, oid:str=None):
+    def __init__(self, bookmarks=None, workdir=DEFAULT_WORKDIR, clips=None, tracks=None, oid:str=None, verbose:bool=False):
         super().__init__(workdir=workdir, collection=clips, items_attribute=self.items_attribute, oid=oid)
         self.clips = self.read_clips() if clips is None else clips
         self.tracks = tracks
         self.bookmarks = bookmarks
+        self.verbose = verbose
 
     @classmethod
-    def from_file(cls, filepath=None):
+    def from_file(cls, filepath=None, verbose:bool=False):
         path = filepath or cls.DEFAULT_WORKDIR
         with open(path, "r") as file:
             data = json.load(file)
-        return cls.from_dict(data)
+        return cls.from_dict(data, verbose=verbose)
 
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls, data, verbose:bool=False):
         data["bookmarks"] = Bookmarks.from_dict(data["bookmarks"])
         data["clips"] = list(map(lambda c: Clip.from_dict(c), data.get("clips", [])))
         data["tracks"] = list(map(lambda t: Track.from_dict(t), data.get("tracks", [])))
+        data["verbose"] = verbose
         return cls._from_dict(data)
+
+    def to_dict(self):
+        data = self._to_dict(exclude_keys=[
+            "verbose"
+        ])
+        return data
 
     def read_clips(self):
         clips = []
 
         if len(self.bookmarks.bookmarks) % 2 != 0:
-            print("odd number of bookmarks")
+            raise Exception("odd number of bookmarks")
             return clips
     
         for i in range(0, len(self.bookmarks.bookmarks), 2):
@@ -53,7 +61,7 @@ class Clips(SerializableCollection):
 
         for clip in clips:
             if not clip.validate():
-                print(f"Invalid clip: {clip.start.name} to {clip.end.name}")
+                raise Exception(f"Invalid clip: {clip.start.name} to {clip.end.name}")
                 return []
         return clips
 
@@ -65,11 +73,11 @@ class Clips(SerializableCollection):
             self.tracks = []
         else:
             #TODO: raise warning?
-            print("tracks are already read. Not checking for duplicates")
+            self.log("tracks are already read. Not checking for duplicates")
         #read track dir and parse each track.gpx file
         ls = Path(track_dir).glob("**/*.gpx")
         for track in ls:
-            self.tracks.append(Track.from_gpx_file(track, global_offset=global_offset))
+            self.tracks.append(Track.from_gpx_file(track, global_offset=global_offset, verbose=self.verbose))
 
     def read_videos(self, video_dir:Path = None):
         if not self.tracks:
@@ -100,8 +108,8 @@ class Clips(SerializableCollection):
 
             parent_track = self.get_track_for_timestamp(video.timestamp)
             if parent_track:
-                print(type(video.path))
-                print(parent_track[0]["time"], parent_track[-1]["time"], video)
+                self.log("getting track for video (start, end, video)")
+                self.log(parent_track[0]["time"], parent_track[-1]["time"], video)
                 video.parent = parent_track
                 parent_track.videos.append(video)
                 

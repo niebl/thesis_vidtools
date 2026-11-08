@@ -19,13 +19,13 @@ import traceback
 class Track(SerializableCollection):
     items_attribute = "track"
 
-    def __init__(self, track=[], videos = [], oid:str = None):
-        super().__init__(oid=oid)
+    def __init__(self, track=[], videos = [], oid:str = None, verbose:bool=False):
+        super().__init__(oid=oid, verbose=verbose)
         self.track = track #Dataframe as read from GPX
         self.videos = videos
 
     @classmethod
-    def from_gpx_file(cls, file_path, global_offset=0):
+    def from_gpx_file(cls, file_path, global_offset=0, verbose=False):
         with warnings.catch_warnings():
             warnings.filterwarnings(
                 "ignore",
@@ -49,8 +49,9 @@ class Track(SerializableCollection):
             ]
             data[column] = pandas.Series(values, index=data.index, dtype=object)
 
-        track = cls(cls.df_to_track(data))
-        print("read track from", track[0]["time"], "to", track[-1]["time"])
+        track = cls(cls.df_to_track(data), verbose=verbose)
+        if verbose:
+            print("read track from", track[0]["time"], "to", track[-1]["time"])
         return track
 
     @classmethod
@@ -141,7 +142,7 @@ class Track(SerializableCollection):
             #    key=lambda point: point["time"] - ts,
             #    default=None,
             #)
-            print(closest_dist)
+            self.log(closest_dist)
             if closest_dist < 5:
                 return closest
             else:

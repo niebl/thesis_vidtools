@@ -1,60 +1,60 @@
 from Clipping import Clips
 from pathlib import Path
 import json
+import argparse
+import traceback
 
 WORKDIR = "./"
-CLIPS = f"clips.json"
-VIDEOS = f"videos/"
-TRACKS = f"tracks/"
-OUTPUT = f"output/"
+CLIPS = "clips.json"
+VIDEOS = "videos/"
+TRACKS = "tracks/"
+OUTPUT = "output/"
 GLOBAL_OFFSET = 0
 
 def main():
-    try:
-        parser = argparse.ArgumentParser(epilog="v{}")
-        parser.add_argument("-w", "--workdir", action="store", argument_default=WORKDIR,
-                    help="workdir (default: ./ )")
-        
-        parser.add_argument("-c", "--clips", action="store", argument_default=CLIPS,
-                    help="clips.json file to parse (default \{workdir\}/clips.json)")
-        parser.add_argument("-v", "--videos", action="store", argument_default=VIDEOS,
-                    help="directory of video files corresponding to the clips (default \{workdir\}/videos)")
-        parser.add_argument("-t", "--tracks", action="store", argument_default=TRACKS,
-                    help="directory of gpx files corresponding to the clips (default \{workdir\}/tracks)")
-        parser.add_argument("-o", "--output", action="store", argument_default=OUTPUT,
-                    help="directory to write output files to (default \{workdir\}/output)")
-        
-        parser.add_argument("-g", "--global_offset", action="store", argument_default=GLOBAL_OFFSET,
-                    help="global offset between tracks and videos in seconds")
-        parser.add_argument("-v", "--verbose", action="store_true",
-                    help="verbose command line output? (True/False)")
 
-        args = parser.parse_args()
+    parser = argparse.ArgumentParser(epilog="v{}")
+    parser.add_argument("-w", "--workdir", action="store", default=WORKDIR,
+                help="workdir (default: ./ )")
+    
+    parser.add_argument("-c", "--clips", action="store", default=CLIPS,
+                help="clips.json file to parse (default {{workdir}}/clips.json)")
+    parser.add_argument("-v", "--videos", action="store", default=VIDEOS,
+                help="directory of video files corresponding to the clips (default {{workdir}}/videos)")
+    parser.add_argument("-t", "--tracks", action="store", default=TRACKS,
+                help="directory of gpx files corresponding to the clips (default {{workdir}}/tracks)")
+    parser.add_argument("-o", "--output", action="store", default=OUTPUT,
+                help="directory to write output files to (default {{workdir}}/output)")
+    
+    parser.add_argument("-g", "--global_offset", action="store", default=GLOBAL_OFFSET,
+                help="global offset between tracks and videos in seconds")
+    parser.add_argument("-V", "--verbose", action="store_true",
+                help="verbose command line output? (True/False)")
 
-        WD = Path(args.workdir)
-        CLIPS = WD / args.clips
-        TRACKS = WD / args.tracks
-        VIDEOS = WD / args.videos
-        OUTPUT = WD / args.output
-        GLOBAL_OFFSET = args.global_offset
-        VERBOSE = args.verbose
+    args = parser.parse_args()
 
-    except Exception as e:
-        print(e)
+    wd = Path(args.workdir)
+    clips = wd / args.clips
+    tracks = wd / args.tracks
+    videos = wd / args.videos
+    output = wd / args.output
+    global_offset = float(args.global_offset)
+    verbose = args.verbose
+
 
     def log(*args):
-        if VERBOSE: print(*args)
+        if verbose: print(*args)
     
-    clips = Clips.from_file(CLIPS) #Path.home() / "Projects/Bike Footage/clips_zurich/clips.json"
-    clips.workdir = WD #Path.home() / "Projects/Bike Footage/clips_zurich"
+    clips = Clips.from_file(clips, verbose=verbose) #Path.home() / "Projects/Bike Footage/clips_zurich/clips.json"
+    clips.workdir = wd #Path.home() / "Projects/Bike Footage/clips_zurich"
     if not clips.tracks:
         clips.read_tracks(
-            track_dir=TRACKS, #Path.home() / "Projects/Bike Footage/clips_zurich/gps_traces",
-            global_offset=GLOBAL_OFFSET # -133
+            track_dir=tracks, #Path.home() / "Projects/Bike Footage/clips_zurich/gps_traces",
+            global_offset=global_offset # -133
         )
     log("done reading tracks")
     clips.read_videos(
-        video_dir=VIDEOS #Path.home() / "Projects/Bike Footage"
+        video_dir=videos #Path.home() / "Projects/Bike Footage"
     )
     log("done reading videos")
 
