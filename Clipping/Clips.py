@@ -65,7 +65,7 @@ class Clips(SerializableCollection):
                 return []
         return clips
 
-    def read_tracks(self, track_dir:Path = None, global_offset = 0):
+    def read_tracks(self, track_dir:Path = None, global_offset = 0, progress=None):
         if track_dir is None:
             #TODO: raise exception
             return
@@ -75,11 +75,20 @@ class Clips(SerializableCollection):
             #TODO: raise warning?
             self.log("tracks are already read. Not checking for duplicates")
         #read track dir and parse each track.gpx file
-        ls = Path(track_dir).glob("**/*.gpx")
+        ls = list(Path(track_dir).glob("**/*.gpx"))
+        if progress:
+            progress(len(ls), None)
         for track in ls:
-            self.tracks.append(Track.from_gpx_file(track, global_offset=global_offset, verbose=self.verbose))
+            try:
+                self.tracks.append(Track.from_gpx_file(track, global_offset=global_offset, verbose=self.verbose))
+            except Exception:
+                if progress:
+                    progress(len(ls), False)
+                raise
+            if progress:
+                progress(len(ls), True)
 
-    def read_videos(self, video_dir:Path = None):
+    def read_videos(self, video_dir:Path = None, progress=None):
         if not self.tracks:
             return False #todo: raise exceptions
         if not video_dir:
@@ -91,27 +100,36 @@ class Clips(SerializableCollection):
             for video_path in Path(video_dir).glob("**/*.mp4")
             if re.fullmatch(r"DJI_\d{14}_\d{4}_D_\d{3}", video_path.stem)
         ]
+        if progress:
+            progress(len(videos_ls), None)
 
         for i, video_path in enumerate(videos_ls):
-            video = Video(Path(video_path))
-            videos.append(video)
-            if i == 0 or video.get_file_timestamp() != videos[i-1].get_file_timestamp():
-                #if first in array or first in recording session, always get file timestamp
-                video.timestamp = video.get_file_timestamp()
-                video.offset = video.get_offset() #get offset, in case it doesnt start at 001
-            # assign next and prev, infer timestamps and offset
-            else:
-                videos[i-1].next_vid = video
-                video.prev_vid = videos[i-1]
-                video.timestamp = video.get_timestamp()
-                video.offset = video.get_offset()
+            try:
+                video = Video(Path(video_path))
+                videos.append(video)
+                if i == 0 or video.get_file_timestamp() != videos[i-1].get_file_timestamp():
+                    #if first in array or first in recording session, always get file timestamp
+                    video.timestamp = video.get_file_timestamp()
+                    video.offset = video.get_offset() #get offset, in case it doesnt start at 001
+                # assign next and prev, infer timestamps and offset
+                else:
+                    videos[i-1].next_vid = video
+                    video.prev_vid = videos[i-1]
+                    video.timestamp = video.get_timestamp()
+                    video.offset = video.get_offset()
 
-            parent_track = self.get_track_for_timestamp(video.timestamp)
-            if parent_track:
-                self.log("getting track for video (start, end, video)")
-                self.log(parent_track[0]["time"], parent_track[-1]["time"], video)
-                video.parent = parent_track
-                parent_track.videos.append(video)
+                parent_track = self.get_track_for_timestamp(video.timestamp)
+                if parent_track:
+                    self.log("getting track for video (start, end, video)")
+                    self.log(parent_track[0]["time"], parent_track[-1]["time"], video)
+                    video.parent = parent_track
+                    parent_track.videos.append(video)
+            except Exception:
+                if progress:
+                    progress(len(videos_ls), False)
+                raise
+            if progress:
+                progress(len(videos_ls), True)
                 
     def get_track_for_timestamp(self, ts):
         if not self.tracks:
