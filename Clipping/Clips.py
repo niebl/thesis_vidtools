@@ -195,53 +195,9 @@ class Clips(SerializableCollection):
         return True
 
 def main():
-    #bookmarks = Bookmarks(Path.home() / "Projects/Bike Footage/bookmarker.json")
-    #clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage/clips_zurich")
-    #clips.render_all_clips()
-    
-    clips = Clips.from_file(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
-    clips.workdir = Path.home() / "Projects/Bike Footage/clips_zurich"
-    if not clips.tracks:
-        clips.read_tracks(
-            track_dir=Path.home() / "Projects/Bike Footage/clips_zurich/gps_traces",
-            global_offset=-133
-        )
-    print("done reading tracks")
-    clips.read_videos(
-        video_dir=Path.home() / "Projects/Bike Footage"
-    )
-    print("done reading videos")
-
-    #clips.bookmarks = []
-
-    #for each clip, save track geojson for the clip
-    print("getting geometries")
-    for clip in clips.clips:
-        try:
-            try:
-                if not clip.validate():
-                    break
-            except Exception as e:
-                raise(e)
-
-            clip.geometry = clips.get_track_subsegment_for_clip(clip)
-            if clip.geometry:
-                geojson = clip.geometry_geojson()
-                start = int(clip.start.pos * 1000)/1000
-                output_path = Path(clips.workdir) / "clip_tracks" / f"{Path(clip.start.path).stem}_at_{start:.3f}s.geojson"
-                output_path.parent.mkdir(parents=True, exist_ok=True)
-                print(output_path)
-                with open(output_path, "w") as f:
-                    json.dump(geojson, f)
-        except Exception as e:
-            traceback.print_exc()
-            print(e)
-            #break
-    
-    clips.tracks = []
-
-    # TODO: deserialization with the correct references and preventing endless loops
-    #clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
+    bookmarks = Bookmarks(Path.home() / "Projects/Bike Footage/bookmarker.json")
+    clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage/clips_zurich")
+    clips.render_all_clips()
 
 if __name__ == "__main__":
     main()
