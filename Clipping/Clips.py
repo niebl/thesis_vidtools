@@ -150,7 +150,13 @@ class Clips(SerializableCollection):
                     return track 
         return None
 
-    def get_track_subsegment_for_clip(self, clip):
+    def get_track_subsegment_for_clip(
+                self, 
+                clip,
+                margin=0, #margin at start and end of clip in seconds
+                m_start=None, #margin at start in s
+                m_end=None #margin at end in s
+            ):
         track = self.get_track_for_clip(clip)
         if not track:
             raise Exception(f"getting subsegment failed: No track for clip {clip}")
@@ -168,6 +174,9 @@ class Clips(SerializableCollection):
 
         start_timestamp = start_video.get_timestamp() - start_video.get_offset() + clip.start.pos
         end_timestamp = end_video.get_timestamp() - end_video.get_offset() + clip.end.pos
+        #apply margin
+        start_timestamp -= m_start or margin
+        end_timestamp += m_end or margin
         if not start_timestamp or not end_timestamp:
             raise Exception(f"getting subsegment failed: start or end timestamp failed")
             return None

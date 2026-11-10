@@ -125,7 +125,7 @@ class Track(SerializableCollection):
             print(f"Error in contains, using timestamp {ts}", self.track[0]["time"],self.track[-1]["time"])
             return False
 
-    def get_point_by_timestamp(self, ts, ts_format="unix"):
+    def get_point_by_timestamp(self, ts, ts_format="unix", max_closest=float("inf")):
         try:
             if not self.track:
                 raise ValueError("track is empty")
@@ -143,7 +143,7 @@ class Track(SerializableCollection):
             #    default=None,
             #)
             self.log(closest_dist)
-            if closest_dist < 5:
+            if closest_dist < max_closest:
                 return closest
             else:
                 return None
@@ -151,7 +151,7 @@ class Track(SerializableCollection):
             raise e
             return None
 
-    def get_points_by_timestamp_range(self, start_ts, end_ts, ts_format="unix"):
+    def get_points_by_timestamp_range(self, start_ts, end_ts, ts_format="unix", max_closest=float("inf")):
         points = []
         for n in range(start_ts, end_ts):
             points.append(self.get_point_by_timestamp)

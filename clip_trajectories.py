@@ -68,7 +68,7 @@ def main():
             except Exception as e:
                 raise(e)
 
-            clip.geometry = clips.get_track_subsegment_for_clip(clip)
+            clip.geometry = clips.get_track_subsegment_for_clip(clip, m_start=3, m_end=2)
             if clip.geometry:
                 geojson = clip.geometry_geojson()
                 start = int(clip.start.pos * 1000)/1000
