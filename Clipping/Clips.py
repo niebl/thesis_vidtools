@@ -134,6 +134,7 @@ class Clips(SerializableCollection):
 
     def get_track_for_clip(self, clip):
         if not self.tracks:
+            raise Exception(f"getting track failed: No tracks found")
             return None
         #it might be possible otherwise, but we assume that there is only one track per clip
         if not clip.validate:

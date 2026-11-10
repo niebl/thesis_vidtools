@@ -10,13 +10,13 @@ class OID:
         self.oid = oid    
     
     def __str__(self):
-        return self.id
+        return self.oid
 
 class Serializable:
     def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False):
         self.workdir = workdir
         self.parent = parent
-        self.oid = str(oid) or OID()
+        self.oid = OID(oid)
         self.verbose = verbose
 
     @classmethod
