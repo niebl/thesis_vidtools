@@ -7,14 +7,14 @@ from ..Clip import Clip
 from ..Tracks import Track
 from .test_bookmark_serialization import TestBookmark
 
-CLIPS_FIXTURE = """{\"workdir\": \"/home/user/Projects/Videos\", \"clips\":[{\"start\": {\"pos\": 40.5405, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:40.540\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"end\": {\"pos\": 48.782067, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:48.782\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_20240901110117_0007_D_003_at_40.540s.mp4\", \"observations\": {}, \"discard\": false, \"uncertain\": false},
-{\"start\": {\"pos\": 60.927533, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:01:00.927\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"end\": {\"pos\": 11.878533, \"name\": \"117_0007_D_003.mp4 @ 00:00:11.878\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_20240901110117_0007_D_003_at_60.927s.mp4\", \"observations\": {}, \"discard\": false, \"uncertain\": false},
-{\"start\": {\"pos\": 32.298933, \"name\": \"848_0008_D_001.mp4 @ 00:00:32.298\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_001.mp4\"}, \"end\": {\"pos\": 47.714333, \"name\": \"848_0008_D_001.mp4 @ 00:00:47.714\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_001.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_20240901110848_0008_D_002_at_32.298s.mp4\", \"observations\": {}, \"discard\": false, \"uncertain\": false}], "bookmarks":[{\"pos\":40.5405,\"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:40.540\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
+CLIPS_FIXTURE = """{\"workdir\": \"/home/user/Projects/Videos\", \"clips\":[{\"start\": {\"pos\": 40.5405, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:40.540\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"end\": {\"pos\": 48.782067, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:48.782\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_20240901110117_0007_D_003_at_40.540s.mp4\", \"geometry\": null, \"observations\": {}, \"discard\": false, \"uncertain\": false},
+{\"start\": {\"pos\": 60.927533, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:01:00.927\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"end\": {\"pos\": 11.878533, \"name\": \"117_0007_D_003.mp4 @ 00:00:11.878\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_20240901110117_0007_D_003_at_60.927s.mp4\", \"geometry\": null, \"observations\": {}, \"discard\": false, \"uncertain\": false},
+{\"start\": {\"pos\": 32.298933, \"name\": \"848_0008_D_001.mp4 @ 00:00:32.298\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_001.mp4\"}, \"end\": {\"pos\": 47.714333, \"name\": \"848_0008_D_001.mp4 @ 00:00:47.714\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_001.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_20240901110848_0008_D_002_at_32.298s.mp4\", \"geometry\": null, \"observations\": {}, \"discard\": false, \"uncertain\": false}], "bookmarks":[{\"pos\":40.5405,\"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:40.540\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
 {\"pos\":48.782067,\"name\": \"117_0007_D_003.mp4 @ 00:00:48.782\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
 {\"pos\":60.927533,\"name\": \"117_0007_D_003.mp4 @ 00:01:00.927\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"},
 {\"pos\":11.878533,\"name\": \"848_0008_D_001.mp4 @ 00:00:11.878\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_001.mp4\"},
 {\"pos\":32.298933,\"name\": \"848_0008_D_002.mp4 @ 00:00:32.298\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_002.mp4\"}]}"""
-CLIP_FIXTURE = "{\"start\": {\"pos\": 65.2692, \"name\": \"DJI_806_0009_D_002.mp4 @ 00:01:05.269\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_806_0009_D_002.mp4\"}, \"end\": {\"pos\": 87.520767, \"name\": \"DJI_806_0009_D_002.mp4 @ 00:01:27.520\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_806_0009_D_002.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_806_0009_D_002_at_65.269s.mp4\", \"observations\": {}, \"discard\": false, \"uncertain\": false}"
+CLIP_FIXTURE = "{\"start\": {\"pos\": 65.2692, \"name\": \"DJI_806_0009_D_002.mp4 @ 00:01:05.269\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_806_0009_D_002.mp4\"}, \"end\": {\"pos\": 87.520767, \"name\": \"DJI_806_0009_D_002.mp4 @ 00:01:27.520\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_806_0009_D_002.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_806_0009_D_002_at_65.269s.mp4\", \"geometry\": null, \"observations\": {}, \"discard\": false, \"uncertain\": false}"
 CLIP_FIXTURE = json.dumps({
     **json.loads(CLIP_FIXTURE),
     "oid": "clip-001",
@@ -71,7 +71,8 @@ class TestClip:
         clip = Clip.from_dict(json.loads(CLIP_FIXTURE))
         dic = Clip.to_dict(clip)
         assert type(dic) is dict
-        assert len(dic) == 7
+        print(dic)
+        assert len(dic) == 8
         assert not "parent" in dic
 
     def test_clip_from_string(self):
@@ -114,7 +115,7 @@ class TestClips:
         clips = Clips.from_dict(json.loads(CLIPS_FIXTURE))
         dic = Clips.to_dict(clips)
         assert type(dic) is dict
-        assert len(dic) == 5
+        assert len(dic) == 6
 
     def test_clips_from_string(self):
         clips = Clips.from_string(CLIPS_FIXTURE)

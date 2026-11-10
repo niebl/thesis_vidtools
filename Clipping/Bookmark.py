@@ -15,7 +15,8 @@ class Bookmark(Serializable):
     def to_dict(self):
         data = self._to_dict(exclude_keys=[
             "workdir",
-            "parent"
+            "parent",
+            "verbose"
         ])
         return data
 

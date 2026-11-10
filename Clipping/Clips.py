@@ -67,7 +67,7 @@ class Clips(SerializableCollection):
 
     def read_tracks(self, track_dir:Path = None, global_offset = 0):
         if track_dir is None:
-            #TODO: raise exception
+            raise Exception(f"No track directory was given")
             return
         if self.tracks is None or self.tracks == []:
             self.tracks = []
@@ -75,7 +75,11 @@ class Clips(SerializableCollection):
             #TODO: raise warning?
             self.log("tracks are already read. Not checking for duplicates")
         #read track dir and parse each track.gpx file
-        ls = Path(track_dir).glob("**/*.gpx")
+        ls = [
+            track_dir for track_dir in Path(track_dir).glob("**/*.gpx")
+        ]
+        if len(ls) == 0:
+            raise Exception(f"no tracks found in {str(video_dir)}")
         for track in ls:
             self.tracks.append(Track.from_gpx_file(track, global_offset=global_offset, verbose=self.verbose))
 
@@ -91,6 +95,8 @@ class Clips(SerializableCollection):
             for video_path in Path(video_dir).glob("**/*.mp4")
             if re.fullmatch(r"DJI_\d{14}_\d{4}_D_\d{3}", video_path.stem)
         ]
+        if len(videos_ls) == 0:
+            raise Exception(f"no videos found in {str(video_dir)}")
 
         for i, video_path in enumerate(videos_ls):
             video = Video(Path(video_path))

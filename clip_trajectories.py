@@ -85,7 +85,7 @@ def main():
     clips.tracks = []
 
     # TODO: deserialization with the correct references and preventing endless loops
-    #clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
+    clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")
 
 if __name__ == "__main__":
     main()

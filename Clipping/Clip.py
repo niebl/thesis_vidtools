@@ -42,10 +42,10 @@ class Clip(Serializable):
 
     def to_dict(self):
         data = self._to_dict(exclude_keys=[
-            "geometry",
             "files",
             "parent",
-            "workdir"
+            "workdir",
+            "verbose"
         ])
         return data
 
@@ -114,7 +114,7 @@ class Clip(Serializable):
                 raise Exception("clip invalid, duration not okay {self}")
 
             return same_dir and direct_follow and duration_ok and self.has_bookmarks()
-        except Exception as e: print(e)
+        except Exception as e: print("clip invalid", e)
 
     def get_duration(self):
         if self.start.path == self.end.path:

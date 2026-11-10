@@ -5,7 +5,7 @@ from pathlib import Path
 
 class OID:
     def __init__(self, oid:String=None):
-        if not oid:
+        if (not oid) or (oid == "None") or (len(oid) != 10):
             oid = nanoid.generate(size=10)
         self.oid = oid    
     
@@ -72,7 +72,7 @@ class Serializable:
     def to_dict(self):
         return self._to_dict()
 
-    def _to_dict(self, exclude_keys=["parent"]):
+    def _to_dict(self, exclude_keys=["parent", "verbose"]):
         data = self.__dict__
         out_data = {}
         for key in exclude_keys:
