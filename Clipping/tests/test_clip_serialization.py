@@ -83,6 +83,21 @@ class TestClip:
         clip = Clip.from_string(CLIP_FIXTURE)
         assert json.loads(str(clip)) == json.loads(CLIP_FIXTURE)
 
+    def test_get_bbox(self):
+        clip = Clip.from_dict(json.loads(CLIP_FIXTURE))
+        clip.geometry = [
+            {"lon": 8.5, "lat": 47.4},
+            {"lon": 8.6, "lat": 47.5},
+        ]
+
+        assert clip.get_bbox(margin=0) == [8.5, 47.4, 8.6, 47.5]
+        assert clip.get_bbox() == pytest.approx([
+            8.499866,
+            47.39991,
+            8.600133,
+            47.500089,
+        ])
+
 
 class TestClips:
     ### HELPERS:

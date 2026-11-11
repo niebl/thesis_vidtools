@@ -6,6 +6,10 @@ else:
     from Serializable import Serializable, SerializableCollection
 from pathlib import Path
 import av
+import overpass
+from turf.bbox import bbox
+from turf.destination import destination
+from turf.helpers import point
 
 class Clip(Serializable):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
@@ -13,8 +17,10 @@ class Clip(Serializable):
             self, 
             start:Bookmark, 
             end:Bookmark, 
-            workdir:Path=None, 
-            videoclip=None, 
+            workdir:Path=None,
+            map_data_path:Path=None, 
+            videoclip=None,
+            geometry=None, 
             observations:dict=False, 
             discard=False, 
             uncertain=False,
@@ -27,9 +33,10 @@ class Clip(Serializable):
         self.files = [start.path]
         #add second file if clip spans 2
         self.files.append(end.path) if end.path != start.path else None
+        self.map_data_path = map_data_path
         self.videoclip = videoclip or ""
         self.parent = parent
-        self.geometry = None
+        self.geometry = geometry
         self.observations = observations or {}
         self.discard = discard
         self.uncertain = uncertain
@@ -138,3 +145,29 @@ class Clip(Serializable):
             "type": "LineString",
             "coordinates": coordinates
         }
+
+    def get_bbox(self, margin=10):
+        if not self.geometry:
+            raise ValueError("clip geometry is empty")
+        if margin < 0:
+            raise ValueError("margin must be non-negative")
+
+        west, south, east, north = bbox(self.geometry_geojson())
+        if margin == 0:
+            return [west, south, east, north]
+
+        longitude_latitude = south if abs(south) >= abs(north) else north
+        west = destination(
+            point([west, longitude_latitude]), margin, -90, {"units": "meters"}
+        )["geometry"]["coordinates"][0]
+        east = destination(
+            point([east, longitude_latitude]), margin, 90, {"units": "meters"}
+        )["geometry"]["coordinates"][0]
+        south = destination(
+            point([(west + east) / 2, south]), margin, 180, {"units": "meters"}
+        )["geometry"]["coordinates"][1]
+        north = destination(
+            point([(west + east) / 2, north]), margin, 0, {"units": "meters"}
+        )["geometry"]["coordinates"][1]
+
+        return [south, west, north, east]

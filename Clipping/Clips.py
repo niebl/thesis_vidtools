@@ -13,6 +13,8 @@ import subprocess
 import json
 import traceback
 import re
+import overpass
+import time
 
 class Clips(SerializableCollection):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
@@ -218,10 +220,81 @@ class Clips(SerializableCollection):
             return False
         return True
 
+    def save_osm_data_for_clips(self, dir=None):
+        api = overpass.API(
+            user_agent = "Thesis project (https://github.com/niebl)",
+            timeout=300
+            )
+        for clip in self.clips[0:4]:
+            bbox = clip.get_bbox()
+            bbox = ",".join(map(lambda n: str(n), bbox))
+            query = f"""
+            (
+                  way({bbox})["highway"]
+            )
+            """
+            try:
+                response = api.get(query)
+                """
+                response = api.get(f\"""
+                    (
+                      node({bbox});
+                      way({bbox});
+                      relation({bbox});
+                    )->.all;
+                    (
+                      // All roads, paths, cycleways, footways, etc.
+                      way.all(area.searchArea)["highway"];
+
+                      // Highway nodes: traffic signals, stops, crossings, speed cameras, etc.
+                      node.all(area.searchArea)["highway"];
+
+                      // Bicycle infrastructure / access tags
+                      way.all(area.searchArea)[~"^cycleway"~"."];
+                      way.all(area.searchArea)[~"^bicycle"~"."];
+                      node.all(area.searchArea)[~"^bicycle"~"."];
+                      way.all(area.searchArea)["oneway:bicycle"];
+
+                      // Road signaling
+                      node.all(area.searchArea)[~"^traffic_sign"~"."];
+                      way.all(area.searchArea)[~"^traffic_sign"~"."];
+                      node.all(area.searchArea)[~"^traffic_signals"~"."];
+                      node.all(area.searchArea)["enforcement"];
+                      way.all(area.searchArea)["enforcement"];
+
+                      // Traffic calming, crossings, barriers, kerbs
+                      node.all(area.searchArea)["traffic_calming"];
+                      way.all(area.searchArea)["traffic_calming"];
+                      node.all(area.searchArea)[~"^crossing"~"."];
+                      way.all(area.searchArea)[~"^crossing"~"."];
+                      node.all(area.searchArea)["barrier"~"^(bollard|cycle_barrier|block)$"];
+                      way.all(area.searchArea)["barrier"~"^(bollard|cycle_barrier|block)$"];
+                      node.all(area.searchArea)["kerb"];
+                      way.all(area.searchArea)["kerb"];
+
+                      // Speed, surface, one-way, etc.
+                      way.all(area.searchArea)[~"^maxspeed"~"."];
+                      node.all(area.searchArea)[~"^maxspeed"~"."];
+                      way.all(area.searchArea)["surface"];
+                      way.all(area.searchArea)["oneway"];
+                      way.all(area.searchArea)["smoothness"];
+                      way.all(area.searchArea)["segregated"];
+                      way.all(area.searchArea)["sidewalk"];
+                    );
+                \""")
+                """
+                print(response)
+                time.sleep(1)
+            except Exception as e:
+                print(e)
+                print(query)
+
 def main():
-    bookmarks = Bookmarks(Path.home() / "Projects/Bike Footage/bookmarker.json")
-    clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage/clips_zurich")
-    clips.render_all_clips()
+    #bookmarks = Bookmarks(Path.home() / "Projects/Bike Footage/bookmarker.json")
+    #clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage/clips_zurich")
+    #clips.render_all_clips()
+    clips = Clips.from_file("/home/dings/Projects/Bike Footage/clips_zurich/clips.json", verbose=True)
+    clips.save_osm_data_for_clips()
 
 if __name__ == "__main__":
     main()
