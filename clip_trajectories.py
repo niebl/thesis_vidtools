@@ -64,9 +64,11 @@ def main():
         try:
             try:
                 if not clip.validate():
-                    break
+                    continue
             except Exception as e:
-                raise(e)
+                print(e)
+                continue
+                #raise(e)
 
             clip.geometry = clips.get_track_subsegment_for_clip(clip, m_start=4, m_end=2)
             if clip.geometry:

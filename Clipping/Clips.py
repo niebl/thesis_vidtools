@@ -21,9 +21,9 @@ class Clips(SerializableCollection):
     # workdir, clips, tracks, bookmark
     def __init__(self, bookmarks=None, workdir=DEFAULT_WORKDIR, clips=None, tracks=None, oid:str=None, verbose:bool=False):
         super().__init__(workdir=workdir, collection=clips, items_attribute=self.items_attribute, oid=oid)
-        self.clips = self.read_clips() if clips is None else clips
         self.tracks = tracks
         self.bookmarks = bookmarks
+        self.clips = self.read_clips() if clips is None else clips
         self.verbose = verbose
 
     @classmethod
@@ -93,7 +93,7 @@ class Clips(SerializableCollection):
         videos_ls = [
             video_path
             for video_path in Path(video_dir).glob("**/*.mp4")
-            if re.fullmatch(r"DJI_\d{14}_\d{4}_D_\d{3}", video_path.stem)
+            if re.fullmatch(r"DJI_\d{14}_\d{4}_D_\d{3}.mp4", video_path.name)
         ]
         if len(videos_ls) == 0:
             raise Exception(f"no videos found in {str(video_dir)}")
@@ -137,7 +137,7 @@ class Clips(SerializableCollection):
             raise Exception(f"getting track failed: No tracks found")
             return None
         #it might be possible otherwise, but we assume that there is only one track per clip
-        if not clip.validate:
+        if not clip.validate():
             raise Exception("clip invalid", clip)
         start = Path(clip.start.path)
         end = Path(clip.end.path)

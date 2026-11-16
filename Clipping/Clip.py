@@ -102,7 +102,7 @@ class Clip(Serializable):
         try:
             same_dir = Path(self.start.path).parent == Path(self.end.path).parent
             if not same_dir:
-                raise Exception("clip invalid, not same dir {self}")
+                raise Exception(f"clip invalid, not same dir {self}")
             files= sorted(Path(self.start.path).parent.glob("*"))
             start_index = files.index(Path(self.start.path))
             end_index = files.index(Path(self.end.path))
@@ -114,7 +114,9 @@ class Clip(Serializable):
                 raise Exception("clip invalid, duration not okay {self}")
 
             return same_dir and direct_follow and duration_ok and self.has_bookmarks()
-        except Exception as e: print("clip invalid", e)
+        except Exception as e: 
+            print("clip invalid", e)
+            
 
     def get_duration(self):
         if self.start.path == self.end.path:
