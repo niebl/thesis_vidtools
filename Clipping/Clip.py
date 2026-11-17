@@ -146,6 +146,13 @@ class Clip(Serializable):
                 "offset": video.get_offset()
             }
 
+    def get_date(self):
+        track = self.parent.get_track_for_clip(self)
+        if track is not None:
+            video_start = track.get_video_by_title(Path(self.start.path).stem)
+            return date.fromtimestamp(video_start.get_file_timestamp())
+        else: return None
+
     def geometry_geojson(self, human_readable=False):
         #TODO: probably needs more work to work
         coordinates = []
@@ -169,7 +176,7 @@ class Clip(Serializable):
 
                 properties["start"] = self.video_infos(video_start, human_readable)
                 properties["end"] = self.video_infos(video_end, human_readable)
-                properties["day"] = str(date.fromtimestamp(video_start.get_file_timestamp()))
+                properties["day"] = str(self.get_date())
         return {
             "type": "LineString",
             "coordinates": coordinates,

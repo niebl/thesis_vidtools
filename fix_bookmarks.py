@@ -12,14 +12,14 @@ def dedupe_and_rename(bookmarks):
     #remove all bookmarks from /home/dings/Projects/Bike Footage/06/ because those were duplicates
     bookmarks.bookmarks = list(filter(
         lambda b: not b.path.startswith(
-                os.path.abspath("/home/dings/Projects/Bike Footage/06"+os.sep)
+                os.path.abspath("/home/dings/Projects/Bike Footage/clips_zurich/08"+os.sep)
             ),
         bookmarks.bookmarks
     ))
 
     #update bookmark names for timestamps changed
     bookmarks.map(lambda b: b.update_filename())
-    bookmarks.save_bookmarks()
+    bookmarks.save_bookmarks("/home/dings/Projects/Bike Footage/bookmark.json")
     
 if __name__ == "__main__":
     main()

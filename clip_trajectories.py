@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 import argparse
 import traceback
+from datetime import date
 
 WORKDIR = "./"
 CLIPS = "clips.json"
@@ -71,6 +72,7 @@ def main():
 
     #for each clip, save track geojson for the clip
     log("getting geometries")
+    dates = set()
     for clip in clips.clips:
         try:
             try:
@@ -79,20 +81,29 @@ def main():
             except Exception as e:
                 print(e)
                 continue
-
+            
+            date = clip.get_date()
+            if date:
+                dates.add(date)
             clip.geometry = clips.get_track_subsegment_for_clip(
                 clip, m_start=2, m_end=2
                 )
+            
         except Exception as e:
             traceback.print_exc()
             print(e)
     
-    output_path = Path(clips.workdir) / "clip_tracks" / f"clips.geojson"
-    #output_path = Path.home() / "cloud/sciebo/Studium/0_Masterarbeit/gis/zurich/tracks_days/clips.geojson"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    log(output_path)
-    with open(output_path, "w") as f:
-        json.dump(clips.geometry_geojson(human_readable=True, skip_empty=True), f)
+    for day in dates:
+        output_path = Path(clips.workdir) / "clip_tracks" / f"clips_{day}.geojson"
+        #output_path = Path.home() / f"cloud/sciebo/Studium/0_Masterarbeit/gis/zurich/tracks_days/clips_{day}.geojson"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        log(output_path)
+        feature_collection = clips.geometry_geojson(
+            lambda c: c.get_date() == day,
+            human_readable=True, skip_empty=True
+            )
+        with open(output_path, "w") as f:
+            json.dump(feature_collection, f)
     
     clips.tracks = []
     clips.videos = []
