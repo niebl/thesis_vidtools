@@ -59,7 +59,7 @@ class Track(SerializableCollection):
     
     @classmethod
     def from_dict(cls, data):
-        data["videos"] = list(map(lambda v: Video.from_dict(v), data["videos"]))
+        data["videos"] = list(map(lambda v: Video.from_dict(v), data.get("videos", [])))
         return cls._from_dict(data)
 
     @staticmethod

@@ -6,6 +6,8 @@ else:
     from Serializable import Serializable, SerializableCollection
 from pathlib import Path
 import av
+from datetime import datetime as dt
+from datetime import date
 
 class Clip(Serializable):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
@@ -28,7 +30,6 @@ class Clip(Serializable):
         #add second file if clip spans 2
         self.files.append(end.path) if end.path != start.path else None
         self.videoclip = videoclip or ""
-        self.parent = parent
         self.geometry = None
         self.observations = observations or {}
         self.discard = discard
@@ -131,12 +132,46 @@ class Clip(Serializable):
             return trailing_duration + leading_duration
             return None
 
-    def geometry_geojson(self):
+    def unix_to_iso(self, ts):
+        if not isinstance(ts,dt):
+            return dt.fromtimestamp(float(ts)).isoformat()
+        else:
+            ts.isoformat()
+
+    def video_infos(self, video, human_readable=False):
+        return {
+                "name": video.path.name,
+                "f_ts": self.unix_to_iso(video.get_file_timestamp()) if human_readable else video.get_file_timestamp(),
+                "ts": self.unix_to_iso(video.get_timestamp()) if human_readable else video.get_timestamp(),
+                "offset": video.get_offset()
+            }
+
+    def geometry_geojson(self, human_readable=False):
         #TODO: probably needs more work to work
         coordinates = []
+        if self.geometry is None: 
+            self.geometry = []
         for point in self.geometry:
             coordinates.append([point["lon"], point["lat"]])
+        start = int(self.start.pos * 1000)/1000
+        properties = {
+            "name": f"{Path(self.start.path).stem}_at_{start:.3f}s",
+            "duration": self.get_duration(),
+            "bookmarks": {
+                "start": self.start.to_dict(), "end":self.end.to_dict()
+                }
+        }
+        if self.parent:
+            track = self.parent.get_track_for_clip(self)
+            if track is not None:
+                video_start = track.get_video_by_title(Path(self.start.path).stem)
+                video_end = track.get_video_by_title(Path(self.end.path).stem)
+
+                properties["start"] = self.video_infos(video_start, human_readable)
+                properties["end"] = self.video_infos(video_end, human_readable)
+                properties["day"] = str(date.fromtimestamp(video_start.get_file_timestamp()))
         return {
             "type": "LineString",
-            "coordinates": coordinates
+            "coordinates": coordinates,
+            "properties": properties
         }

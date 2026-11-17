@@ -36,7 +36,7 @@ class Bookmarks(SerializableCollection):
     def parse_bookmarks(self):
         with open(self.location, "r") as file:
             data = json.load(file)
-        bookmarks = list(map(lambda b: Bookmark(b["pos"], b["path"], b["name"], b["version"]), data))
+        bookmarks = list(map(lambda b: Bookmark(b["pos"], b["path"], b["name"], b["ver"]), data))
         return bookmarks
 
     #WARNING: overwrites your bookmarks. make sure to have backups

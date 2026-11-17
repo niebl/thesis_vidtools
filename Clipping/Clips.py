@@ -36,8 +36,8 @@ class Clips(SerializableCollection):
     @classmethod
     def from_dict(cls, data, verbose:bool=False):
         data["bookmarks"] = Bookmarks.from_dict(data["bookmarks"])
-        data["clips"] = list(map(lambda c: Clip.from_dict(c), data.get("clips", [])))
-        data["tracks"] = list(map(lambda t: Track.from_dict(t), data.get("tracks", [])))
+        data["clips"] = list(map(lambda c: Clip.from_dict(c), data.get("clips") or []))
+        data["tracks"] = list(map(lambda t: Track.from_dict(t), data.get("tracks") or []))
         data["verbose"] = verbose
         return cls._from_dict(data)
 
@@ -90,11 +90,15 @@ class Clips(SerializableCollection):
             return False #TODO: see above
 
         videos = []
-        videos_ls = [
-            video_path
-            for video_path in Path(video_dir).glob("**/*.mp4")
-            if re.fullmatch(r"DJI_\d{14}_\d{4}_D_\d{3}.mp4", video_path.name)
-        ]
+        videos_ls = sorted(
+            [
+                video_path
+                for video_path in Path(video_dir).glob("**/*.mp4")
+                if re.fullmatch(r"DJI_\d{14}_\d{4}_D_\d{3}", video_path.stem)
+            ],
+            key=lambda path: path.stem,
+        )
+        
         if len(videos_ls) == 0:
             raise Exception(f"no videos found in {str(video_dir)}")
 
@@ -218,10 +222,28 @@ class Clips(SerializableCollection):
             return False
         return True
 
+    def geometry_geojson(self, filter_function:function=None, name:String=None, human_readable=False, skip_empty=False):
+        if not filter_function:
+            filter_function = lambda c: c
+        clips = filter(filter_function, self.clips)
+        features = []
+        for clip in clips:
+            geometry = clip.geometry_geojson(human_readable)
+            if skip_empty and not geometry["coordinates"]:
+                continue
+            feature = {"type": "Feature", "geometry": geometry, "properties": geometry["properties"]}
+            geometry.pop("properties")
+            features.append(feature)
+        return {
+            "type": "FeatureCollection",
+            "features": features
+        }
+
 def main():
     bookmarks = Bookmarks(Path.home() / "Projects/Bike Footage/bookmarker.json")
     clips = Clips(bookmarks, Path.home() / "Projects/Bike Footage/clips_zurich")
     clips.render_all_clips()
+    clips.save_clip_data("/home/dings/Projects/Bike Footage/clips_zurich/clips.json")
 
 if __name__ == "__main__":
     main()

@@ -46,6 +46,17 @@ def main():
         if verbose: print(*args)
     
     clips = Clips.from_file(clips, verbose=verbose) #Path.home() / "Projects/Bike Footage/clips_zurich/clips.json"
+    clips.build_parent_tree()
+    for i, clip in enumerate(clips.clips):
+        if clip.parent is None:
+            print(clip)
+            print(f"clip index {i} has no parent")
+            exit()
+        if clip.start is None or clip.end is None:
+            print(clip)
+            print(f"clip index {i} misses bookmark")
+            exit()
+
     clips.workdir = wd #Path.home() / "Projects/Bike Footage/clips_zurich"
     if not clips.tracks:
         clips.read_tracks(
@@ -68,23 +79,23 @@ def main():
             except Exception as e:
                 print(e)
                 continue
-                #raise(e)
 
-            clip.geometry = clips.get_track_subsegment_for_clip(clip, m_start=4, m_end=2)
-            if clip.geometry:
-                geojson = clip.geometry_geojson()
-                start = int(clip.start.pos * 1000)/1000
-                output_path = Path(clips.workdir) / "clip_tracks" / f"{Path(clip.start.path).stem}_at_{start:.3f}s.geojson"
-                output_path.parent.mkdir(parents=True, exist_ok=True)
-                log(output_path)
-                with open(output_path, "w") as f:
-                    json.dump(geojson, f)
+            clip.geometry = clips.get_track_subsegment_for_clip(
+                clip, m_start=2, m_end=2
+                )
         except Exception as e:
             traceback.print_exc()
             print(e)
-            #break
+    
+    output_path = Path(clips.workdir) / "clip_tracks" / f"clips.geojson"
+    #output_path = Path.home() / "cloud/sciebo/Studium/0_Masterarbeit/gis/zurich/tracks_days/clips.geojson"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    log(output_path)
+    with open(output_path, "w") as f:
+        json.dump(clips.geometry_geojson(human_readable=True, skip_empty=True), f)
     
     clips.tracks = []
+    clips.videos = []
 
     # TODO: deserialization with the correct references and preventing endless loops
     clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")

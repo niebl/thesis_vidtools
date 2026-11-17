@@ -13,7 +13,7 @@ class OID:
         return self.oid
 
 class Serializable:
-    def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False):
+    def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False, build_parent_tree=False):
         self.workdir = workdir
         self.parent = parent
         self.oid = OID(oid)
@@ -54,6 +54,17 @@ class Serializable:
                 inspect.Parameter.KEYWORD_ONLY,
             )
         }
+
+    def build_parent_tree(self, parent=None):
+        data = self.__dict__
+        for key in data:
+            if isinstance(data[key], Serializable):
+                data[key].build_parent_tree(self)
+            elif isinstance(data[key], list):
+                for entry in data[key]:
+                    if isinstance(entry, Serializable):
+                        entry.build_parent_tree(self)
+        self.parent = parent
     
     def log(self, *args):
         if self.is_verbose: print(*args)
@@ -72,21 +83,23 @@ class Serializable:
     def to_dict(self):
         return self._to_dict()
 
-    def _to_dict(self, exclude_keys=["parent", "verbose"]):
+    def _to_dict(self, exclude_keys=None):
+        if exclude_keys is None:
+            exclude_keys = ["parent", "verbose"]
         data = self.__dict__
         out_data = {}
-        for key in exclude_keys:
-            data.pop(key, None)
         for key in data:
+            if key in exclude_keys:
+                continue
             if isinstance(data[key], Serializable):
                 out_data[key] = data[key].to_dict()
             elif isinstance(data[key], OID):
                 out_data[key] = str(data[key])
             elif isinstance(data[key], list):
-                out_data[key] = data[key]
-                for i, entry in enumerate(data[key]):
-                    if isinstance(entry, Serializable):
-                        out_data[key][i] = data[key][i].to_dict()
+                out_data[key] = [
+                    entry.to_dict() if isinstance(entry, Serializable) else entry
+                    for entry in data[key]
+                ]
             elif isinstance(data[key], Path):
                 out_data[key] = str(data[key])
             else:

@@ -4,14 +4,14 @@ from pathlib import Path
 import os
 
 def main():
-    bookmarks = Bookmarks()
-    #dedupe_and_rename(bookmarks)
+    bookmarks = Bookmarks("../bookmarker.json")
+    dedupe_and_rename(bookmarks)
     print(bookmarks)
 
 def dedupe_and_rename(bookmarks):
     #remove all bookmarks from /home/dings/Projects/Bike Footage/06/ because those were duplicates
     bookmarks.bookmarks = list(filter(
-        lambda b: not b.filepath.startswith(
+        lambda b: not b.path.startswith(
                 os.path.abspath("/home/dings/Projects/Bike Footage/06"+os.sep)
             ),
         bookmarks.bookmarks

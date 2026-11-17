@@ -116,6 +116,10 @@ class TestClips:
         dic = Clips.to_dict(clips)
         assert type(dic) is dict
         assert len(dic) == 6
+        assert isinstance(clips.clips[0], Clip)
+        assert isinstance(clips.tracks[0], Track)
+        assert isinstance(dic["clips"][0], dict)
+        assert isinstance(dic["tracks"][0], dict)
 
     def test_clips_from_string(self):
         clips = Clips.from_string(CLIPS_FIXTURE)
