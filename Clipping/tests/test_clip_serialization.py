@@ -17,30 +17,30 @@ CLIPS_FIXTURE = """{\"workdir\": \"/home/user/Projects/Videos\", \"clips\":[{\"s
 CLIP_FIXTURE = "{\"start\": {\"pos\": 65.2692, \"name\": \"DJI_806_0009_D_002.mp4 @ 00:01:05.269\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_806_0009_D_002.mp4\"}, \"end\": {\"pos\": 87.520767, \"name\": \"DJI_806_0009_D_002.mp4 @ 00:01:27.520\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_806_0009_D_002.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_806_0009_D_002_at_65.269s.mp4\", \"geometry\": null, \"observations\": {}, \"discard\": false, \"uncertain\": false}"
 CLIP_FIXTURE = json.dumps({
     **json.loads(CLIP_FIXTURE),
-    "oid": "clip-001",
-    "start": {**json.loads(CLIP_FIXTURE)["start"], "oid": "bookmark-001"},
-    "end": {**json.loads(CLIP_FIXTURE)["end"], "oid": "bookmark-002"},
+    "oid": "clip---001",
+    "start": {**json.loads(CLIP_FIXTURE)["start"], "oid": "bkmark-001"},
+    "end": {**json.loads(CLIP_FIXTURE)["end"], "oid": "bkmark-002"},
 })
 
 WORKDIR = "/home/user/Projects/Videos"
 CLIPS_FIXTURE = json.dumps({
     **json.loads(CLIPS_FIXTURE),
-    "oid": "clips-001",
+    "oid": "clips--001",
     "clips": [
         {
             **clip,
-            "oid": f"clip-{index:03d}",
-            "start": {**clip["start"], "oid": f"bookmark-{index * 2 - 1:03d}"},
-            "end": {**clip["end"], "oid": f"bookmark-{index * 2:03d}"},
+            "oid": f"clip---{index:03d}",
+            "start": {**clip["start"], "oid": f"bkmark-{index * 2 - 1:03d}"},
+            "end": {**clip["end"], "oid": f"bkmark-{index * 2:03d}"},
         }
         for index, clip in enumerate(json.loads(CLIPS_FIXTURE)["clips"], start=1)
     ],
     "bookmarks": [
-        {**bookmark, "oid": f"bookmark-{index:03d}"}
+        {**bookmark, "oid": f"bkmark-{index:03d}"}
         for index, bookmark in enumerate(json.loads(CLIPS_FIXTURE)["bookmarks"], start=1)
     ],
     "tracks": [{
-        "oid": "track-001",
+        "oid": "track--001",
         "track": [{"time": 1725181416.0, "lat": 47.414008, "lon": 8.550946}],
         "videos": [],
     }],
@@ -55,7 +55,7 @@ class TestClip:
         type(clip) == Clip
         assert TestBookmark.bookmark_conditions(clip.start, json.dumps(data["start"]))
         assert TestBookmark.bookmark_conditions(clip.end, json.dumps(data["end"]))
-        assert clip.oid == data["oid"]
+        assert str(clip.oid) == data["oid"]
         assert clip.videoclip == data["videoclip"]
         assert clip.observations == data["observations"]
         assert clip.discard == data["discard"]

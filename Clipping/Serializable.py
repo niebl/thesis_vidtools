@@ -12,6 +12,13 @@ class OID:
     def __str__(self):
         return self.oid
 
+    def __eq__(self, other):
+        if type(other) is str:
+            return self.oid == other
+        else:
+            return self == other
+            
+
 class Serializable:
     def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False, build_parent_tree=False):
         self.workdir = workdir
