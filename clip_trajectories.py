@@ -47,7 +47,6 @@ def main():
         if verbose: print(*args)
     
     clips = Clips.from_file(clips, verbose=verbose) #Path.home() / "Projects/Bike Footage/clips_zurich/clips.json"
-    clips.build_parent_tree()
     for i, clip in enumerate(clips.clips):
         if clip.parent is None:
             print(clip)
@@ -111,7 +110,7 @@ def main():
     print(f"successfully written {n_clips} clip trajectories out of {int(len(clips.bookmarks) / 2)} bookmarked clips")
     
     #clips.tracks = []
-    #clips.videos = []
+    clips.videos = []
 
     # TODO: deserialization with the correct references and preventing endless loops
     clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")

@@ -11,11 +11,11 @@ from dateutil import parser
 from zoneinfo import ZoneInfo
 
 class Video(Serializable):
-    def __init__(self, path: Path, offset=None, start_timestamp = None, parent = None, oid:str=None, prev_vid=None, next_vid=None ):
+    def __init__(self, path: Path, offset=None, start_timestamp = None, parent = None, oid:str=None, prev_vid=None, next_vid=None, duration=None):
         super().__init__(parent=parent, oid=oid)
         self.path = path if type(path) is Path else Path(path)
         self.offset = offset
-        self.duration = self.get_duration()
+        self.duration = duration or self.get_duration()
         self.start_timestamp = start_timestamp
         self.prev_vid = prev_vid
         self.next_vid = next_vid
@@ -31,7 +31,7 @@ class Video(Serializable):
         if hasattr(self, "next_vid") and self.next_vid:
             data["next_vid"] = str(self.next_vid.oid)
         return data
-    
+
     def to_string(self):
         data = self.to_dict()
         return json.dumps(data)

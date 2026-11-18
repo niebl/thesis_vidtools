@@ -20,7 +20,7 @@ class OID:
             
 
 class Serializable:
-    def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False, build_parent_tree=False):
+    def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False):
         self.workdir = workdir
         self.parent = parent
         self.oid = OID(oid)
@@ -62,6 +62,8 @@ class Serializable:
             )
         }
 
+    #rebuilds parent references after i.e. from_dict
+    #TODO: recursionerror
     def build_parent_tree(self, parent=None):
         data = self.__dict__
         for key in data:
@@ -72,6 +74,67 @@ class Serializable:
                     if isinstance(entry, Serializable):
                         entry.build_parent_tree(self)
         self.parent = parent
+
+    #rebuilds references from OID after i.e. from_dict
+    #TODO: this can't yet rebuild parent relations
+    def build_rel_from_oids(self, verbose=False):
+        if verbose:
+            self.log("building relations from oids..")
+
+        objects = {str(self.oid): self}
+        self.collect_objects(objects)
+        visited = set()
+
+        def relink(obj):
+            if id(obj) in visited:
+                return
+            visited.add(id(obj))
+
+            for key, attr in obj.__dict__.items():
+                if key == "oid":
+                    continue #don't relink your own oid!
+                if isinstance(attr, OID):
+                    target = objects.get(str(attr))
+                    if target is not None:
+                        setattr(obj, key, target)
+                        relink(target)
+                elif isinstance(attr, list):
+                    for index, item in enumerate(attr):
+                        if isinstance(item, OID):
+                            target = objects.get(str(item))
+                            if target is not None:
+                                attr[index] = target
+                                relink(target)
+                        elif isinstance(item, Serializable):
+                            relink(item)
+                elif isinstance(attr, Serializable):
+                    relink(attr)
+
+        relink(self)
+        
+    #collects all OIDs in self, and references
+    #might need parent tree, which is still broken
+    def collect_objects(self, objects={}):
+        data = self.__dict__
+        for key in data:
+            attr = data[key]
+            if isinstance(attr, OID) and not str(attr) in objects:
+                objects[str(attr)] = None #OID with no owner found
+            elif isinstance(attr, list):
+                for item in attr:
+                    if isinstance(item, OID) and not str(attr) in objects:
+                        objects[str(attr)] = None 
+                        continue
+                    elif isinstance(item, Serializable) and objects:
+                        if not str(item.oid) in objects or objects[str(item.oid)] != item:
+                            objects[str(item.oid)] = item
+                            objects = item.collect_objects(objects)
+            elif isinstance(attr, Serializable):
+                if not str(attr.oid) in objects or objects[str(attr.oid)] != attr:
+                    objects[str(attr.oid)] = attr
+                    objects = attr.collect_objects(objects)
+        objects[str(self.oid)] = self
+        return objects
     
     def log(self, *args):
         if self.is_verbose: print(*args)
@@ -89,6 +152,29 @@ class Serializable:
     
     def to_dict(self):
         return self._to_dict()
+
+    def find_by_oid(self, oid, from_root=False):
+        if isinstance(oid, OID):
+            oid = str(oid)
+        root = self.get_root() if from_root else self
+        data = root.__dict__
+        for key in data:
+            item = data[key]
+            if isinstance(item, Serializable):
+                if item.oid == oid: return item
+            elif isinstance(item, list):
+                for listitem in item:
+                    if isinstance(listitem, Serializable):
+                        if listitem.oid == oid: return listitem
+        return None
+
+    def get_root(self):
+        if not self.parent:
+            return self
+        if not isinstance(self.parent, Serializable):
+            return self.parent
+        else:
+            return self.parent.get_root()
 
     def _to_dict(self, exclude_keys=None):
         if exclude_keys is None:
