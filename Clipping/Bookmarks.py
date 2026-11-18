@@ -14,8 +14,11 @@ class Bookmarks(SerializableCollection):
 
     def __init__(self, 
             location:Path=None, 
-            bookmarks=None
+            bookmarks=None,
+            oid=None,
+            verbose=None
         ):
+        super().__init__(oid=oid, verbose=verbose)
         self.location = location or self.DEFAULT_LOCATION
         self.bookmarks = self.parse_bookmarks() if bookmarks is None else bookmarks
     

@@ -1,8 +1,8 @@
 from pathlib import Path
 if __package__:
-    from .Serializable import Serializable, SerializableCollection
+    from .Serializable import Serializable, SerializableCollection, OID
 else:
-    from Serializable import Serializable, SerializableCollection
+    from Serializable import Serializable, SerializableCollection, OID
 import subprocess
 import re
 import json
@@ -26,11 +26,21 @@ class Video(Serializable):
     def to_dict(self):
         data = self._to_dict(exclude_keys=["parent", "prev_vid", "next_vid", "verbose"])
         data["path"] = str(data["path"])
+        data["prev_vid"] = None
+        data["next_vid"] = None
         if hasattr(self, "prev_vid") and self.prev_vid:
             data["prev_vid"] = str(self.prev_vid.oid)
         if hasattr(self, "next_vid") and self.next_vid:
             data["next_vid"] = str(self.next_vid.oid)
         return data
+
+    @classmethod
+    def from_dict(cls, data):
+        if data.get("prev_vid"):
+            data["prev_vid"] = OID(data["prev_vid"])
+        if data.get("next_vid"): 
+            data["next_vid"] = OID(data["next_vid"])
+        return cls._from_dict(data)
 
     def to_string(self):
         data = self.to_dict()
