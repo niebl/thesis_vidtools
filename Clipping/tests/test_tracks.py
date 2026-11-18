@@ -8,6 +8,7 @@ from ..Tracks import Track, Video
 
 FIXTURES = Path(__file__).parent / "fixtures"
 GPS_FIXTURE = FIXTURES / "Bike_ride.gpx"
+GPS_FIXTURE_OFFSET = FIXTURES / "Bike_ride_offset.gpx"
 VIDEO_FIXTURE = FIXTURES / "DJI_20240901110552_0007_D_001.mp4"
 VIDEO_FIXTURES = [
     FIXTURES / "DJI_20240901110505_0007_D_003.mp4",
@@ -153,3 +154,33 @@ class TestTrack:
             videos[2].start_timestamp - -5
         ) #might need a better test case here
         assert videos[2].start_timestamp == pytest.approx(track_start["time"] - 5)
+    
+    def test_video_offset(self):
+        track = Track.from_gpx_file(GPS_FIXTURE)
+        video1 = Video(VIDEO_FIXTURES[0], parent=track)
+        video2 = Video(VIDEO_FIXTURES[1], parent=track)
+        video3 = Video(VIDEO_FIXTURE, parent=track)
+        video1.next_vid = video2
+        video2.prev_vid = video1
+        video2.next_vid = video3
+        video3.prev_vid = video2
+        
+        videos = [Video(path, offset=-133, parent=track) for path in VIDEO_FIXTURES]
+        
+        assert video1.get_offset() == -180 * 2
+        assert video2.get_offset() == -180 * 2 #video 2 inherits vid1 offset because 1 is first in line
+        assert video3.get_offset() == 0 #because it is the first video of a recording. prev offset ignored
+        for video in videos:
+            assert video.get_offset() == -133
+
+    def test_track_offset(self):
+        track = Track.from_gpx_file(GPS_FIXTURE)
+        track_offset_manual = Track.from_gpx_file(GPS_FIXTURE, track_offset=-133)
+        track_offset = Track.from_gpx_file(GPS_FIXTURE_OFFSET)
+
+        pt1 = track[10]
+        pt1_offset_manual = track_offset_manual[10]
+        pt1_offset = track_offset[10]
+
+        assert pt1["time"] == pt1_offset_manual["time"] -133
+        assert pt1["time"] == pt1_offset["time"] -133

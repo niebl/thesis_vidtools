@@ -62,7 +62,7 @@ def main():
     if not clips.tracks:
         clips.read_tracks(
             track_dir=tracks, #Path.home() / "Projects/Bike Footage/clips_zurich/gps_traces",
-            global_offset=global_offset # -133
+            track_offset=global_offset # -133
         )
     log("done reading tracks")
     clips.read_videos(
@@ -93,6 +93,8 @@ def main():
             traceback.print_exc()
             print(e)
     
+    n_clips = 0
+
     for day in dates:
         output_path = Path(clips.workdir) / "clip_tracks" / f"clips_{day}.geojson"
         #output_path = Path.home() / f"cloud/sciebo/Studium/0_Masterarbeit/gis/zurich/tracks_days/clips_{day}.geojson"
@@ -102,11 +104,14 @@ def main():
             lambda c: c.get_date() == day,
             human_readable=True, skip_empty=True
             )
+        n_clips += len(feature_collection["features"])
         with open(output_path, "w") as f:
             json.dump(feature_collection, f)
+
+    print(f"successfully written {n_clips} clip trajectories out of {int(len(clips.bookmarks) / 2)} bookmarked clips")
     
-    clips.tracks = []
-    clips.videos = []
+    #clips.tracks = []
+    #clips.videos = []
 
     # TODO: deserialization with the correct references and preventing endless loops
     clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")

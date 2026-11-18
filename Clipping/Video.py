@@ -52,13 +52,17 @@ class Video(Serializable):
         
         prev = self.get_prev()
 
-        if self.offset is None and not prev:
-            #raise Exception("First video has no offset")
-            seg_id = self.get_snippet_index()
-            return (seg_id-1)*-180 #A video segment is almost exactly 3 minutes
+        file_fts = self.get_file_timestamp()
+        seg_id = self.get_snippet_index()
 
         if prev:
-            return prev.get_offset()
+            prev_fts = prev.get_file_timestamp()
+            prev_seg_id = prev.get_snippet_index()
+            if prev_fts == file_fts and seg_id == prev_seg_id+1: 
+                return prev.get_offset()
+
+        return (seg_id-1)*-180 #A video segment is almost exactly 3 minutes
+
 
     def get_file_timestamp(self):
         if type(self.path) is not Path:
@@ -100,13 +104,6 @@ class Video(Serializable):
             return float(result.stdout)
         else:
             return self.duration
-
-    def get_track_points(self):
-        #gets the GPS track points coinciding with the given video
-        start = self.start_timestamp - self.offset
-        end = start 
-
-        pass
 
     def get_index(self):
         try:
