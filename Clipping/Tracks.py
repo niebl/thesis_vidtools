@@ -11,6 +11,7 @@ import gpxo
 import json
 import warnings
 import traceback
+from xml.dom import minidom
 
 class Track(SerializableCollection):
     items_attribute = "track"
@@ -20,8 +21,9 @@ class Track(SerializableCollection):
         self.track = track #Dataframe as read from GPX
         self.videos = videos
 
+    # track_offset:= at sync point, timestamp_track - timestamp_video in seconds
     @classmethod
-    def from_gpx_file(cls, file_path, global_offset=0, verbose=False):
+    def from_gpx_file(cls, file_path, track_offset=0, verbose=False):
         with warnings.catch_warnings():
             warnings.filterwarnings(
                 "ignore",
@@ -30,9 +32,14 @@ class Track(SerializableCollection):
             df = gpxo.Track(file_path)
 
         data = df.data.copy()
+        
+        metadata = minidom.parse(str(file_path)).getElementsByTagName("metadata")[0]
+        metadata_offset = metadata.getElementsByTagName("offset")
+        track_offset = float(metadata_offset[0].firstChild.data) if len(metadata_offset) > 0 else track_offset
+        
         timestamps = pandas.to_datetime(data["time"], utc=True)
         data["time"] = timestamps.map(
-            lambda value: value.timestamp()-global_offset if pandas.notna(value) else None
+            lambda value: value.timestamp()-track_offset if pandas.notna(value) else None
         )
         
 

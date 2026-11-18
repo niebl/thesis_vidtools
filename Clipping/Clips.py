@@ -64,7 +64,7 @@ class Clips(SerializableCollection):
                 return []
         return clips
 
-    def read_tracks(self, track_dir:Path = None, global_offset = 0):
+    def read_tracks(self, track_dir:Path = None, track_offset = 0):
         if track_dir is None:
             raise Exception(f"No track directory was given")
             return
@@ -80,7 +80,7 @@ class Clips(SerializableCollection):
         if len(ls) == 0:
             raise Exception(f"no tracks found in {str(video_dir)}")
         for track in ls:
-            self.tracks.append(Track.from_gpx_file(track, global_offset=global_offset, verbose=self.verbose))
+            self.tracks.append(Track.from_gpx_file(track, track_offset=track_offset, verbose=self.verbose))
 
     def read_videos(self, video_dir:Path = None):
         if not self.tracks:
