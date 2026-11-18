@@ -20,6 +20,7 @@ CLIP_FIXTURE = json.dumps({
     "oid": "clip---001",
     "start": {**json.loads(CLIP_FIXTURE)["start"], "oid": "bkmark-001"},
     "end": {**json.loads(CLIP_FIXTURE)["end"], "oid": "bkmark-002"},
+    "clip_detections": {"detection_frames": []}
 })
 
 WORKDIR = "/home/user/Projects/Videos"
@@ -72,7 +73,7 @@ class TestClip:
         dic = Clip.to_dict(clip)
         assert type(dic) is dict
         print(dic)
-        assert len(dic) == 8
+        assert len(dic) == 9
         assert not "parent" in dic
 
     def test_clip_from_string(self):
