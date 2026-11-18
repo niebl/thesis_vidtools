@@ -3,7 +3,12 @@ if __package__:
     from .Serializable import Serializable, SerializableCollection
 else:
     from Serializable import Serializable, SerializableCollection
-
+import subprocess
+import re
+import json
+from datetime import datetime
+from dateutil import parser
+from zoneinfo import ZoneInfo
 
 class Video(Serializable):
     def __init__(self, path: Path, offset=None, start_timestamp = None, parent = None, oid:str=None, prev_vid=None, next_vid=None ):
@@ -19,12 +24,12 @@ class Video(Serializable):
         #    self.start_timestamp = self.get_timestamp() #infer from title or calculate from other videos
 
     def to_dict(self):
-        data = self._to_dict(exclude_keys=["parent", "prev_vid", "next_vid"])
+        data = self._to_dict(exclude_keys=["parent", "prev_vid", "next_vid", "verbose"])
         data["path"] = str(data["path"])
         if hasattr(self, "prev_vid") and self.prev_vid:
-            data["prev_vid"] = str(self.prev_vid)
+            data["prev_vid"] = str(self.prev_vid.oid)
         if hasattr(self, "next_vid") and self.next_vid:
-            data["next_vid"] = str(self.next_vid)
+            data["next_vid"] = str(self.next_vid.oid)
         return data
     
     def to_string(self):
@@ -70,6 +75,7 @@ class Video(Serializable):
     def get_snippet_index(self):
         if type(self.path) is not Path:
             path = Path(self.path) #TODO: decide. is it string or PAth?
+        else: path = self.path
         filename = path.stem
         try:
             return int(filename[-3:])

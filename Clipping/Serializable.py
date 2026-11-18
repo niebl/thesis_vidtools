@@ -5,18 +5,26 @@ from pathlib import Path
 
 class OID:
     def __init__(self, oid:String=None):
-        if not oid:
+        if (not oid) or (oid == "None") or (len(oid) != 10):
             oid = nanoid.generate(size=10)
         self.oid = oid    
     
     def __str__(self):
-        return self.id
+        return self.oid
+
+    def __eq__(self, other):
+        if type(other) is str:
+            return self.oid == other
+        else:
+            return self == other
+            
 
 class Serializable:
-    def __init__(self, workdir=None, parent=None, oid:str=None):
+    def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False, build_parent_tree=False):
         self.workdir = workdir
         self.parent = parent
-        self.oid = str(oid) or OID()
+        self.oid = OID(oid)
+        self.verbose = verbose
 
     @classmethod
     def from_dict(cls, data):
@@ -54,6 +62,25 @@ class Serializable:
             )
         }
 
+    def build_parent_tree(self, parent=None):
+        data = self.__dict__
+        for key in data:
+            if isinstance(data[key], Serializable):
+                data[key].build_parent_tree(self)
+            elif isinstance(data[key], list):
+                for entry in data[key]:
+                    if isinstance(entry, Serializable):
+                        entry.build_parent_tree(self)
+        self.parent = parent
+    
+    def log(self, *args):
+        if self.is_verbose: print(*args)
+
+    def is_verbose(self):
+        if not hasattr(self, "verbose"):
+            return False
+        return self.verbose or self.parent.is_verbose()
+
     def find_item(self, lambda_f, attr):
         for item in getattr(self, attr):
             if lambda_f(item):
@@ -63,21 +90,23 @@ class Serializable:
     def to_dict(self):
         return self._to_dict()
 
-    def _to_dict(self, exclude_keys=["parent"]):
+    def _to_dict(self, exclude_keys=None):
+        if exclude_keys is None:
+            exclude_keys = ["parent", "verbose"]
         data = self.__dict__
         out_data = {}
-        for key in exclude_keys:
-            data.pop(key, None)
         for key in data:
+            if key in exclude_keys:
+                continue
             if isinstance(data[key], Serializable):
                 out_data[key] = data[key].to_dict()
             elif isinstance(data[key], OID):
                 out_data[key] = str(data[key])
             elif isinstance(data[key], list):
-                out_data[key] = data[key]
-                for i, entry in enumerate(data[key]):
-                    if isinstance(entry, Serializable):
-                        out_data[key][i] = data[key][i].to_dict()
+                out_data[key] = [
+                    entry.to_dict() if isinstance(entry, Serializable) else entry
+                    for entry in data[key]
+                ]
             elif isinstance(data[key], Path):
                 out_data[key] = str(data[key])
             else:
@@ -94,8 +123,15 @@ class Serializable:
 class SerializableCollection(Serializable):
     items_attribute = "collection"
 
-    def __init__(self, workdir=None, parent=None, collection = None, items_attribute=items_attribute, oid:str=None):
-        super().__init__(workdir=workdir, parent=parent, oid=oid)
+    def __init__(self, 
+            workdir=None, 
+            parent=None, 
+            collection = None, 
+            items_attribute=items_attribute, 
+            oid:str=None,
+            verbose:bool=False
+            ):
+        super().__init__(workdir=workdir, parent=parent, oid=oid, verbose=verbose)
         if items_attribute is None:
             items_attribute = self.items_attribute
         setattr(self, items_attribute, collection)

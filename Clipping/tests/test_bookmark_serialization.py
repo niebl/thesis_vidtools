@@ -10,9 +10,9 @@ BOOKMARKS_FIXTURE = """[{\"pos\":40.5405,\"name\": \"DJI_117_0007_D_003.mp4 @ 00
 {\"pos\":32.298933,\"name\": \"848_0008_D_002.mp4 @ 00:00:32.298\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_002.mp4\"},
 {\"pos\":47.714333,\"name\": \"848_0008_D_002.mp4 @ 00:00:47.714\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_002.mp4\"}]"""
 BOOKMARK_FIXTURE = "{\"pos\":19.019,\"name\": \"848_0008_D_003.mp4 @ 00:00:19.018\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/848_0008_D_003.mp4\"}"
-BOOKMARK_FIXTURE = json.dumps({**json.loads(BOOKMARK_FIXTURE), "oid": "bookmark-001"})
+BOOKMARK_FIXTURE = json.dumps({**json.loads(BOOKMARK_FIXTURE), "oid": "bkmark-001"})
 BOOKMARKS_FIXTURE = json.dumps([
-    {**bookmark, "oid": f"bookmark-{index:03d}"}
+    {**bookmark, "oid": f"bkmark-{index:03d}"}
     for index, bookmark in enumerate(json.loads(BOOKMARKS_FIXTURE), start=1)
 ])
 
@@ -23,8 +23,9 @@ class TestBookmark:
         data = json.loads(bookmark_fixture)
         cond1 = type(bookmark) == Bookmark
         cond2 = bookmark.path == data["path"] and bookmark.ver == data["ver"] and bookmark.name == data["name"] and bookmark.pos == data["pos"]
-        cond3 = bookmark.oid == data["oid"]
-        return cond1 and cond2 and cond3
+        cond3 = str(bookmark.oid) == data["oid"]
+        cond4 = bookmark.oid == data["oid"]
+        return cond1 and cond2 and cond3 and cond4
 
     ### TESTS:
     def test_bookmark_from_dict(self):

@@ -15,7 +15,7 @@ VIDEO_FIXTURES = [
     VIDEO_FIXTURE,
 ]
 VIDEO_SERIALIZATION_FIXTURE = {
-    "oid": "video-001",
+    "oid": "video--001",
     "path": str(VIDEO_FIXTURE),
     "offset": -12.5,
     "start_timestamp": 1725181552.0,
@@ -37,7 +37,7 @@ class TestVideo:
     def test_serialize(self):
         video = Video(
             VIDEO_FIXTURE,
-            oid="video-001",
+            oid="video--001",
             offset=VIDEO_SERIALIZATION_FIXTURE["offset"],
             start_timestamp=VIDEO_SERIALIZATION_FIXTURE["start_timestamp"],
         )
