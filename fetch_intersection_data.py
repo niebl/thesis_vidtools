@@ -16,14 +16,12 @@ def get_features_along_linestring(
     buffer_m: float = 50.0,
     tags: dict | None = None,
 ):
-    """Fetch OSM features (e.g. traffic signals, crossings, stop signs) in the buffer."""
     if tags is None:
         tags = {"highway": ["traffic_signals", "stop", "crossing"]}
     polygon = linestring_to_buffer_polygon(linestring_geojson, buffer_m)
     return osmnx.features_from_polygon(polygon, tags=tags)
 
 def linestring_to_buffer_polygon(linestring_geojson: dict, buffer_m: float = 50.0):
-    """Convert a LineString GeoJSON dict to a buffered polygon in WGS84 (lat/lon)."""
     geom = shape(linestring_geojson)
     if geom.geom_type != "LineString":
         raise ValueError(f"Expected a LineString, got {geom.geom_type}.")
@@ -43,27 +41,6 @@ def linestring_to_buffer_polygon(linestring_geojson: dict, buffer_m: float = 50.
     )
     return poly_wgs84
 
-
-def prune_short_dead_ends(graph, min_length_m=12, max_iterations=10):
-    graph = graph.copy()
-
-    for _ in range(max_iterations):
-        dead_ends = [n for n, d in graph.nodes(data=True) if d.get("street_count", 0) == 1]
-        removed = False
-        for node in dead_ends:
-            for u, v, key, data in graph.edges(node, keys=True, data=True):
-                # OSMnx edge 'length' is in meters
-                if data.get("length", 0) < min_length_m:
-                    graph.remove_node(node)
-                    removed = True
-                    break
-        if not removed:
-            break
-
-    # Drop any nodes left with no edges after pruning
-    graph = osmnx.remove_isolated_nodes(graph)
-    return graph
-
 def _remove_isolated_nodes(G):
     isolated = [n for n in G.nodes if G.degree(n) == 0]
     G.remove_nodes_from(isolated)   
@@ -76,7 +53,7 @@ def drop_service_ways(graph, exclude):
     edges = osmnx.graph_to_gdfs(graph, nodes=False, edges=True)
     mask = (edges["highway"] == "service" & edges["service"].isin(exclude))
     mask_private = (edges["access"].isin(exclude_access))
-    footways = (edges["foot"].isin({"yes", "designated"}) & (edges["cycleway"].isin({"no"}) | edges["foot"].isin({"designated"})))
+    footways = (edges["foot"].isin({"yes"}) & (edges["cycleway"].isin({"no"}) | edges["foot"].isin({"designated"})))
 
     drop_edges = pd.concat([edges[mask], edges[mask_private], edges[footways]])
 
