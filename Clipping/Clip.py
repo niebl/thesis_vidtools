@@ -17,6 +17,7 @@ class Clip(Serializable):
             end:Bookmark, 
             workdir:Path=None, 
             videoclip=None, 
+            geometry:list=None,
             observations:dict=False, 
             discard=False, 
             uncertain=False,
@@ -30,7 +31,7 @@ class Clip(Serializable):
         #add second file if clip spans 2
         self.files.append(end.path) if end.path != start.path else None
         self.videoclip = videoclip or ""
-        self.geometry = None
+        self.geometry = geometry
         self.observations = observations or {}
         self.discard = discard
         self.uncertain = uncertain

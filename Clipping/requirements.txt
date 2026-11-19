@@ -7,3 +7,7 @@ gpxo
 nanoid
 mpv
 osmnx
+
+folium
+matplotlib
+mapclassify
