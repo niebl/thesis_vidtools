@@ -77,7 +77,8 @@ class Serializable:
 
     #rebuilds references from OID after i.e. from_dict
     #TODO: this can't yet rebuild parent relations
-    def build_rel_from_oids(self, verbose=False):
+    def relink(self, verbose=False):
+        self.build_parent_tree()
         if verbose:
             self.log("building relations from oids..")
 

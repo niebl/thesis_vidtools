@@ -47,7 +47,8 @@ def main():
         if verbose: print(*args)
     
     clips = Clips.from_file(clips, verbose=verbose) #Path.home() / "Projects/Bike Footage/clips_zurich/clips.json"
-    clips.build_parent_tree()
+    #clips.build_parent_tree()
+    clips.relink()
     for i, clip in enumerate(clips.clips):
         if clip.parent is None:
             print(clip)

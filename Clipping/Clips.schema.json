@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "Clips.schema.json",
+  "title": "Clips serialization",
+  "description": "JSON serialization produced by Clips.to_dict() and parsed by Clips.from_dict().",
+  "type": "object",
+  "required": ["workdir", "oid", "parent", "tracks", "clips", "bookmarks"],
+  "additionalProperties": false,
+  "properties": {
+    "workdir": {
+      "type": ["string", "null"]
+    },
+    "oid": {
+      "$ref": "#/$defs/oid"
+    },
+    "parent": {
+      "type": "null"
+    },
+    "tracks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Track"
+      }
+    },
+    "clips": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Clip"
+      }
+    },
+    "bookmarks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Bookmark"
+      }
+    }
+  },
+  "$defs": {
+    "oid": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 10
+    },
+    "Bookmark": {
+      "type": "object",
+      "required": ["oid", "path", "pos", "name", "ver"],
+      "additionalProperties": false,
+      "properties": {
+        "oid": {
+          "$ref": "#/$defs/oid"
+        },
+        "path": {
+          "type": "string"
+        },
+        "pos": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ver": {
+          "type": "integer"
+        }
+      }
+    },
+    "Clip": {
+      "type": "object",
+      "required": ["oid", "start", "end", "videoclip", "geometry", "observations", "discard", "uncertain"],
+      "additionalProperties": false,
+      "properties": {
+        "oid": {
+          "$ref": "#/$defs/oid"
+        },
+        "start": {
+          "$ref": "#/$defs/Bookmark"
+        },
+        "end": {
+          "$ref": "#/$defs/Bookmark"
+        },
+        "videoclip": {
+          "type": "string"
+        },
+        "geometry": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TrajectoryPoint"
+              }
+            }
+          ]
+        },
+        "observations": {
+          "type": "object"
+        },
+        "discard": {
+          "type": "boolean"
+        },
+        "uncertain": {
+          "type": "boolean"
+        }
+      }
+    },
+    "TrajectoryPoint": {
+      "type": "object",
+      "required": ["time", "lat", "lon"],
+      "properties": {
+        "time": {
+          "type": ["number", "null"]
+        },
+        "lat": {
+          "type": ["number", "null"]
+        },
+        "lon": {
+          "type": ["number", "null"]
+        },
+        "ele": {
+          "type": ["number", "null"]
+        },
+        "dist": {
+          "type": ["number", "null"]
+        },
+        "dur": {
+          "type": ["number", "null"]
+        },
+        "vel": {
+          "type": ["number", "null"]
+        },
+        "orient": {
+          "type": ["number", "null"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "Track": {
+      "type": "object",
+      "required": ["workdir", "oid", "geometry", "track", "videos"],
+      "additionalProperties": false,
+      "properties": {
+        "workdir": {
+          "type": ["string", "null"]
+        },
+        "oid": {
+          "$ref": "#/$defs/oid"
+        },
+        "geometry": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TrajectoryPoint"
+              }
+            }
+          ]
+        },
+        "track": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TrajectoryPoint"
+          }
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Video"
+          }
+        }
+      }
+    },
+    "Video": {
+      "type": "object",
+      "required": ["workdir", "oid", "path", "offset", "duration", "start_timestamp", "prev_vid", "next_vid"],
+      "additionalProperties": false,
+      "properties": {
+        "workdir": {
+          "type": ["string", "null"]
+        },
+        "oid": {
+          "$ref": "#/$defs/oid"
+        },
+        "path": {
+          "type": "string"
+        },
+        "offset": {
+          "type": ["number", "null"]
+        },
+        "duration": {
+          "type": ["number", "null"]
+        },
+        "start_timestamp": {
+          "type": ["number", "null"]
+        },
+        "prev_vid": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/oid"
+            }
+          ]
+        },
+        "next_vid": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/oid"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

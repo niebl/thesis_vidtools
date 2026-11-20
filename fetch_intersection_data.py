@@ -117,7 +117,7 @@ def main():
     clips = Clips.from_file(clips, verbose=True)
     log("- relinking clip data...")
     clips.build_parent_tree()
-    clips.build_rel_from_oids()
+    clips.relink()
 
 
     # load OSM graph

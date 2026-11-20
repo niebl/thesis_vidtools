@@ -33,7 +33,7 @@ class ObjectCollection(SerializableCollection):
                 children.append(SerializableFixture.from_dict(item))
         data["children"] = children
         obj = cls._from_dict(data)
-        obj.build_rel_from_oids()
+        obj.relink()
         return obj
 
 @pytest.fixture
