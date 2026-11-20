@@ -88,12 +88,12 @@ def main():
         "unclassified": 15,
         "residential": 12,
         "living_street": 10,
-        "service": 8,
+        "service": 6,
         "cycleway": 8,
-        "path": 8,
+        "path": 4,
         "footway": 8,
         "pedestrian": 8,
-        "track": 8,
+        "track": 4,
     }
 
     EXCLUDE_SERVICE = {
