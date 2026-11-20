@@ -8,6 +8,10 @@ from pathlib import Path
 import av
 from datetime import datetime as dt
 from datetime import date
+from math import atan2, cos, degrees, radians, sin
+import geopandas as gpd
+import pandas as pd
+from shapely.geometry import shape
 
 class Clip(Trajectory):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
@@ -153,6 +157,61 @@ class Clip(Trajectory):
             video_start = track.get_video_by_title(Path(self.start.path).stem)
             return date.fromtimestamp(video_start.get_file_timestamp())
         else: return None
+
+    def simplify(self, distance=10):
+        if not self.geometry or len(self.geometry) < 2:
+            return pd.DataFrame(self.geometry or [])
+
+        points = pd.DataFrame(self.geometry)
+        gdf = gpd.GeoDataFrame(
+            points,
+            geometry=gpd.points_from_xy(points["lon"], points["lat"]),
+            crs="EPSG:4326",
+        )
+        projected = gdf.to_crs(gdf.estimate_utm_crs())
+        line = shape(self.geometry_geojson()["geometry"])
+        simplified = gpd.GeoSeries([line], crs="EPSG:4326").to_crs(
+            projected.crs
+        ).simplify(distance, preserve_topology=False).iloc[0]
+
+        source_coordinates = [(point.x, point.y) for point in projected.geometry]
+        kept = [
+            min(
+                range(len(source_coordinates)),
+                key=lambda index: (source_coordinates[index][0] - coordinate[0]) ** 2
+                + (source_coordinates[index][1] - coordinate[1]) ** 2,
+            )
+            for coordinate in simplified.coords
+        ]
+        rows = [gdf.iloc[index].drop(labels="geometry").copy() for index in kept]
+
+        for index, row in enumerate(rows):
+            if index == 0:
+                row["dist"] = row["dur"] = row["vel"] = row["orient"] = 0.0
+                continue
+
+            previous = gdf.iloc[kept[index - 1]]
+            current = gdf.iloc[kept[index]]
+            delta_time = float(current["time"] - previous["time"])
+            distance_km = projected.geometry.iloc[kept[index - 1]].distance(
+                projected.geometry.iloc[kept[index]]
+            ) / 1000
+            longitude_delta = radians(current["lon"] - previous["lon"])
+            latitude_start = radians(previous["lat"])
+            latitude_end = radians(current["lat"])
+            bearing_y = sin(longitude_delta) * cos(latitude_end)
+            bearing_x = (
+                cos(latitude_start) * sin(latitude_end)
+                - sin(latitude_start) * cos(latitude_end) * cos(longitude_delta)
+            )
+
+            row["dist"] = distance_km
+            row["dur"] = delta_time
+            row["vel"] = distance_km * 3600 / delta_time if delta_time > 0 else 0.0
+            row["orient"] = (degrees(atan2(bearing_y, bearing_x)) + 360) % 360
+
+        return self.df_to_trajectory(pd.DataFrame(rows).reset_index(drop=True))
+
 
     def geometry_geojson(self, human_readable=False, geom_type:GeometryType=GeometryType.LineString):
         coordinates = []
