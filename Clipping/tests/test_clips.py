@@ -51,6 +51,7 @@ CLIP_GEOMETRY_FIXTURE = [
     {"time": 1725181418.0, "lat": 47.414028, "lon": 8.550966},
 ]
 CLIP_GEOMETRY_GEOJSON_FIXTURE = {
+    "Type": "Feature",
     "geometry": {
         "type": "LineString",
         "coordinates": [[8.550946, 47.414008],[8.550956, 47.414018],[8.550966, 47.414028]]
@@ -76,6 +77,45 @@ CLIP_GEOMETRY_GEOJSON_FIXTURE = {
         },
     },
 }
+
+
+CLIP_STRAIGHT_FIXTURE = {
+    "direction": "straight",
+    "geometry": [
+        {"time": 1725181416.0, "lat": 47.414000, "lon": 8.550000},
+        {"time": 1725181417.0, "lat": 47.414000, "lon": 8.550500},
+        {"time": 1725181418.0, "lat": 47.414000, "lon": 8.551000},
+        {"time": 1725181419.0, "lat": 47.414000, "lon": 8.551500},
+    ],
+}
+
+CLIP_LEFT_TURN_FIXTURE = {
+    "direction": "left",
+    "geometry": [
+        {"time": 1725181416.0, "lat": 47.414000, "lon": 8.550000},
+        {"time": 1725181417.0, "lat": 47.414000, "lon": 8.550500},
+        {"time": 1725181418.0, "lat": 47.414000, "lon": 8.551000},
+        {"time": 1725181419.0, "lat": 47.414500, "lon": 8.551000},
+        {"time": 1725181420.0, "lat": 47.415000, "lon": 8.551000},
+    ],
+}
+
+CLIP_RIGHT_TURN_FIXTURE = {
+    "direction": "right",
+    "geometry": [
+        {"time": 1725181416.0, "lat": 47.415000, "lon": 8.550000},
+        {"time": 1725181417.0, "lat": 47.415000, "lon": 8.550500},
+        {"time": 1725181418.0, "lat": 47.415000, "lon": 8.551000},
+        {"time": 1725181419.0, "lat": 47.414500, "lon": 8.551000},
+        {"time": 1725181420.0, "lat": 47.414000, "lon": 8.551000},
+    ],
+}
+
+CLIP_DIRECTION_FIXTURES = (
+    CLIP_STRAIGHT_FIXTURE,
+    CLIP_LEFT_TURN_FIXTURE,
+    CLIP_RIGHT_TURN_FIXTURE,
+)
 
 
 class TestClip:
@@ -118,6 +158,27 @@ class TestClip:
         clip = Clip.from_string(CLIP_FIXTURE)
         clip.geometry = CLIP_GEOMETRY_FIXTURE
         assert clip.geometry_geojson() == CLIP_GEOMETRY_GEOJSON_FIXTURE
+
+    def test_simplify(self):
+        for fixture in CLIP_DIRECTION_FIXTURES:
+            clip = Clip.from_string(CLIP_FIXTURE)
+            clip.geometry = fixture["geometry"]
+
+            simplified = clip.simplify()
+
+            assert isinstance(simplified, list)
+            assert len(simplified) <= len(fixture["geometry"])
+            assert len(simplified) >= 2
+            assert simplified[0]["time"] == fixture["geometry"][0]["time"]
+            assert simplified[-1]["time"] == fixture["geometry"][-1]["time"]
+            assert set(simplified[0]) >= {"time", "lat", "lon", "dist", "dur", "vel", "orient"}
+
+    @pytest.mark.parametrize("fixture", CLIP_DIRECTION_FIXTURES)
+    def test_turn_direction(self, fixture):
+        clip = Clip.from_string(CLIP_FIXTURE)
+        clip.geometry = fixture["geometry"]
+
+        assert clip.turn_direction() == fixture["direction"]
 
 class TestClips:
     ### HELPERS:

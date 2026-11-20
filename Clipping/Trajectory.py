@@ -102,6 +102,7 @@ class Trajectory(SerializableCollection):
         geom = []
         if geom_type == GeometryType.LineString:
             geom = {
+                    "type": "Feature",
                     "properties": {},
                     "geometry": {"type": "LineString","coordinates": []}
                 }
