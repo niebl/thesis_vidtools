@@ -1,15 +1,15 @@
 if __package__:
     from .Bookmarks import Bookmarks, Bookmark
-    from .Serializable import Serializable, SerializableCollection
+    from .Trajectory import *
 else:
     from Bookmarks import Bookmarks, Bookmark
-    from Serializable import Serializable, SerializableCollection
+    from Trajectory import *
 from pathlib import Path
 import av
 from datetime import datetime as dt
 from datetime import date
 
-class Clip(Serializable):
+class Clip(Trajectory):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
     def __init__(
             self, 
@@ -24,7 +24,7 @@ class Clip(Serializable):
             parent=None,
             oid:str=None
         ):
-        super().__init__(workdir=workdir, parent=parent, oid=oid)
+        super().__init__(workdir=workdir, parent=parent, oid=oid, items_attribute="geometry")
         self.start = start
         self.end = end
         self.files = [start.path]
@@ -154,13 +154,11 @@ class Clip(Serializable):
             return date.fromtimestamp(video_start.get_file_timestamp())
         else: return None
 
-    def geometry_geojson(self, human_readable=False):
-        #TODO: probably needs more work to work
+    def geometry_geojson(self, human_readable=False, geom_type:GeometryType=GeometryType.LineString):
         coordinates = []
         if self.geometry is None: 
             self.geometry = []
-        for point in self.geometry:
-            coordinates.append([point["lon"], point["lat"]])
+        geom = super().geometry_geojson(geom_type=geom_type)
         start = int(self.start.pos * 1000)/1000
         properties = {
             "name": f"{Path(self.start.path).stem}_at_{start:.3f}s",
@@ -174,12 +172,17 @@ class Clip(Serializable):
             if track is not None:
                 video_start = track.get_video_by_title(Path(self.start.path).stem)
                 video_end = track.get_video_by_title(Path(self.end.path).stem)
-
                 properties["start"] = self.video_infos(video_start, human_readable)
                 properties["end"] = self.video_infos(video_end, human_readable)
                 properties["day"] = str(self.get_date())
-        return {
-            "type": "LineString",
-            "coordinates": coordinates,
-            "properties": properties
-        }
+        geom["properties"].update(properties)
+        if geom_type == GeometryType.Points:
+            for i, point in enumerate(self.geometry):
+                geom["features"][i]["properties"] = {
+                    ['ele']:      point['ele'],
+                    ['dist']:     point['dist'],
+                    ['orient']:   point['orient'],
+                    ['dur']:      point['dur'],
+                    ['vel']:      point['vel']
+                }
+        return geom

@@ -4,12 +4,26 @@ else:
     from Serializable import Serializable, SerializableCollection
 import geopandas as gpd
 import pandas as pd
+from shapely.geometry import LineString, Point
+from enum import Enum
+
+class GeometryType(Enum):
+        LineString = LineString
+        Points = Point
 
 class Trajectory(SerializableCollection):
-    def __init__(self, geometry:list=[], oid:str=None, verbose:bool=False):
+    def __init__(
+            self, 
+            geometry:list=[], 
+            oid:str=None, 
+            verbose:bool=False, 
+            workdir=None,
+            parent=None,
+            items_attribute:str=None
+            ):
         items_attribute = "geometry"
 
-        super().__init__(oid=oid, verbose=verbose)
+        super().__init__(oid=oid, verbose=verbose, workdir=workdir, items_attribute=items_attribute)
         self.geometry = geometry
 
     @staticmethod
@@ -27,7 +41,7 @@ class Trajectory(SerializableCollection):
         return data
 
     @staticmethod
-    def trajectory_to_df(in_dict):
+    def trajectory_to_df(in_dict, geom_type):
         df = pandas.DataFrame.from_dict(
             in_dict,
             orient='records'
@@ -83,3 +97,22 @@ class Trajectory(SerializableCollection):
         points = []
         for n in range(start_ts, end_ts):
             points.append(self.get_point_by_timestamp)
+
+    def geometry_geojson(self, geom_type:GeometryType=LineString):
+        geom = []
+        if geom_type == GeometryType.LineString:
+            geom = {
+                    "properties": {},
+                    "geometry": {"type": "LineString","coordinates": []}
+                }
+            for point in self.geometry:
+                geom["geometry"]["coordinates"].append([point["lon"], point["lat"]])
+        elif geom_type == GeometryType.Points:
+            geom = {"type": "FeatureCollection", "features": []}
+            for point in self.geometry:
+                geom["features"].append({
+                    "properties": {},"geometry": {"type": "Point",
+                        "coordinates": (point["lon"], point["lat"])
+                    }
+                })
+        return geom

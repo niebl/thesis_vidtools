@@ -51,12 +51,10 @@ CLIP_GEOMETRY_FIXTURE = [
     {"time": 1725181418.0, "lat": 47.414028, "lon": 8.550966},
 ]
 CLIP_GEOMETRY_GEOJSON_FIXTURE = {
-    "type": "LineString",
-    "coordinates": [
-        [8.550946, 47.414008],
-        [8.550956, 47.414018],
-        [8.550966, 47.414028],
-    ],
+    "geometry": {
+        "type": "LineString",
+        "coordinates": [[8.550946, 47.414008],[8.550956, 47.414018],[8.550966, 47.414028]]
+    },
     "properties": {
         "name": "DJI_806_0009_D_002_at_65.269s",
         "duration": 87.520767 - 65.2692,

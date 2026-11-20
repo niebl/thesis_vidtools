@@ -3,11 +3,13 @@ if __package__:
     from .Serializable import Serializable, SerializableCollection
     from .Tracks import Track, Video
     from .Clip import Clip
+    from .Trajectory import GeometryType
 else:
     from Bookmarks import Bookmarks, Bookmark
     from Serializable import Serializable, SerializableCollection
     from Tracks import Track, Video
     from Clip import Clip
+    from Trajectory import GeometryType
 from pathlib import Path
 import subprocess
 import json
@@ -222,22 +224,17 @@ class Clips(SerializableCollection):
             return False
         return True
 
-    def geometry_geojson(self, filter_function:function=None, name:String=None, human_readable=False, skip_empty=False):
+    def geometry_geojson(self, filter_function:function=None, name:String=None, human_readable=False, skip_empty=False, geom_type:GeometryType=GeometryType.LineString):
         if not filter_function:
             filter_function = lambda c: c
         clips = filter(filter_function, self.clips)
         features = []
         for clip in clips:
-            geometry = clip.geometry_geojson(human_readable)
+            feature = clip.geometry_geojson(human_readable)
             if skip_empty and not geometry["coordinates"]:
                 continue
-            feature = {"type": "Feature", "geometry": geometry, "properties": geometry["properties"]}
-            geometry.pop("properties")
             features.append(feature)
-        return {
-            "type": "FeatureCollection",
-            "features": features
-        }
+        return {"type": "FeatureCollection","features": features}
 
 def main():
     bookmarks = Bookmarks(Path.home() / "Projects/Bike Footage/bookmarker.json")
