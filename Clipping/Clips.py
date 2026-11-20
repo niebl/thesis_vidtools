@@ -127,7 +127,7 @@ class Clips(SerializableCollection):
         if not self.tracks:
             return None
         results = list(filter(
-            lambda t: t.contains_time(ts), 
+            lambda t: t.contains_timestamp(ts), 
             self.tracks
         ))
         if len(results) == 1:
@@ -153,10 +153,10 @@ class Clips(SerializableCollection):
             if start_video and end_video:
                 start_offset = start_video.get_offset() or 0
                 end_offset = end_video.get_offset() or 0
-                if (track.contains_time(start_video.get_timestamp() - start_offset) or 
-                    track.contains_time(end_video.get_timestamp() - end_offset) or
-                    track.contains_time(start_video.get_timestamp() + start_video.get_duration() - start_offset) or
-                    track.contains_time(end_video.get_timestamp() + end_video.get_duration() - end_offset)
+                if (track.contains_timestamp(start_video.get_timestamp() - start_offset) or 
+                    track.contains_timestamp(end_video.get_timestamp() - end_offset) or
+                    track.contains_timestamp(start_video.get_timestamp() + start_video.get_duration() - start_offset) or
+                    track.contains_timestamp(end_video.get_timestamp() + end_video.get_duration() - end_offset)
                     ):
                     return track 
         return None
