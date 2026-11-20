@@ -5,7 +5,7 @@ from ..Bookmarks import Bookmark, Bookmarks
 from ..Clips import Clips
 from ..Clip import Clip
 from ..Tracks import Track
-from .test_bookmark_serialization import TestBookmark
+from .test_bookmarks import TestBookmark
 
 CLIPS_FIXTURE = """{\"workdir\": \"/home/user/Projects/Videos\", \"clips\":[{\"start\": {\"pos\": 40.5405, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:40.540\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"end\": {\"pos\": 48.782067, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:00:48.782\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_20240901110117_0007_D_003_at_40.540s.mp4\", \"geometry\": null, \"observations\": {}, \"discard\": false, \"uncertain\": false},
 {\"start\": {\"pos\": 60.927533, \"name\": \"DJI_117_0007_D_003.mp4 @ 00:01:00.927\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/DJI_117_0007_D_003.mp4\"}, \"end\": {\"pos\": 11.878533, \"name\": \"117_0007_D_003.mp4 @ 00:00:11.878\", \"ver\": 2, \"path\": \"/home/user/Projects/Videos/117_0007_D_003.mp4\"}, \"videoclip\": \"/home/user/Projects/Videos/DJI_20240901110117_0007_D_003_at_60.927s.mp4\", \"geometry\": null, \"observations\": {}, \"discard\": false, \"uncertain\": false},
@@ -45,6 +45,39 @@ CLIPS_FIXTURE = json.dumps({
         "videos": [],
     }],
 })
+CLIP_GEOMETRY_FIXTURE = [
+    {"time": 1725181416.0, "lat": 47.414008, "lon": 8.550946},
+    {"time": 1725181417.0, "lat": 47.414018, "lon": 8.550956},
+    {"time": 1725181418.0, "lat": 47.414028, "lon": 8.550966},
+]
+CLIP_GEOMETRY_GEOJSON_FIXTURE = {
+    "type": "LineString",
+    "coordinates": [
+        [8.550946, 47.414008],
+        [8.550956, 47.414018],
+        [8.550966, 47.414028],
+    ],
+    "properties": {
+        "name": "DJI_806_0009_D_002_at_65.269s",
+        "duration": 87.520767 - 65.2692,
+        "bookmarks": {
+            "start": {
+                "pos": 65.2692,
+                "name": "DJI_806_0009_D_002.mp4 @ 00:01:05.269",
+                "ver": 2,
+                "path": "/home/user/Projects/Videos/DJI_806_0009_D_002.mp4",
+                "oid": "bkmark-001",
+            },
+            "end": {
+                "pos": 87.520767,
+                "name": "DJI_806_0009_D_002.mp4 @ 00:01:27.520",
+                "ver": 2,
+                "path": "/home/user/Projects/Videos/DJI_806_0009_D_002.mp4",
+                "oid": "bkmark-002",
+            },
+        },
+    },
+}
 
 
 class TestClip:
@@ -83,6 +116,10 @@ class TestClip:
         clip = Clip.from_string(CLIP_FIXTURE)
         assert json.loads(str(clip)) == json.loads(CLIP_FIXTURE)
 
+    def test_clip_geometry_geojson(self):
+        clip = Clip.from_string(CLIP_FIXTURE)
+        clip.geometry = CLIP_GEOMETRY_FIXTURE
+        assert clip.geometry_geojson() == CLIP_GEOMETRY_GEOJSON_FIXTURE
 
 class TestClips:
     ### HELPERS:
