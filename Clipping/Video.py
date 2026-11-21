@@ -17,8 +17,10 @@ class Video(Serializable):
         self.offset = offset
         self.duration = duration or self.get_duration()
         self.start_timestamp = start_timestamp
-        self.prev_vid = prev_vid
-        self.next_vid = next_vid
+        self.peers = {
+            "prev_vid": prev_vid, 
+            "next_vid": next_vid
+        }
         # this is a problem before video is added to track. better call such methods from parent after creation:
         #if not self.start_timestamp and self.get_index() == 0:
         #    self.start_timestamp = self.get_timestamp() #infer from title or calculate from other videos
@@ -26,20 +28,22 @@ class Video(Serializable):
     def to_dict(self):
         data = self._to_dict(exclude_keys=["parent", "prev_vid", "next_vid", "verbose"])
         data["path"] = str(data["path"])
-        data["prev_vid"] = None
-        data["next_vid"] = None
-        if hasattr(self, "prev_vid") and self.prev_vid:
-            data["prev_vid"] = str(self.prev_vid.oid)
-        if hasattr(self, "next_vid") and self.next_vid:
-            data["next_vid"] = str(self.next_vid.oid)
+        data["peers"] = {
+            "prev_vid": None,
+            "next_vid": None
+        }
+        if self.peers.get("prev_vid"):
+            data["peers"]["prev_vid"] = str(self.peers["prev_vid"].oid)
+        if self.peers.get("next_vid"):
+            data["peers"]["next_vid"] = str(self.peers["next_vid"].oid)
         return data
 
     @classmethod
     def from_dict(cls, data):
-        if data.get("prev_vid"):
-            data["prev_vid"] = OID(data["prev_vid"])
-        if data.get("next_vid"): 
-            data["next_vid"] = OID(data["next_vid"])
+        if data["peers"].get("prev_vid"):
+            data["peers"]["prev_vid"] = OID(data["peers"]["prev_vid"].oid)
+        if data["peers"].get("next_vid"): 
+            data["peers"]["next_vid"] = OID(data["peers"]["next_vid"].oid)
         return cls._from_dict(data)
 
     def to_string(self):
@@ -125,20 +129,20 @@ class Video(Serializable):
 
     def get_prev(self):
         try:
-            if hasattr(self, "prev_vid") and self.prev_vid: return self.prev_vid
+            if self.peers.get("prev_vid"): return self.peers.get("prev_vid")
             i = self.get_index() - 1
             if i < 0:
-                return False
+                return None
             return self.parent.videos[i]
         except Exception:
-            return False
+            return None
 
     def get_next(self):
         try:
-            if hasattr(self, "next_vid") and self.next_vid: return self.next_vid
+            if self.peers.get("next_vid"): return self.peers.get("next_vid")
             i = self.get_index() + 1
             if i >= len(self.parent.videos):
-                return False
+                return None
             return self.parent.videos[i]
         except Exception:
-            return False
+            return None

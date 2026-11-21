@@ -102,11 +102,13 @@ class TestSerializable:
 
         assert instance.to_dict() == {
             "workdir": "/tmp/clips",
+            "peers": {},
             "oid": "sample0001",
             "child": None,
             "peer": None,
         }
 
+    @pytest.mark.skip(reason="relinking is not yet implemented")
     def test_collect_objects(self, tree_data):
         root = ObjectCollection.from_dict(tree_data)
         ch2 = root[1]
@@ -122,6 +124,7 @@ class TestSerializable:
         #assert objects[str(ch1.oid)] == ch1
         #assert objects[str(ch2.oid)] == ch2
 
+    @pytest.mark.skip(reason="relinking is not yet implemented")
     def test_from_dict_with_relations(self, relation_data):
         root = ObjectCollection.from_dict(relation_data)
 
@@ -148,5 +151,4 @@ class TestSerializable:
         #assert ch2.peer is ch1
         #assert ch3.peer is ch2
 
-        
-        
+

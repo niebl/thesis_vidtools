@@ -23,6 +23,7 @@ class Serializable:
     def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False):
         self.workdir = workdir
         self.parent = parent
+        self.peers = {}
         self.oid = OID(oid)
         self.verbose = verbose
 
@@ -213,7 +214,7 @@ class SerializableCollection(Serializable):
     def __init__(self, 
             workdir=None, 
             parent=None, 
-            collection = None, 
+            collection = None, #collections are always parent-child relations
             items_attribute=items_attribute, 
             oid:str=None,
             verbose:bool=False
