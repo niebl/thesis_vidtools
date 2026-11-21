@@ -212,6 +212,29 @@ class Clip(Trajectory):
 
         return self.df_to_trajectory(pd.DataFrame(rows).reset_index(drop=True))
 
+    def clip_turn_direction(self):        
+        #naively check for turns
+
+        #for each detected turn:
+        #   "certainties" for each direction
+        #   mark turn as uncertain if there is no clear winner
+
+
+        #check for nearby intersection geometry
+        if self.intersection_geometry:
+            #use that to support turn inference
+                #if more than one turn, select the one closer to intersection
+                #check for alignment of route with intersection legs
+                    #this might require looking at the OSM edge of said leg
+                #adjust certainty from that
+            pass
+        else:
+            #select turn with highest certainty
+            pass
+        
+        #
+
+        pass
 
     def geometry_geojson(self, human_readable=False, geom_type:GeometryType=GeometryType.LineString):
         coordinates = []
