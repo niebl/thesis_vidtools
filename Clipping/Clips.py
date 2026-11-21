@@ -113,8 +113,8 @@ class Clips(SerializableCollection):
                 video.offset = video.get_offset() #get offset, in case it doesnt start at 001
             # assign next and prev, infer timestamps and offset
             else:
-                videos[i-1].next_vid = video
-                video.prev_vid = videos[i-1]
+                videos[i-1].peers["next_vid"] = video
+                video.peers["prev_vid"] = videos[i-1]
                 video.timestamp = video.get_timestamp()
                 video.offset = video.get_offset()
 

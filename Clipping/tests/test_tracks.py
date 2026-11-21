@@ -62,12 +62,12 @@ class TestVideo:
         for path in VIDEO_FIXTURES:
             track.add_video(Video(path, offset=0, parent=track))
 
-        assert track.videos[0].get_prev() is False
+        assert track.videos[0].get_prev() is None
         assert track.videos[0].get_next() is track.videos[1]
         assert track.videos[1].get_prev() is track.videos[0]
         assert track.videos[1].get_next() is track.videos[2]
         assert track.videos[2].get_prev() is track.videos[1]
-        assert track.videos[2].get_next() is False
+        assert track.videos[2].get_next() is None
     
 class TestTrack:
 
@@ -160,10 +160,10 @@ class TestTrack:
         video1 = Video(VIDEO_FIXTURES[0], parent=track)
         video2 = Video(VIDEO_FIXTURES[1], parent=track)
         video3 = Video(VIDEO_FIXTURE, parent=track)
-        video1.next_vid = video2
-        video2.prev_vid = video1
-        video2.next_vid = video3
-        video3.prev_vid = video2
+        video1.peers["next_vid"] = video2
+        video2.peers["prev_vid"] = video1
+        video2.peers["next_vid"] = video3
+        video3.peers["prev_vid"] = video2
         
         videos = [Video(path, offset=-133, parent=track) for path in VIDEO_FIXTURES]
         
