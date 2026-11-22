@@ -26,7 +26,8 @@ def main():
                 help="directory of gpx files corresponding to the clips (default {{workdir}}/tracks)")
     parser.add_argument("-o", "--output", action="store", default=OUTPUT,
                 help="directory to write output files to (default {{workdir}}/output)")
-    
+    parser.add_argument("-r", "--rebuild", action="store_true",
+                help="rebuild tracks and videos? (True/False)")
     parser.add_argument("-g", "--global_offset", action="store", default=GLOBAL_OFFSET,
                 help="global offset between tracks and videos in seconds")
     parser.add_argument("-V", "--verbose", action="store_true",
@@ -47,7 +48,6 @@ def main():
         if verbose: print(*args)
     
     clips = Clips.from_file(clips, verbose=verbose) #Path.home() / "Projects/Bike Footage/clips_zurich/clips.json"
-    #clips.build_parent_tree()
     clips.relink()
     for i, clip in enumerate(clips.clips):
         if clip.parent is None:
@@ -60,16 +60,17 @@ def main():
             exit()
 
     clips.workdir = wd #Path.home() / "Projects/Bike Footage/clips_zurich"
-    if not clips.tracks:
+    if args.rebuild or not clips.tracks:
+        clips.tracks = []
         clips.read_tracks(
             track_dir=tracks, #Path.home() / "Projects/Bike Footage/clips_zurich/gps_traces",
             track_offset=global_offset # -133
         )
-    log("done reading tracks")
-    clips.read_videos(
-        video_dir=videos #Path.home() / "Projects/Bike Footage"
-    )
-    log("done reading videos")
+        log("done reading tracks")
+        clips.read_videos(
+            video_dir=videos #Path.home() / "Projects/Bike Footage"
+        )
+        log("done reading videos")
 
     #for each clip, save track geojson for the clip
     log("getting geometries")
@@ -110,9 +111,6 @@ def main():
             json.dump(feature_collection, f)
 
     print(f"successfully written {n_clips} clip trajectories out of {int(len(clips.bookmarks) / 2)} bookmarked clips")
-    
-    #clips.tracks = []
-    clips.videos = []
 
     # TODO: deserialization with the correct references and preventing endless loops
     clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips.json")

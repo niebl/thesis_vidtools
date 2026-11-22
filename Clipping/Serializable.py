@@ -20,10 +20,10 @@ class OID:
             
 
 class Serializable:
-    def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False):
+    def __init__(self, workdir=None, parent=None, oid:str=None, verbose:bool=False, peers=None):
         self.workdir = workdir
         self.parent = parent
-        self.peers = {}
+        self.peers = peers or {}
         self.oid = OID(oid)
         self.verbose = verbose
 
@@ -33,9 +33,7 @@ class Serializable:
 
     @classmethod
     def _from_dict(cls, data):
-        #filter so not too many args are passed
         args = cls.filter_kwargs(cls, data)
-        #TODO: some way to handle references to parents?
         return cls(**args)
 
     @classmethod

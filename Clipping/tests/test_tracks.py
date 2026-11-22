@@ -69,6 +69,41 @@ class TestVideo:
         assert track.videos[2].get_prev() is track.videos[1]
         assert track.videos[2].get_next() is None
     
+    def test_video_peer_relations(self):
+        track = Track(track=[], videos=[], oid="track--001")
+        videos = [
+            Video(VIDEO_FIXTURES[0], oid="video--001", parent=track),
+            Video(VIDEO_FIXTURES[1], oid="video--002", parent=track),
+            Video(VIDEO_FIXTURE, oid="video--003", parent=track),
+        ]
+
+        for video in videos:
+            track.add_video(video)
+
+        videos[0].peers["next_vid"] = videos[1]
+        videos[1].peers["prev_vid"] = videos[0]
+        videos[1].peers["next_vid"] = videos[2]
+        videos[2].peers["prev_vid"] = videos[1]
+
+        serialized = json.loads(json.dumps(track.to_dict()))
+        assert serialized["videos"][0]["peers"]["prev_vid"] is None
+        assert serialized["videos"][0]["peers"]["next_vid"] == "video--002"
+        assert serialized["videos"][1]["peers"]["prev_vid"] == "video--001"
+        assert serialized["videos"][1]["peers"]["next_vid"] == "video--003"
+        assert serialized["videos"][2]["peers"]["prev_vid"] == "video--002"
+        assert serialized["videos"][2]["peers"]["next_vid"] is None
+
+        restored = Track.from_dict(serialized)
+        restored.relink()
+
+        assert restored.videos[0].peers["next_vid"] is restored.videos[1]
+        assert restored.videos[1].peers["prev_vid"] is restored.videos[0]
+        assert restored.videos[1].peers["next_vid"] is restored.videos[2]
+        assert restored.videos[2].peers["prev_vid"] is restored.videos[1]
+        assert restored.videos[0].peers["prev_vid"] is None
+        assert restored.videos[2].peers["next_vid"] is None
+        
+
 class TestTrack:
 
     def test_from_gpx(self):

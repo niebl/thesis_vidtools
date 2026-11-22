@@ -11,13 +11,13 @@ from dateutil import parser
 from zoneinfo import ZoneInfo
 
 class Video(Serializable):
-    def __init__(self, path: Path, offset=None, start_timestamp = None, parent = None, oid:str=None, prev_vid=None, next_vid=None, duration=None):
+    def __init__(self, path: Path, offset=None, start_timestamp = None, parent = None, oid:str=None, prev_vid=None, next_vid=None, duration=None, peers=None):
         super().__init__(parent=parent, oid=oid)
         self.path = path if type(path) is Path else Path(path)
         self.offset = offset
         self.duration = duration or self.get_duration()
         self.start_timestamp = start_timestamp
-        self.peers = {
+        self.peers = peers or {
             "prev_vid": prev_vid, 
             "next_vid": next_vid
         }
@@ -26,7 +26,7 @@ class Video(Serializable):
         #    self.start_timestamp = self.get_timestamp() #infer from title or calculate from other videos
 
     def to_dict(self):
-        data = self._to_dict(exclude_keys=["parent", "prev_vid", "next_vid", "verbose"])
+        data = self._to_dict(exclude_keys=["parent", "peers", "verbose"])
         data["path"] = str(data["path"])
         data["peers"] = {
             "prev_vid": None,
@@ -40,10 +40,10 @@ class Video(Serializable):
 
     @classmethod
     def from_dict(cls, data):
-        if data["peers"].get("prev_vid"):
-            data["peers"]["prev_vid"] = OID(data["peers"]["prev_vid"].oid)
-        if data["peers"].get("next_vid"): 
-            data["peers"]["next_vid"] = OID(data["peers"]["next_vid"].oid)
+        if data.get("peers",{}).get("prev_vid"):
+            data["peers"]["prev_vid"] = OID(data["peers"]["prev_vid"])
+        if data.get("peers",{}).get("next_vid"): 
+            data["peers"]["next_vid"] = OID(data["peers"]["next_vid"])
         return cls._from_dict(data)
 
     def to_string(self):
@@ -137,6 +137,7 @@ class Video(Serializable):
         except Exception:
             return None
 
+    # technically works, but fallback might be broken
     def get_next(self):
         try:
             if self.peers.get("next_vid"): return self.peers.get("next_vid")
