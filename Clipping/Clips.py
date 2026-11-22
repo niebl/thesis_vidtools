@@ -33,6 +33,7 @@ class Clips(SerializableCollection):
         path = filepath or cls.DEFAULT_WORKDIR
         with open(path, "r") as file:
             data = json.load(file)
+        data["tracks"] = [] #left in here because relink doesn't yet work
         return cls.from_dict(data, verbose=verbose)
 
     @classmethod
@@ -124,7 +125,7 @@ class Clips(SerializableCollection):
                 self.log(parent_track[0]["time"], parent_track[-1]["time"], video)
                 video.parent = parent_track
                 parent_track.videos.append(video)
-                
+             
     def get_track_for_timestamp(self, ts):
         if not self.tracks:
             return None
@@ -231,7 +232,7 @@ class Clips(SerializableCollection):
         features = []
         for clip in clips:
             feature = clip.geometry_geojson(human_readable)
-            if skip_empty and not geometry["coordinates"]:
+            if skip_empty and not feature["geometry"]["coordinates"]:
                 continue
             features.append(feature)
         return {"type": "FeatureCollection","features": features}

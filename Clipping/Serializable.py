@@ -94,8 +94,6 @@ class Serializable:
             if hasattr(obj, "peers"): 
                 for k, peer in obj.peers.items():
                     if isinstance(peer, OID): 
-                        print(str(peer))
-                        print(objects)
                         obj.peers[k] = objects[str(peer)]
         
     #collects all OIDs in self, and references

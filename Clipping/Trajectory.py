@@ -84,8 +84,9 @@ class Trajectory(SerializableCollection):
             #    key=lambda point: point["time"] - ts,
             #    default=None,
             #)
-            self.log(closest_dist)
+            #self.log(closest_dist)
             if closest_dist < max_closest:
+                self.log("closest found point:", closest)
                 return closest
             else:
                 return None
