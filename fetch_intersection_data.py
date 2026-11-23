@@ -82,9 +82,9 @@ def main():
     TOLERANCE_BY_WAY = {
         "motorway": 40,
         "trunk": 35,
-        "primary": 35,
-        "secondary": 30,
-        "tertiary": 20,
+        "primary": 30,
+        "secondary": 25,
+        "tertiary": 18,
         "unclassified": 15,
         "residential": 12,
         "living_street": 10,
@@ -207,17 +207,25 @@ def main():
     #set clip intersection graphs
     log("- setting clip intersection graphs...")
     for clip in clips.clips:
-        log(f"\033[K- Setting intersection graphs for clip {clip.oid}", end="\r")
+        log(f"\033[K- Setting intersection graphs for clip \"{clip.oid}\"", end="\r")
         try:
             clip.set_intersection_graphs(
                 graph=graph,
                 topograph=graph
             )
         except Exception as e:
-            print(f"Error setting intersection graphs for clip {clip.oid}: {e}")
+            print(f"Error setting intersection graphs for clip \"{clip.oid}\": {e}")
             traceback.print_exc()
     log(" ")
-    log("- finished setting clip intersection graphs...")
+    log("- finished setting clip intersection graphs!")
+    log("- detect viable turns in clips...")
+    for clip in clips.clips:
+        log(f"- Detecting turns for clip \"{clip.oid}\"", end="\r")
+        try:
+            clip.detect_turns(angle_threshold=30, min_velocity=5)
+        except Exception as e:
+            print(f"Error detecting turns for clip \"{clip.oid}\": {e}")
+            traceback.print_exc()
 
     # 2. Nearby signals / crossings / stop signs (join to intersections as needed)
     #features = get_features_along_linestring(linestring, buffer_m=50)

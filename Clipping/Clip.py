@@ -220,29 +220,115 @@ class Clip(Trajectory):
 
         return self.df_to_trajectory(pd.DataFrame(rows).reset_index(drop=True))
 
-    def clip_turn_direction(self):        
+    def detect_turns(self, angle_threshold=30, min_velocity=5):
+        if not self.geometry or len(self.geometry) < 3:
+            return []
+
+        print("turn detection for clip", self.oid)
+        turn_events = []
+        current_event = []
+
+        for point in self.geometry:
+            angle_change = point.get("angle_change")
+            velocity = point.get("vel", 0)
+
+            #TODO: this still includes angle change from non-qualifying points
+
+            qualifies = (
+                angle_change is not None
+                and abs(angle_change) >= angle_threshold
+                and velocity is not None
+                and velocity >= min_velocity
+            )
+
+            if qualifies:
+                current_event.append(point)
+                print("appending point")
+            elif current_event: #only gets called when not qualified, appends event if exists
+                turn_events.append(current_event)
+                current_event = []
+
+        if current_event:
+            turn_events.append(current_event)
+
+        return turn_events
+
+    def moving_window_heading_change(self, window_size=7):
+        if not self.geometry or len(self.geometry) < 2:
+            return None
+
+        for i in range(len(self.geometry)):
+            p1 = self.geometry[max(0, i - window_size)]
+            p2 = self.geometry[i]
+
+            if p1.get("orient") is None or p2.get("orient") is None:
+                continue
+
+            angle_diff = (p2["orient"] - p1["orient"] + 180) % 360 - 180
+
+            self.geometry[i]["angle_change"] = angle_diff
+
+    def moving_window_angle_compare(self, window_size=4, node_geom=None):
+        if not self.geometry or len(self.geometry) < 2:
+            return None
+
+        for i in range(len(self.geometry)):
+            p1 = self.geometry[max(0, i - window_size)]
+            p2 = self.geometry[i]
+
+            if p1.get("angle") is None or p2.get("angle") is None:
+                continue
+
+            angle_diff = (p2["angle"] - p1["angle"] + 180) % 360 - 180
+
+            self.geometry[i]["angle_change"] = angle_diff
+
+    def clip_turn_direction(self, window_size=7):        
         #naively check for turns
+        self.moving_window_heading_change(window_size=window_size)
+        turn_points = self.detect_turns(angle_threshold=30, min_velocity=5)
 
-        #for each detected turn:
-        #   "certainties" for each direction
-        #   mark turn as uncertain if there is no clear winner
-
+        max_point = []
+        direction = None
+        for event in turn_points:
+            max_point = max(event, key=lambda p: abs(p["angle_change"]))
+            direction = "left" if max_point["angle_change"] < 0 else "right"
+            print(f"Detected turn at time {max_point['time']} with angle change {max_point['angle_change']} and velocity {max_point['vel']}.")
+            print(f"Turn direction: {direction}")
 
         #check for nearby intersection geometry
-        if self.intersection_geometry:
-            #use that to support turn inference
-                #if more than one turn, select the one closer to intersection
-                #check for alignment of route with intersection legs
-                    #this might require looking at the OSM edge of said leg
-                #adjust certainty from that
-            pass
+        if self.intersection_graph:
+            #calculate turn points distance to nearest intersection edge
+            self.intersection_graph = ox.bearing.add_edge_bearings(self.intersection_graph)
+            distances = []
+            for event in turn_points:
+                max_point = max(event, key=lambda p: abs(p["angle_change"]))
+                point_geom = shape({"type": "Point", "coordinates": (max_point["lon"], max_point["lat"])})
+                nearest_edge = osmnx.distance.nearest_edges(self.intersection_graph, X=max_point["lon"], Y=max_point["lat"])
+                nearest_edge_geom = shape(self.intersection_graph.edges[nearest_edge[0], nearest_edge[1], nearest_edge[2]]["geometry"])
+                distances.append(point_geom.distance(nearest_edge_geom))
+            
+                #get incident edges of nearest intersection node
+                outgoing = set(self.intersection_topology.out_edges(nearest_edge[0]))
+                #get nodes osmids of outgoing edges
+                outgoing_osmids = set([self.intersection_topology.edges[edge]["osmid_original"] for edge in outgoing])
+                for osmid in outgoing_osmids:
+                    #get original edge geometry via osmid
+                    original_edges = [(u, v, k) for u, v, k, d in self.intersection_graph.edges(keys=True, data=True) if d.get("osmid") == osmid]
+                    for edge in original_edges:
+                        edge_geom = shape(self.intersection_graph.edges[edge]["geometry"])
+                        #calculate bearing of edge geometry
+                        edge_bearing = self.calculate_bearing(edge_geom)
         else:
-            #select turn with highest certainty
-            pass
-        
-        #
-
-        pass
+            turning_point = max(event, key=lambda p: abs(p["angle_change"]))
+            match turning_point["angle_change"]:
+                case x if x < 0:
+                    direction = "left"
+                case x if x > 0:
+                    direction = "right"
+                case _:
+                    direction = "straight"
+        return direction
 
     def set_intersection_graphs(self, path_graph=None, path_topograph=None, buffer=300, graph=None, topograph=None):
         proj_to_3857 = pyproj.Transformer.from_crs(

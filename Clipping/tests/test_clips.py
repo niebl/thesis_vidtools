@@ -203,13 +203,13 @@ class TestClip:
             assert simplified[-1]["time"] == fixture["geometry"][-1]["time"]
             assert set(simplified[0]) >= {"time", "lat", "lon", "dist", "dur", "vel", "orient"}
 
-    @pytest.mark.skip(reason="turn_direction is not yet implemented")
+    #@pytest.mark.skip(reason="turn_direction is not yet implemented")
     @pytest.mark.parametrize("fixture", CLIP_DIRECTION_FIXTURES)
     def test_turn_direction(self, fixture):
         clip = Clip.from_string(CLIP_FIXTURE)
         clip.geometry = fixture["geometry"]
 
-        assert clip.turn_direction() == fixture["direction"]
+        assert clip.clip_turn_direction() == fixture["direction"]
 
 class TestClips:
     ### HELPERS:
