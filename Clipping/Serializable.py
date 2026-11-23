@@ -95,6 +95,7 @@ class Serializable:
                 for k, peer in obj.peers.items():
                     if isinstance(peer, OID): 
                         obj.peers[k] = objects[str(peer)]
+        self.log("relink successful")
         
     #collects all OIDs in self, and references
     #might need parent tree, which is still broken
@@ -177,10 +178,10 @@ class Serializable:
             elif isinstance(data[key], dict):
                 out_data[key] = data[key]
                 for k, val in out_data[key].items():
-                    if isinstance(val, Serializable):
+                    if isinstance(val, OID) or k == "peers":
+                        out_data[key][k] = str(val.oid) #this should work for both Serializable and oid
+                    elif isinstance(val, Serializable):
                         out_data[key][k] = val.to_dict()
-                    if isinstance(val, OID):
-                        out_data[key][k] = str(val)
             elif isinstance(data[key], Path):
                 out_data[key] = str(data[key])
             else:

@@ -48,7 +48,11 @@ def main():
         if verbose: print(*args)
     
     clips = Clips.from_file(clips, verbose=verbose) #Path.home() / "Projects/Bike Footage/clips_zurich/clips.json"
-    clips.relink()
+    try:
+        clips.relink(verbose=verbose)
+    except Exception as e:
+        log("relink failed. attempting rebuild", e)
+        clips.tracks = []
     for i, clip in enumerate(clips.clips):
         if clip.parent is None:
             print(clip)

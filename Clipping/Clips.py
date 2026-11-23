@@ -33,7 +33,6 @@ class Clips(SerializableCollection):
         path = filepath or cls.DEFAULT_WORKDIR
         with open(path, "r") as file:
             data = json.load(file)
-        data["tracks"] = [] #left in here because relink doesn't yet work
         return cls.from_dict(data, verbose=verbose)
 
     @classmethod

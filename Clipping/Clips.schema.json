@@ -4,7 +4,7 @@
   "title": "Clips serialization",
   "description": "JSON serialization produced by Clips.to_dict() and parsed by Clips.from_dict().",
   "type": "object",
-  "required": ["workdir", "oid", "parent", "tracks", "clips", "bookmarks"],
+  "required": ["workdir", "oid", "parent", "peers", "tracks", "clips", "bookmarks"],
   "additionalProperties": false,
   "properties": {
     "workdir": {
@@ -15,6 +15,9 @@
     },
     "parent": {
       "type": "null"
+    },
+    "peers": {
+      "$ref": "#/$defs/PeerMap"
     },
     "tracks": {
       "type": "array",
@@ -41,6 +44,19 @@
       "minLength": 10,
       "maxLength": 10
     },
+    "PeerMap": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "null"
+          },
+          {
+            "$ref": "#/$defs/oid"
+          }
+        ]
+      }
+    },
     "Bookmark": {
       "type": "object",
       "required": ["oid", "path", "pos", "name", "ver"],
@@ -65,11 +81,14 @@
     },
     "Clip": {
       "type": "object",
-      "required": ["oid", "start", "end", "videoclip", "geometry", "observations", "discard", "uncertain"],
+      "required": ["oid", "peers", "start", "end", "videoclip", "geometry", "observations", "discard", "uncertain"],
       "additionalProperties": false,
       "properties": {
         "oid": {
           "$ref": "#/$defs/oid"
+        },
+        "peers": {
+          "$ref": "#/$defs/PeerMap"
         },
         "start": {
           "$ref": "#/$defs/Bookmark"
@@ -137,7 +156,7 @@
     },
     "Track": {
       "type": "object",
-      "required": ["workdir", "oid", "geometry", "track", "videos"],
+      "required": ["workdir", "oid", "peers", "geometry", "track", "videos"],
       "additionalProperties": false,
       "properties": {
         "workdir": {
@@ -145,6 +164,9 @@
         },
         "oid": {
           "$ref": "#/$defs/oid"
+        },
+        "peers": {
+          "$ref": "#/$defs/PeerMap"
         },
         "geometry": {
           "oneOf": [
@@ -175,7 +197,7 @@
     },
     "Video": {
       "type": "object",
-      "required": ["workdir", "oid", "path", "offset", "duration", "start_timestamp", "prev_vid", "next_vid"],
+      "required": ["workdir", "oid", "path", "offset", "duration", "start_timestamp", "peers"],
       "additionalProperties": false,
       "properties": {
         "workdir": {
@@ -196,25 +218,24 @@
         "start_timestamp": {
           "type": ["number", "null"]
         },
-        "prev_vid": {
-          "oneOf": [
-            {
-              "type": "null"
+        "peers": {
+          "type": "object",
+          "required": ["prev_vid", "next_vid"],
+          "additionalProperties": false,
+          "properties": {
+            "prev_vid": {
+              "oneOf": [
+                {"type": "null"},
+                {"$ref": "#/$defs/oid"}
+              ]
             },
-            {
-              "$ref": "#/$defs/oid"
+            "next_vid": {
+              "oneOf": [
+                {"type": "null"},
+                {"$ref": "#/$defs/oid"}
+              ]
             }
-          ]
-        },
-        "next_vid": {
-          "oneOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/$defs/oid"
-            }
-          ]
+          }
         }
       }
     }
