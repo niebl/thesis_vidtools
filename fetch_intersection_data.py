@@ -111,6 +111,7 @@ def main():
         if verbose: print(runtime, *args)
 
     #presupposes clip_trajectories.py output
+    #also requires pre-filtered osm data 
     log("- loading clip data...")
 
     clips = WORKDIR / "clips_zurich/clips.json"
