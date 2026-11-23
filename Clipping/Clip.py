@@ -9,9 +9,13 @@ import av
 from datetime import datetime as dt
 from datetime import date
 from math import atan2, cos, degrees, radians, sin
+
 import geopandas as gpd
 import pandas as pd
 from shapely.geometry import shape
+import shapely
+import osmnx
+import pyproj
 
 class Clip(Trajectory):
     DEFAULT_WORKDIR = Path.home() / "Videos/clips"
@@ -26,7 +30,9 @@ class Clip(Trajectory):
             discard=False, 
             uncertain=False,
             parent=None,
-            oid:str=None
+            oid:str=None,
+            intersection_graph:osmnx.graph=None,
+            intersection_topology:osmnx.graph=None
         ):
         super().__init__(workdir=workdir, parent=parent, oid=oid, items_attribute="geometry")
         self.start = start
@@ -39,6 +45,8 @@ class Clip(Trajectory):
         self.observations = observations or {}
         self.discard = discard
         self.uncertain = uncertain
+        self.intersection_graph = None
+        self.intersection_topology = None
 
     @classmethod
     def from_dict(cls, data):
@@ -236,6 +244,35 @@ class Clip(Trajectory):
 
         pass
 
+    def set_intersection_graphs(self, path_graph=None, path_topograph=None, buffer=300, graph=None, topograph=None):
+        proj_to_3857 = pyproj.Transformer.from_crs(
+            pyproj.CRS('EPSG:4326'), pyproj.CRS('EPSG:3857'), 
+            always_xy=True).transform
+        proj_to_4326 = pyproj.Transformer.from_crs(
+            pyproj.CRS('EPSG:3857'), pyproj.CRS('EPSG:4326'), 
+            always_xy=True).transform
+        
+        # get buffer around clip maneuver geometry
+        trajectory = shape(self.geometry_geojson()["geometry"])
+        traj_3857 = shapely.ops.transform(proj_to_3857, trajectory)
+        buffer = shapely.buffer(traj_3857, distance=buffer)
+        buffer = shapely.ops.transform(proj_to_4326, buffer)
+
+        #get intersection graph and cut to a buffer
+        graph = topograph or osmnx.io.load_graphml(filepath=path_topograph)
+
+        graph = osmnx.truncate.truncate_graph_polygon(
+            graph, buffer, truncate_by_edge=True
+            )
+        self.intersection_topology = graph
+        
+        #get intersection geometry from .osm file or argument
+        geometry = graph or osmnx.io.load_graphml(filepath = path_graph)
+        geometry = osmnx.truncate.truncate_graph_polygon(
+            geometry, buffer, truncate_by_edge=True
+            )
+        self.intersection_graph = geometry
+
     def geometry_geojson(self, human_readable=False, geom_type:GeometryType=GeometryType.LineString):
         coordinates = []
         if self.geometry is None: 
@@ -249,7 +286,7 @@ class Clip(Trajectory):
                 "start": self.start.to_dict(), "end":self.end.to_dict()
                 }
         }
-        if self.parent:
+        if self.parent and len(self.parent.tracks) > 0:
             track = self.parent.get_track_for_clip(self)
             if track is not None:
                 video_start = track.get_video_by_title(Path(self.start.path).stem)

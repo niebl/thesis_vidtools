@@ -103,23 +103,27 @@ def main():
 
     start = time.time()
     verbose = True    
-    def log(*args):
+    def log(*args, end="\n"):
         current = time.time()
         runtime = math.floor( (current - start) * 1000 )
         runtime = str(f"{runtime:,d}").rjust(13," ") + "ms"
 
-        if verbose: print(runtime, *args)
+        if verbose: print(runtime, *args, end=end)
 
     #presupposes clip_trajectories.py output
     #also requires pre-filtered osm data 
     log("- loading clip data...")
 
     clips = WORKDIR / "clips_zurich/clips.json"
+        
     clips = Clips.from_file(clips, verbose=True)
     log("- relinking clip data...")
     clips.build_parent_tree()
-    clips.relink()
-
+    try:
+        clips.relink(verbose=True)
+    except Exception as e:
+        print(f"Error relinking clips. tracks and videos will not be usable: {e}")
+        clips.tracks = []
 
     # load OSM graph
     graph = None
@@ -196,6 +200,24 @@ def main():
 
     #print(f"Intersections found: {len(intersections)}")
     #print(intersections[["x", "y", "street_count"]].head())
+
+    #temporary
+    clips.clips = clips.clips[:5]
+
+    #set clip intersection graphs
+    log("- setting clip intersection graphs...")
+    for clip in clips.clips:
+        log(f"\033[K- Setting intersection graphs for clip {clip.oid}", end="\r")
+        try:
+            clip.set_intersection_graphs(
+                graph=graph,
+                topograph=graph
+            )
+        except Exception as e:
+            print(f"Error setting intersection graphs for clip {clip.oid}: {e}")
+            traceback.print_exc()
+    log(" ")
+    log("- finished setting clip intersection graphs...")
 
     # 2. Nearby signals / crossings / stop signs (join to intersections as needed)
     #features = get_features_along_linestring(linestring, buffer_m=50)
