@@ -82,9 +82,9 @@ def main():
     TOLERANCE_BY_WAY = {
         "motorway": 40,
         "trunk": 35,
-        "primary": 35,
-        "secondary": 30,
-        "tertiary": 20,
+        "primary": 30,
+        "secondary": 25,
+        "tertiary": 18,
         "unclassified": 15,
         "residential": 12,
         "living_street": 10,
@@ -149,9 +149,10 @@ def main():
     graphml_consolidated_file = GRAPHML_LOC_CONSOLIDATED / f"zurich_dynamic_consolidation.graphml"
 
     DEFAULT = 12
+    graph_cons = None
     if os.path.isfile((str(graphml_consolidated_file))):
         log("- loading consolidated graph from file...")
-        graph = osmnx.io.load_graphml(filepath=graphml_consolidated_file)
+        graph_cons = osmnx.io.load_graphml(filepath=graphml_consolidated_file)
     else:
         log("- assigning per-node tolerances...")
         tolerances = {}
@@ -179,7 +180,7 @@ def main():
         log(f"      Graph: {len(graph.nodes)} nodes, {len(graph.edges)} edges")
 
         log("- consolidating intersections...")
-        graph = osmnx.consolidate_intersections(
+        graph_cons = osmnx.consolidate_intersections(
             graph, 
             tolerance=tolerances, 
             rebuild_graph=True,
@@ -187,16 +188,17 @@ def main():
             #dead_ends=False,
             )
 
-        log("- reprojecting graph back...")
+        log("- reprojecting graph_cons back...")
+        graph_cons = osmnx.project_graph(graph_cons, to_latlong=True)
         graph = osmnx.project_graph(graph, to_latlong=True)
 
         log("- saving consolidated graph...")
-        osmnx.io.save_graphml(graph, filepath=graphml_consolidated_file)
+        osmnx.io.save_graphml(graph_cons, filepath=graphml_consolidated_file)
 
-    log("- saving graph to files...")
-    nodes, edges = osmnx.graph_to_gdfs(graph, nodes=True, edges=True)
-    nodes.to_file(WORKDIR / "mapdata" / "nodes_zurich.geojson", driver="GeoJSON")
-    edges.to_file(WORKDIR / "mapdata" / "edges_zurich.geojson", driver="GeoJSON")
+        log("- saving graphs to files...")
+        nodes_cons, edges_cons = osmnx.graph_to_gdfs(graph_cons, nodes=True, edges=True)
+        nodes_cons.to_file(WORKDIR / "mapdata" / "nodes_zurich_consolidated.geojson", driver="GeoJSON")
+        edges_cons.to_file(WORKDIR / "mapdata" / "edges_zurich_consolidated.geojson", driver="GeoJSON")
 
     #print(f"Intersections found: {len(intersections)}")
     #print(intersections[["x", "y", "street_count"]].head())
@@ -207,17 +209,25 @@ def main():
     #set clip intersection graphs
     log("- setting clip intersection graphs...")
     for clip in clips.clips:
-        log(f"\033[K- Setting intersection graphs for clip {clip.oid}", end="\r")
+        log(f"\033[K- Setting intersection graphs for clip \"{clip.oid}\"", end="\r")
         try:
             clip.set_intersection_graphs(
                 graph=graph,
-                topograph=graph
+                consolidated=graph_cons
             )
         except Exception as e:
-            print(f"Error setting intersection graphs for clip {clip.oid}: {e}")
+            print(f"Error setting intersection graphs for clip \"{clip.oid}\": {e}")
             traceback.print_exc()
     log(" ")
-    log("- finished setting clip intersection graphs...")
+    log("- finished setting clip intersection graphs!")
+    log("- detect viable turns in clips...")
+    for clip in clips.clips:
+        log(f"- Detecting turns for clip \"{Path(clip.videoclip).name}\"")
+        try:
+            clip.infer_turn_direction(window_size=7, angle_threshold=30, min_velocity=6)
+        except Exception as e:
+            print(f"Error detecting turns for clip \"{clip.oid}\": {e}")
+            traceback.print_exc()
 
     # 2. Nearby signals / crossings / stop signs (join to intersections as needed)
     #features = get_features_along_linestring(linestring, buffer_m=50)

@@ -32,7 +32,7 @@ class Clip(Trajectory):
             parent=None,
             oid:str=None,
             intersection_graph:osmnx.graph=None,
-            intersection_topology:osmnx.graph=None
+            consolidated_graph:osmnx.graph=None
         ):
         super().__init__(workdir=workdir, parent=parent, oid=oid, items_attribute="geometry")
         self.start = start
@@ -46,7 +46,7 @@ class Clip(Trajectory):
         self.discard = discard
         self.uncertain = uncertain
         self.intersection_graph = None
-        self.intersection_topology = None
+        self.consolidated_graph = None
 
     @classmethod
     def from_dict(cls, data):
@@ -220,31 +220,155 @@ class Clip(Trajectory):
 
         return self.df_to_trajectory(pd.DataFrame(rows).reset_index(drop=True))
 
-    def clip_turn_direction(self):        
+    def detect_turns(self, angle_threshold=30, min_velocity=5):
+        if not self.geometry or len(self.geometry) < 3:
+            return []
+
+        turn_events = []
+        current_event = []
+
+        for point in self.geometry:
+            angle_change = point.get("angle_change")
+            velocity = point.get("vel", 0)
+
+            #TODO: this still includes angle change from non-qualifying in window
+            qualifies = (
+                angle_change is not None
+                and abs(angle_change) >= angle_threshold
+                and velocity is not None
+                and velocity >= min_velocity
+            )
+
+            if qualifies:
+                current_event.append(point)
+            elif current_event: #only gets called when not qualified, appends event if exists
+                turn_events.append(current_event)
+                current_event = []
+
+        if current_event:
+            turn_events.append(current_event)
+        
+        #check betweeen events. merge events if they are close in time and velocity is low enough
+        merged_events = []
+        for i, event in enumerate(turn_events):
+            if i == 0:
+                merged_events.append(event)
+                continue
+
+            previous_event = merged_events[-1]
+            time_gap = event[0]["time"] - previous_event[-1]["time"]
+            #average velocity in segment between events
+            between_segment = [p for p in self.geometry if previous_event[-1]["time"] < p["time"] < event[0]["time"]]
+            btw_avg_velocity = sum(p.get("vel", 0) for p in between_segment) / len(between_segment) if between_segment else 0
+
+            # merge events if they are close in time and velocity is low enough
+            if time_gap <= 6 and btw_avg_velocity <= min_velocity:
+                merged_events[-1].extend(event)
+            else:
+                merged_events.append(event)
+        return merged_events
+
+    def moving_window_heading_change(self, window_size=7):
+        if not self.geometry or len(self.geometry) < 2:
+            return None
+
+        for i in range(len(self.geometry)):
+            p1 = self.geometry[max(0, i - window_size)]
+            p2 = self.geometry[i]
+
+            if p1.get("orient") is None or p2.get("orient") is None:
+                continue
+
+            angle_diff = (p2["orient"] - p1["orient"] + 180) % 360 - 180
+
+            self.geometry[i]["angle_change"] = angle_diff
+
+    def moving_window_angle_compare(self, window_size=4, node_geom=None):
+        if not self.geometry or len(self.geometry) < 2:
+            return None
+
+        for i in range(len(self.geometry)):
+            p1 = self.geometry[max(0, i - window_size)]
+            p2 = self.geometry[i]
+
+            if p1.get("angle") is None or p2.get("angle") is None:
+                continue
+
+            angle_diff = (p2["angle"] - p1["angle"] + 180) % 360 - 180
+
+            self.geometry[i]["angle_change"] = angle_diff
+
+    def infer_turn_direction(self, window_size=7, angle_threshold=20, min_velocity=5):        
         #naively check for turns
+        self.moving_window_heading_change(window_size=window_size)
+        turn_points = self.detect_turns(angle_threshold=angle_threshold, min_velocity=min_velocity)
 
-        #for each detected turn:
-        #   "certainties" for each direction
-        #   mark turn as uncertain if there is no clear winner
-
+        max_point = []
+        direction = None
 
         #check for nearby intersection geometry
-        if self.intersection_geometry:
-            #use that to support turn inference
-                #if more than one turn, select the one closer to intersection
-                #check for alignment of route with intersection legs
-                    #this might require looking at the OSM edge of said leg
-                #adjust certainty from that
-            pass
-        else:
-            #select turn with highest certainty
-            pass
+        if self.consolidated_graph:
+            #calculate turn points distance to nearest intersection edge
+            self.intersection_graph = osmnx.bearing.add_edge_bearings(self.intersection_graph)
+            distances = []
+            for event in turn_points:
+                max_point = max(event, key=lambda p: abs(p["angle_change"]))
+                point_geom = shape({"type": "Point", "coordinates": (max_point["lon"], max_point["lat"])})
+                intersection_legs = self.get_intersection_legs(point_geom)
+
+            #keep turning point with lowest distance to intersection edge
+            if distances:
+                min_distance = min(distances)
+                min_index = distances.index(min_distance)
+                turn_point = turn_points[min_index]
+                direction = "left" if max_point["angle_change"] < 0 else "right"
+                print(f"    Detected turn at time {max_point['time']} with angle change {max_point['angle_change']} and velocity {max_point['vel']}.")
+                print(f"    Turn direction: {direction}")
+            
         
-        #
+            #For later:
+            # edge cases to consider. turns when walking in circles
+            #       check if you stay mostly on the same edge
+            #      or simplify with distance of 10 and compare this turn with the simplified geometry.
+        else:
+            turning_point = max(event, key=lambda p: abs(p["angle_change"]))
+            match turning_point["angle_change"]:
+                case x if x < 0:
+                    direction = "left"
+                case x if x > 0:
+                    direction = "right"
+                case _:
+                    direction = "straight"
+        return direction
 
-        pass
+    def get_intersection_legs(self, poi):
+        consolidated_g = self.consolidated_graph
+        #get lat/lon of poi (Point object)
+        node_id = osmnx.nearest_nodes(consolidated_g, X=poi.x, Y=poi.y)
+        node = consolidated_g.nodes[node_id]
+        distance = poi.distance(shape({"type": "Point", "coordinates": (node["x"], node["y"])}))
+        #get original osmids from consolidated graph node
+        orig_ids = consolidated_g.nodes[node_id].get("osmid_original", [])
+        if not isinstance(orig_ids, list):
+            orig_ids = [orig_ids]
+        orig_set = set(orig_ids)
+        
+        #get legs from unconsolidated graph
+        for orig_id in orig_ids:
+            if not self.intersection_graph.nodes[orig_ids[0]]:
+                print(f"    Original node {orig_id} not found in intersection graph.")
+                continue
+            for u, v, key, data in self.intersection_graph.edges(orig_id, keys=True, data=True):
+                other = v if u == orig_id else u
+                # Skip internal edges that stay within the same cluster (e.g. roundabout ring)
+                if other in orig_set:
+                    continue
+                print(f"        leg at node {oid}: edge {u}->{v} | bearing={data.get('bearing')} | highway={data.get('highway')}")
+        
+        exit()
 
-    def set_intersection_graphs(self, path_graph=None, path_topograph=None, buffer=300, graph=None, topograph=None):
+    
+    def set_intersection_graphs(self, path_graph=None, path_consolidated=None, buffer=300, graph=None, consolidated=None):
         proj_to_3857 = pyproj.Transformer.from_crs(
             pyproj.CRS('EPSG:4326'), pyproj.CRS('EPSG:3857'), 
             always_xy=True).transform
@@ -258,20 +382,20 @@ class Clip(Trajectory):
         buffer = shapely.buffer(traj_3857, distance=buffer)
         buffer = shapely.ops.transform(proj_to_4326, buffer)
 
-        #get intersection graph and cut to a buffer
-        graph = topograph or osmnx.io.load_graphml(filepath=path_topograph)
+        #get consolidated intersections and cut to a buffer
+        consolidated = consolidated or osmnx.io.load_graphml(filepath=path_consolidated)
 
+        consolidated = osmnx.truncate.truncate_graph_polygon(
+            consolidated, buffer, truncate_by_edge=True
+            )
+        self.consolidated_graph = consolidated
+        
+        #get intersection geometry from .osm file or argument
+        graph = graph or osmnx.io.load_graphml(filepath = path_graph)
         graph = osmnx.truncate.truncate_graph_polygon(
             graph, buffer, truncate_by_edge=True
             )
-        self.intersection_topology = graph
-        
-        #get intersection geometry from .osm file or argument
-        geometry = graph or osmnx.io.load_graphml(filepath = path_graph)
-        geometry = osmnx.truncate.truncate_graph_polygon(
-            geometry, buffer, truncate_by_edge=True
-            )
-        self.intersection_graph = geometry
+        self.intersection_graph = graph
 
     def geometry_geojson(self, human_readable=False, geom_type:GeometryType=GeometryType.LineString):
         coordinates = []
