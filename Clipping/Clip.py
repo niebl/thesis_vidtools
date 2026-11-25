@@ -231,7 +231,7 @@ class Clip(Trajectory):
             angle_change = point.get("angle_change")
             velocity = point.get("vel", 0)
 
-            #TODO: this still includes angle change from non-qualifying in window
+            #TODO: this still includes angle change from non-qualifying points in window
             qualifies = (
                 angle_change is not None
                 and abs(angle_change) >= angle_threshold
