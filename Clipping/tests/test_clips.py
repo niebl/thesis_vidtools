@@ -2,7 +2,9 @@ import pytest
 
 import json
 from pathlib import Path
+import networkx as nx
 import osmnx
+from shapely.geometry import Point
 from ..Bookmarks import Bookmark, Bookmarks
 from ..Clips import Clips
 from ..Clip import Clip
@@ -222,6 +224,35 @@ class TestClip:
             assert simplified[0]["time"] == fixture["geometry"][0]["time"]
             assert simplified[-1]["time"] == fixture["geometry"][-1]["time"]
             assert set(simplified[0]) >= {"time", "lat", "lon", "dist", "dur", "vel", "orient"}
+
+    def test_get_intersection_legs_returns_filtered_candidates(self, monkeypatch):
+        clip = Clip.__new__(Clip)
+        clip.geometry = [
+            {"lat": -0.003, "lon": 0.0},
+            {"lat": -0.002, "lon": 0.0},
+            {"lat": -0.001, "lon": 0.0},
+            {"lat": 0.010, "lon": 0.0},
+            {"lat": 0.011, "lon": 0.0},
+            {"lat": 0.012, "lon": 0.0},
+        ]
+        clip.consolidated_graph = nx.MultiDiGraph()
+        clip.consolidated_graph.add_node(100, x=0.0, y=0.0, osmid_original=[1])
+        clip.intersection_graph = nx.MultiDiGraph()
+        clip.intersection_graph.add_node(1, x=0.0, y=0.0)
+        clip.intersection_graph.add_node(2, x=0.001, y=0.0)
+        clip.intersection_graph.add_node(3, x=0.0, y=-0.001)
+        clip.intersection_graph.add_node(4, x=0.0, y=0.001)
+        clip.intersection_graph.add_node(5, x=-0.001, y=0.0)
+        clip.intersection_graph.add_edge(1, 2, bearing=90, highway="residential")
+        clip.intersection_graph.add_edge(1, 3, bearing=180, highway="residential")
+        clip.intersection_graph.add_edge(1, 4, bearing=0, highway="residential")
+        clip.intersection_graph.add_edge(1, 5, bearing=270, highway="path")
+        monkeypatch.setattr(osmnx, "nearest_nodes", lambda graph, X, Y: 100)
+
+        legs = clip.get_intersection_legs(Point(0.0, 0.0))
+
+        assert (1, 3) in [leg[:2] for leg in legs]
+        assert not any(data.get("highway") == "path" for _, _, data in legs)
 
     #@pytest.mark.skip(reason="turn_direction is not yet implemented")
     @pytest.mark.parametrize("fixture", CLIP_DIRECTION_FIXTURES)

@@ -299,75 +299,198 @@ class Clip(Trajectory):
             self.geometry[i]["angle_change"] = angle_diff
 
     def infer_turn_direction(self, window_size=7, angle_threshold=20, min_velocity=5):        
-        #naively check for turns
         self.moving_window_heading_change(window_size=window_size)
-        turn_points = self.detect_turns(angle_threshold=angle_threshold, min_velocity=min_velocity)
+        turn_events = self.detect_turns(
+            angle_threshold=angle_threshold, min_velocity=min_velocity
+        )
+        if not turn_events:
+            return "straight"
+        event_changes = [
+            max(event, key=lambda point: abs(point["angle_change"]))["angle_change"]
+            for event in turn_events
+        ]
+        if len(event_changes) > 1 and abs(sum(event_changes)) <= max(angle_threshold, 30):
+            return "straight"
 
-        max_point = []
-        direction = None
+        topology_graph = self.consolidated_graph
+        if topology_graph is None:
+            topology_graph = getattr(self, "intersection_topology", None)
 
-        #check for nearby intersection geometry
-        if self.consolidated_graph:
-            #calculate turn points distance to nearest intersection edge
-            self.intersection_graph = osmnx.bearing.add_edge_bearings(self.intersection_graph)
-            distances = []
-            for event in turn_points:
-                max_point = max(event, key=lambda p: abs(p["angle_change"]))
-                point_geom = shape({"type": "Point", "coordinates": (max_point["lon"], max_point["lat"])})
-                intersection_legs = self.get_intersection_legs(point_geom)
+        if topology_graph is None or self.intersection_graph is None:
+            turning_point = max(
+                (point for event in turn_events for point in event),
+                key=lambda point: abs(point["angle_change"]),
+            )
+            change = turning_point["angle_change"]
+            if abs(change) < angle_threshold:
+                return "straight"
+            return "right" if change > 0 else "left"
 
-            #keep turning point with lowest distance to intersection edge
-            if distances:
-                min_distance = min(distances)
-                min_index = distances.index(min_distance)
-                turn_point = turn_points[min_index]
-                direction = "left" if max_point["angle_change"] < 0 else "right"
-                print(f"    Detected turn at time {max_point['time']} with angle change {max_point['angle_change']} and velocity {max_point['vel']}.")
-                print(f"    Turn direction: {direction}")
-            
-        
-            #For later:
-            # edge cases to consider. turns when walking in circles
-            #       check if you stay mostly on the same edge
-            #      or simplify with distance of 10 and compare this turn with the simplified geometry.
-        else:
-            turning_point = max(event, key=lambda p: abs(p["angle_change"]))
-            match turning_point["angle_change"]:
-                case x if x < 0:
-                    direction = "left"
-                case x if x > 0:
-                    direction = "right"
-                case _:
-                    direction = "straight"
+        self.intersection_graph = osmnx.bearing.add_edge_bearings(
+            self.intersection_graph
+        )
+
+        def normalize_bearing(bearing):
+            return (bearing + 180) % 360 - 180
+
+        def bearing_between(start, end):
+            longitude_delta = radians(end["lon"] - start["lon"])
+            latitude_start = radians(start["lat"])
+            latitude_end = radians(end["lat"])
+            bearing_y = sin(longitude_delta) * cos(latitude_end)
+            bearing_x = (
+                cos(latitude_start) * sin(latitude_end)
+                - sin(latitude_start) * cos(latitude_end) * cos(longitude_delta)
+            )
+            return degrees(atan2(bearing_y, bearing_x)) % 360
+
+        def average_position(points):
+            return {
+                "lat": sum(point["lat"] for point in points) / len(points),
+                "lon": sum(point["lon"] for point in points) / len(points),
+            }
+
+        def average_bearing(points):
+            bearings = [
+                bearing_between(start, end)
+                for start, end in zip(points, points[1:])
+                if (start["lat"], start["lon"]) != (end["lat"], end["lon"])
+            ]
+            if not bearings:
+                return None
+            return normalize_bearing(degrees(atan2(
+                sum(sin(radians(value)) for value in bearings),
+                sum(cos(radians(value)) for value in bearings),
+            )))
+
+        trajectory_matches = []
+        for endpoint, points in (
+            ("start", self.geometry[:3]),
+            ("end", self.geometry[-3:]),
+        ):
+            bearing = average_bearing(points)
+            if bearing is None:
+                continue
+            if endpoint == "start":
+                bearing = normalize_bearing(bearing + 180)
+            trajectory_matches.append((endpoint, average_position(points), bearing))
+
+        if len(trajectory_matches) != 2:
+            return "straight"
+
+        geod = pyproj.Geod(ellps="WGS84")
+        event_matches = []
+        for event in turn_events:
+            turning_point = max(
+                event, key=lambda point: abs(point["angle_change"])
+            )
+            point_geom = shape({
+                "type": "Point",
+                "coordinates": (turning_point["lon"], turning_point["lat"]),
+            })
+            legs = self.get_intersection_legs(point_geom)
+            candidates = {"start": [], "end": []}
+
+            for orig_id, other, data in legs:
+                leg_bearing = data.get("bearing")
+                if leg_bearing is None:
+                    start_node = self.intersection_graph.nodes[orig_id]
+                    end_node = self.intersection_graph.nodes[other]
+                    leg_bearing = bearing_between(
+                        {"lat": start_node["y"], "lon": start_node["x"]},
+                        {"lat": end_node["y"], "lon": end_node["x"]},
+                    )
+                leg_bearing = normalize_bearing(float(leg_bearing))
+                node = self.intersection_graph.nodes[orig_id]
+
+                for endpoint, position, trajectory_bearing in trajectory_matches:
+                    angle_difference = abs(normalize_bearing(
+                        leg_bearing - trajectory_bearing
+                    ))
+                    _, _, distance = geod.inv(
+                        position["lon"], position["lat"], node["x"], node["y"]
+                    )
+                    candidates[endpoint].append({
+                        "angle_difference": angle_difference,
+                        "distance_m": distance,
+                        "leg_bearing": leg_bearing,
+                    })
+
+            if not candidates["start"] or not candidates["end"]:
+                continue
+            best_start = min(
+                candidates["start"],
+                key=lambda match: (match["angle_difference"], match["distance_m"]),
+            )
+            best_end = min(
+                candidates["end"],
+                key=lambda match: (match["angle_difference"], match["distance_m"]),
+            )
+            incoming_bearing = normalize_bearing(best_start["leg_bearing"] + 180)
+            turn_angle = normalize_bearing(best_end["leg_bearing"] - incoming_bearing)
+            direction = (
+                "straight" if abs(turn_angle) <= angle_threshold
+                else "right" if turn_angle > 0
+                else "left"
+            )
+            alignment_error = max(
+                best_start["angle_difference"], best_end["angle_difference"]
+            )
+            event_matches.append((
+                alignment_error,
+                best_start["distance_m"] + best_end["distance_m"],
+                direction,
+                turn_angle,
+                turning_point,
+            ))
+
+        if not event_matches:
+            turning_point = max(
+                (point for event in turn_events for point in event),
+                key=lambda point: abs(point["angle_change"]),
+            )
+            change = turning_point["angle_change"]
+            return "right" if change > 0 else "left"
+
+        alignment_error, _, direction, turn_angle, turning_point = min(
+            event_matches, key=lambda match: (match[0], match[1])
+        )
+        if alignment_error > 60:
+            self.uncertain = True
+        print(
+            f"    Detected {direction} turn at time {turning_point['time']} "
+            f"(intersection bearing change={turn_angle:.1f} degrees, "
+            f"alignment error={alignment_error:.1f} degrees)."
+        )
         return direction
 
     def get_intersection_legs(self, poi):
         consolidated_g = self.consolidated_graph
-        #get lat/lon of poi (Point object)
+        if consolidated_g is None:
+            consolidated_g = getattr(self, "intersection_topology", None)
+        if consolidated_g is None or self.intersection_graph is None:
+            return []
+
         node_id = osmnx.nearest_nodes(consolidated_g, X=poi.x, Y=poi.y)
-        node = consolidated_g.nodes[node_id]
-        distance = poi.distance(shape({"type": "Point", "coordinates": (node["x"], node["y"])}))
-        #get original osmids from consolidated graph node
         orig_ids = consolidated_g.nodes[node_id].get("osmid_original", [])
         if not isinstance(orig_ids, list):
             orig_ids = [orig_ids]
+        orig_ids = [int(orig_id) for orig_id in orig_ids]
         orig_set = set(orig_ids)
-        
-        #get legs from unconsolidated graph
+
+        legs = []
+        exclude = ["path", "cycleway", "footway", "steps", "track"]
         for orig_id in orig_ids:
-            if not self.intersection_graph.nodes[orig_ids[0]]:
+            if orig_id not in self.intersection_graph:
                 print(f"    Original node {orig_id} not found in intersection graph.")
                 continue
             for u, v, key, data in self.intersection_graph.edges(orig_id, keys=True, data=True):
                 other = v if u == orig_id else u
-                # Skip internal edges that stay within the same cluster (e.g. roundabout ring)
-                if other in orig_set:
+                if other in orig_set or data.get("highway") in exclude:
                     continue
-                print(f"        leg at node {oid}: edge {u}->{v} | bearing={data.get('bearing')} | highway={data.get('highway')}")
-        
-        exit()
+                legs.append((orig_id, other, data))
+        return legs
 
-    
     def set_intersection_graphs(self, path_graph=None, path_consolidated=None, buffer=300, graph=None, consolidated=None):
         proj_to_3857 = pyproj.Transformer.from_crs(
             pyproj.CRS('EPSG:4326'), pyproj.CRS('EPSG:3857'), 
