@@ -166,138 +166,6 @@ class Clip(Trajectory):
             return date.fromtimestamp(video_start.get_file_timestamp())
         else: return None
 
-    def simplify(self, distance=10):
-        if not self.geometry or len(self.geometry) < 2:
-            return pd.DataFrame(self.geometry or [])
-
-        points = pd.DataFrame(self.geometry)
-        gdf = gpd.GeoDataFrame(
-            points,
-            geometry=gpd.points_from_xy(points["lon"], points["lat"]),
-            crs="EPSG:4326",
-        )
-        projected = gdf.to_crs(gdf.estimate_utm_crs())
-        line = shape(self.geometry_geojson()["geometry"])
-        simplified = gpd.GeoSeries([line], crs="EPSG:4326").to_crs(
-            projected.crs
-        ).simplify(distance, preserve_topology=False).iloc[0]
-
-        source_coordinates = [(point.x, point.y) for point in projected.geometry]
-        kept = [
-            min(
-                range(len(source_coordinates)),
-                key=lambda index: (source_coordinates[index][0] - coordinate[0]) ** 2
-                + (source_coordinates[index][1] - coordinate[1]) ** 2,
-            )
-            for coordinate in simplified.coords
-        ]
-        rows = [gdf.iloc[index].drop(labels="geometry").copy() for index in kept]
-
-        for index, row in enumerate(rows):
-            if index == 0:
-                row["dist"] = row["dur"] = row["vel"] = row["orient"] = 0.0
-                continue
-
-            previous = gdf.iloc[kept[index - 1]]
-            current = gdf.iloc[kept[index]]
-            delta_time = float(current["time"] - previous["time"])
-            distance_km = projected.geometry.iloc[kept[index - 1]].distance(
-                projected.geometry.iloc[kept[index]]
-            ) / 1000
-            longitude_delta = radians(current["lon"] - previous["lon"])
-            latitude_start = radians(previous["lat"])
-            latitude_end = radians(current["lat"])
-            bearing_y = sin(longitude_delta) * cos(latitude_end)
-            bearing_x = (
-                cos(latitude_start) * sin(latitude_end)
-                - sin(latitude_start) * cos(latitude_end) * cos(longitude_delta)
-            )
-
-            row["dist"] = distance_km
-            row["dur"] = delta_time
-            row["vel"] = distance_km * 3600 / delta_time if delta_time > 0 else 0.0
-            row["orient"] = (degrees(atan2(bearing_y, bearing_x)) + 360) % 360
-
-        return self.df_to_trajectory(pd.DataFrame(rows).reset_index(drop=True))
-
-    def detect_turns(self, angle_threshold=30, min_velocity=5):
-        if not self.geometry or len(self.geometry) < 3:
-            return []
-
-        turn_events = []
-        current_event = []
-
-        for point in self.geometry:
-            angle_change = point.get("angle_change")
-            velocity = point.get("vel", 0)
-
-            #TODO: this still includes angle change from non-qualifying points in window
-            qualifies = (
-                angle_change is not None
-                and abs(angle_change) >= angle_threshold
-                and velocity is not None
-                and velocity >= min_velocity
-            )
-
-            if qualifies:
-                current_event.append(point)
-            elif current_event: #only gets called when not qualified, appends event if exists
-                turn_events.append(current_event)
-                current_event = []
-
-        if current_event:
-            turn_events.append(current_event)
-        
-        #check betweeen events. merge events if they are close in time and velocity is low enough
-        merged_events = []
-        for i, event in enumerate(turn_events):
-            if i == 0:
-                merged_events.append(event)
-                continue
-
-            previous_event = merged_events[-1]
-            time_gap = event[0]["time"] - previous_event[-1]["time"]
-            #average velocity in segment between events
-            between_segment = [p for p in self.geometry if previous_event[-1]["time"] < p["time"] < event[0]["time"]]
-            btw_avg_velocity = sum(p.get("vel", 0) for p in between_segment) / len(between_segment) if between_segment else 0
-
-            # merge events if they are close in time and velocity is low enough
-            if time_gap <= 6 and btw_avg_velocity <= min_velocity:
-                merged_events[-1].extend(event)
-            else:
-                merged_events.append(event)
-        return merged_events
-
-    def moving_window_heading_change(self, window_size=7):
-        if not self.geometry or len(self.geometry) < 2:
-            return None
-
-        for i in range(len(self.geometry)):
-            p1 = self.geometry[max(0, i - window_size)]
-            p2 = self.geometry[i]
-
-            if p1.get("orient") is None or p2.get("orient") is None:
-                continue
-
-            angle_diff = (p2["orient"] - p1["orient"] + 180) % 360 - 180
-
-            self.geometry[i]["angle_change"] = angle_diff
-
-    def moving_window_angle_compare(self, window_size=4, node_geom=None):
-        if not self.geometry or len(self.geometry) < 2:
-            return None
-
-        for i in range(len(self.geometry)):
-            p1 = self.geometry[max(0, i - window_size)]
-            p2 = self.geometry[i]
-
-            if p1.get("angle") is None or p2.get("angle") is None:
-                continue
-
-            angle_diff = (p2["angle"] - p1["angle"] + 180) % 360 - 180
-
-            self.geometry[i]["angle_change"] = angle_diff
-
     def infer_turn_direction(self, window_size=7, angle_threshold=20, min_velocity=5):        
         self.moving_window_heading_change(window_size=window_size)
         turn_events = self.detect_turns(
@@ -492,18 +360,11 @@ class Clip(Trajectory):
         return legs
 
     def set_intersection_graphs(self, path_graph=None, path_consolidated=None, buffer=300, graph=None, consolidated=None):
-        proj_to_3857 = pyproj.Transformer.from_crs(
-            pyproj.CRS('EPSG:4326'), pyproj.CRS('EPSG:3857'), 
-            always_xy=True).transform
-        proj_to_4326 = pyproj.Transformer.from_crs(
-            pyproj.CRS('EPSG:3857'), pyproj.CRS('EPSG:4326'), 
-            always_xy=True).transform
-        
         # get buffer around clip maneuver geometry
-        trajectory = shape(self.geometry_geojson()["geometry"])
-        traj_3857 = shapely.ops.transform(proj_to_3857, trajectory)
-        buffer = shapely.buffer(traj_3857, distance=buffer)
-        buffer = shapely.ops.transform(proj_to_4326, buffer)
+        traj = shape(self.geometry_geojson()["geometry"])
+        buffer = self.transform(shapely.buffer(
+                        self.transform(traj, 4326, 3857), distance=buffer), 
+                    3857, 4326)
 
         #get consolidated intersections and cut to a buffer
         consolidated = consolidated or osmnx.io.load_graphml(filepath=path_consolidated)
