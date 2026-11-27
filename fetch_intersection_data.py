@@ -229,10 +229,45 @@ def main():
             print(f"Error detecting turns for clip \"{clip.oid}\": {e}")
             traceback.print_exc()
 
-    # 2. Nearby signals / crossings / stop signs (join to intersections as needed)
-    #features = get_features_along_linestring(linestring, buffer_m=50)
-    #print(f"OSM features found: {len(features)}")
-    #print(features[["element_type", "osmid"]].head())
+    log("- saving geojsons by day")
+    dates = set()
+    for clip in clips.clips:
+        try:
+            try:
+                if not clip.validate():
+                    continue
+            except Exception as e:
+                print(e)
+                continue
+            
+            date = clip.get_date()
+            if date:
+                dates.add(date)
+            clip.geometry = clips.get_track_subsegment_for_clip(
+                clip, m_start=2, m_end=2
+                )
+            
+        except Exception as e:
+            traceback.print_exc()
+            print(e)
+    
+    n_clips = 0
+
+    for day in dates:
+        output_path = Path(clips.workdir) / "clip_tracks" / f"clips_turns_{day}.geojson"
+        #output_path = Path.home() / f"cloud/sciebo/Studium/0_Masterarbeit/gis/zurich/tracks_days/clips_{day}.geojson"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        log(f"      {output_path}")
+        feature_collection = clips.geometry_geojson(
+            lambda c: c.get_date() == day,
+            human_readable=True, skip_empty=True
+            )
+        n_clips += len(feature_collection["features"])
+        with open(output_path, "w") as f:
+            json.dump(feature_collection, f)
+
+    log("- writing clips json")
+    clips.save_clip_data(Path.home() / "Projects/Bike Footage/clips_zurich/clips_turns.json")
 
 if __name__ == "__main__":
     main()

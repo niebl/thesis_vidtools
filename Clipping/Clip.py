@@ -168,7 +168,7 @@ class Clip(Trajectory):
             return date.fromtimestamp(video_start.get_file_timestamp())
         else: return None
 
-    def infer_turn_direction(self, window_size=7, angle_threshold=20, min_velocity=5):
+    def infer_turn_direction(self, window_size=7, angle_threshold=20, min_velocity=5, add_to_observations=True):
         #machines are such messy coders. TODO: clean this up, gain understanding, and keep avoiding it for tasks other than test fixtures and the like
         self.moving_window_heading_change(window_size=window_size)
         turn_events = self.detect_turns(
@@ -319,8 +319,7 @@ class Clip(Trajectory):
             ))
 
         if not event_matches:
-            turning_point = max(
-                (point for event in turn_events for point in event),
+            turning_point = max(                (point for event in turn_events for point in event),                turning_points,
                 key=lambda point: abs(point["angle_change"]),
             )
             change = turning_point["angle_change"]
@@ -330,7 +329,8 @@ class Clip(Trajectory):
             event_matches, key=lambda match: (match[0], match[1])
         )
         if alignment_error > 60:
-            self.uncertain = True
+            if add_to_observations:
+                self.uncertain = True
             change = turning_point["angle_change"]
             direction = "right" if change > 0 else "left"
         print(
@@ -338,6 +338,8 @@ class Clip(Trajectory):
             f"(intersection bearing change={turn_angle:.1f} degrees, "
             f"alignment error={alignment_error:.1f} degrees)."
         )
+        if add_to_observations:
+            self.observations["turn_direction"] = direction
         return direction
 
     def get_intersection_legs(self, poi):
@@ -400,7 +402,8 @@ class Clip(Trajectory):
             "duration": self.get_duration(),
             "bookmarks": {
                 "start": self.start.to_dict(), "end":self.end.to_dict()
-                }
+                },
+            "observations": self.observations
         }
         if self.parent and len(self.parent.tracks) > 0:
             track = self.parent.get_track_for_clip(self)
