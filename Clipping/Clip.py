@@ -59,7 +59,9 @@ class Clip(Trajectory):
             "files",
             "parent",
             "workdir",
-            "verbose"
+            "verbose",
+            'intersection_graph',
+            'consolidated_graph'
         ])
         return data
 
@@ -166,7 +168,8 @@ class Clip(Trajectory):
             return date.fromtimestamp(video_start.get_file_timestamp())
         else: return None
 
-    def infer_turn_direction(self, window_size=7, angle_threshold=20, min_velocity=5):        
+    def infer_turn_direction(self, window_size=7, angle_threshold=20, min_velocity=5):
+        #machines are such messy coders. TODO: clean this up, gain understanding, and keep avoiding it for tasks other than test fixtures and the like
         self.moving_window_heading_change(window_size=window_size)
         turn_events = self.detect_turns(
             angle_threshold=angle_threshold, min_velocity=min_velocity
@@ -270,7 +273,6 @@ class Clip(Trajectory):
                     )
                 leg_bearing = normalize_bearing(float(leg_bearing))
                 node = self.intersection_graph.nodes[orig_id]
-
                 for endpoint, position, trajectory_bearing in trajectory_matches:
                     angle_difference = abs(normalize_bearing(
                         leg_bearing - trajectory_bearing
@@ -296,8 +298,12 @@ class Clip(Trajectory):
             )
             incoming_bearing = normalize_bearing(best_start["leg_bearing"] + 180)
             turn_angle = normalize_bearing(best_end["leg_bearing"] - incoming_bearing)
+            leg_separation = abs(normalize_bearing(
+                best_end["leg_bearing"] - best_start["leg_bearing"]
+            ))
+            opposite_leg_deviation = abs(180 - leg_separation)
             direction = (
-                "straight" if abs(turn_angle) <= angle_threshold
+                "straight" if opposite_leg_deviation <= angle_threshold
                 else "right" if turn_angle > 0
                 else "left"
             )
@@ -325,6 +331,8 @@ class Clip(Trajectory):
         )
         if alignment_error > 60:
             self.uncertain = True
+            change = turning_point["angle_change"]
+            direction = "right" if change > 0 else "left"
         print(
             f"    Detected {direction} turn at time {turning_point['time']} "
             f"(intersection bearing change={turn_angle:.1f} degrees, "
