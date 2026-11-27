@@ -1,0 +1,3977 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d30" for="edge" attr.name="area" attr.type="string"/>
+<key id="d29" for="edge" attr.name="service" attr.type="string"/>
+<key id="d28" for="edge" attr.name="bridge" attr.type="string"/>
+<key id="d27" for="edge" attr.name="width" attr.type="string"/>
+<key id="d26" for="edge" attr.name="cycleway:left" attr.type="string"/>
+<key id="d25" for="edge" attr.name="tunnel" attr.type="string"/>
+<key id="d24" for="edge" attr.name="access" attr.type="string"/>
+<key id="d23" for="edge" attr.name="cycleway" attr.type="string"/>
+<key id="d22" for="edge" attr.name="smoothness" attr.type="string"/>
+<key id="d21" for="edge" attr.name="cycleway:right" attr.type="string"/>
+<key id="d20" for="edge" attr.name="geometry" attr.type="string"/>
+<key id="d19" for="edge" attr.name="ref" attr.type="string"/>
+<key id="d18" for="edge" attr.name="length" attr.type="string"/>
+<key id="d17" for="edge" attr.name="reversed" attr.type="string"/>
+<key id="d16" for="edge" attr.name="lit" attr.type="string"/>
+<key id="d15" for="edge" attr.name="surface" attr.type="string"/>
+<key id="d14" for="edge" attr.name="foot" attr.type="string"/>
+<key id="d13" for="edge" attr.name="cycleway:both" attr.type="string"/>
+<key id="d12" for="edge" attr.name="oneway" attr.type="string"/>
+<key id="d11" for="edge" attr.name="name" attr.type="string"/>
+<key id="d10" for="edge" attr.name="maxspeed" attr.type="string"/>
+<key id="d9" for="edge" attr.name="lanes" attr.type="string"/>
+<key id="d8" for="edge" attr.name="highway" attr.type="string"/>
+<key id="d7" for="edge" attr.name="osmid" attr.type="string"/>
+<key id="d6" for="node" attr.name="junction" attr.type="string"/>
+<key id="d5" for="node" attr.name="x" attr.type="string"/>
+<key id="d4" for="node" attr.name="y" attr.type="string"/>
+<key id="d3" for="graph" attr.name="simplified" attr.type="string"/>
+<key id="d2" for="graph" attr.name="crs" attr.type="string"/>
+<key id="d1" for="graph" attr.name="created_with" attr.type="string"/>
+<key id="d0" for="graph" attr.name="created_date" attr.type="string"/>
+<graph edgedefault="directed"><data key="d0">2026-11-24 18:46:50</data>
+<data key="d1">OSMnx 2.1.2</data>
+<data key="d2">epsg:4326</data>
+<data key="d3">True</data>
+<node id="30064412">
+  <data key="d4">47.4119043</data>
+  <data key="d5">8.5248132</data>
+</node>
+<node id="60029725">
+  <data key="d4">47.4136252</data>
+  <data key="d5">8.5238699</data>
+</node>
+<node id="60029742">
+  <data key="d4">47.4129349</data>
+  <data key="d5">8.5377791</data>
+</node>
+<node id="60029743">
+  <data key="d4">47.4130086</data>
+  <data key="d5">8.5362783</data>
+</node>
+<node id="60120449">
+  <data key="d4">47.4117401</data>
+  <data key="d5">8.5256956</data>
+</node>
+<node id="60120454">
+  <data key="d4">47.4122888</data>
+  <data key="d5">8.5260896</data>
+</node>
+<node id="60121167">
+  <data key="d4">47.4124344</data>
+  <data key="d5">8.5395121</data>
+</node>
+<node id="60121168">
+  <data key="d4">47.411874</data>
+  <data key="d5">8.5378091</data>
+</node>
+<node id="60122773">
+  <data key="d4">47.4095627</data>
+  <data key="d5">8.5377107</data>
+  <data key="d6">yes</data>
+</node>
+<node id="60733909">
+  <data key="d4">47.4089731</data>
+  <data key="d5">8.5395534</data>
+</node>
+<node id="73543570">
+  <data key="d4">47.4140349</data>
+  <data key="d5">8.5415133</data>
+</node>
+<node id="78206053">
+  <data key="d4">47.4138115</data>
+  <data key="d5">8.5466386</data>
+</node>
+<node id="92572026">
+  <data key="d4">47.4138547</data>
+  <data key="d5">8.5454219</data>
+</node>
+<node id="92575897">
+  <data key="d4">47.4149687</data>
+  <data key="d5">8.5455168</data>
+</node>
+<node id="94899700">
+  <data key="d4">47.404344</data>
+  <data key="d5">8.5408922</data>
+</node>
+<node id="101372813">
+  <data key="d4">47.4089999</data>
+  <data key="d5">8.5350067</data>
+</node>
+<node id="101372814">
+  <data key="d4">47.4093711</data>
+  <data key="d5">8.5329541</data>
+</node>
+<node id="101372815">
+  <data key="d4">47.4077937</data>
+  <data key="d5">8.5321399</data>
+</node>
+<node id="101376152">
+  <data key="d4">47.4088501</data>
+  <data key="d5">8.544394</data>
+</node>
+<node id="103035202">
+  <data key="d4">47.4025018</data>
+  <data key="d5">8.5406748</data>
+</node>
+<node id="103035203">
+  <data key="d4">47.4029825</data>
+  <data key="d5">8.5410504</data>
+</node>
+<node id="103035390">
+  <data key="d4">47.4034511</data>
+  <data key="d5">8.5417691</data>
+</node>
+<node id="103065674">
+  <data key="d4">47.4103613</data>
+  <data key="d5">8.5333483</data>
+</node>
+<node id="107120442">
+  <data key="d4">47.406175</data>
+  <data key="d5">8.5730273</data>
+</node>
+<node id="108188703">
+  <data key="d4">47.4026909</data>
+  <data key="d5">8.5427312</data>
+</node>
+<node id="108188704">
+  <data key="d4">47.4032731</data>
+  <data key="d5">8.5433924</data>
+</node>
+<node id="108190107">
+  <data key="d4">47.4096717</data>
+  <data key="d5">8.5438878</data>
+</node>
+<node id="108190383">
+  <data key="d4">47.4095786</data>
+  <data key="d5">8.544119</data>
+</node>
+<node id="108191045">
+  <data key="d4">47.4094634</data>
+  <data key="d5">8.540425</data>
+</node>
+<node id="108220523">
+  <data key="d4">47.4112288</data>
+  <data key="d5">8.5259807</data>
+</node>
+<node id="108221043">
+  <data key="d4">47.4114088</data>
+  <data key="d5">8.5257071</data>
+</node>
+<node id="109434662">
+  <data key="d4">47.4097423</data>
+  <data key="d5">8.5445907</data>
+</node>
+<node id="109497485">
+  <data key="d4">47.409725</data>
+  <data key="d5">8.533095</data>
+</node>
+<node id="145868442">
+  <data key="d4">47.4070163</data>
+  <data key="d5">8.5739245</data>
+</node>
+<node id="148883145">
+  <data key="d4">47.4093854</data>
+  <data key="d5">8.5382858</data>
+</node>
+<node id="251228621">
+  <data key="d4">47.4092555</data>
+  <data key="d5">8.5433726</data>
+</node>
+<node id="256333710">
+  <data key="d4">47.412913</data>
+  <data key="d5">8.5270942</data>
+</node>
+<node id="256333814">
+  <data key="d4">47.4121671</data>
+  <data key="d5">8.5264594</data>
+</node>
+<node id="307742552">
+  <data key="d4">47.4101974</data>
+  <data key="d5">8.5393216</data>
+</node>
+<node id="311412169">
+  <data key="d4">47.4087384</data>
+  <data key="d5">8.5402688</data>
+</node>
+<node id="370130823">
+  <data key="d4">47.4134639</data>
+  <data key="d5">8.5388609</data>
+</node>
+<node id="370130884">
+  <data key="d4">47.4136971</data>
+  <data key="d5">8.5394755</data>
+</node>
+<node id="385184791">
+  <data key="d4">47.4138426</data>
+  <data key="d5">8.5455498</data>
+</node>
+<node id="419866099">
+  <data key="d4">47.4137013</data>
+  <data key="d5">8.5378692</data>
+</node>
+<node id="426976909">
+  <data key="d4">47.4119546</data>
+  <data key="d5">8.5279545</data>
+</node>
+<node id="459984795">
+  <data key="d4">47.4117595</data>
+  <data key="d5">8.5366092</data>
+</node>
+<node id="459985384">
+  <data key="d4">47.4129956</data>
+  <data key="d5">8.5364967</data>
+</node>
+<node id="537553767">
+  <data key="d4">47.410366</data>
+  <data key="d5">8.5435898</data>
+</node>
+<node id="695544021">
+  <data key="d4">47.4052203</data>
+  <data key="d5">8.5728791</data>
+</node>
+<node id="695544023">
+  <data key="d4">47.4059731</data>
+  <data key="d5">8.5730574</data>
+</node>
+<node id="935831692">
+  <data key="d4">47.4118673</data>
+  <data key="d5">8.5249936</data>
+</node>
+<node id="935831697">
+  <data key="d4">47.4122859</data>
+  <data key="d5">8.5238916</data>
+</node>
+<node id="1023031900">
+  <data key="d4">47.4085771</data>
+  <data key="d5">8.5435226</data>
+</node>
+<node id="1023032052">
+  <data key="d4">47.4087062</data>
+  <data key="d5">8.5426365</data>
+</node>
+<node id="1023304230">
+  <data key="d4">47.4091973</data>
+  <data key="d5">8.5414712</data>
+</node>
+<node id="1115823643">
+  <data key="d4">47.4094282</data>
+  <data key="d5">8.5381504</data>
+</node>
+<node id="1269193169">
+  <data key="d4">47.4093425</data>
+  <data key="d5">8.5446895</data>
+</node>
+<node id="1567061807">
+  <data key="d4">47.4080015</data>
+  <data key="d5">8.5725673</data>
+</node>
+<node id="1702655654">
+  <data key="d4">47.413771</data>
+  <data key="d5">8.5454532</data>
+</node>
+<node id="1714475518">
+  <data key="d4">47.4081572</data>
+  <data key="d5">8.5398579</data>
+</node>
+<node id="1840633302">
+  <data key="d4">47.4131896</data>
+  <data key="d5">8.545386</data>
+</node>
+<node id="2052812467">
+  <data key="d4">47.4089704</data>
+  <data key="d5">8.5373581</data>
+</node>
+<node id="2055665881">
+  <data key="d4">47.41387</data>
+  <data key="d5">8.5451281</data>
+</node>
+<node id="2184891282">
+  <data key="d4">47.4099376</data>
+  <data key="d5">8.5412393</data>
+</node>
+<node id="2497683926">
+  <data key="d4">47.4095811</data>
+  <data key="d5">8.5339128</data>
+</node>
+<node id="2734047660">
+  <data key="d4">47.4138651</data>
+  <data key="d5">8.5472818</data>
+</node>
+<node id="2734047661">
+  <data key="d4">47.4139052</data>
+  <data key="d5">8.5476986</data>
+</node>
+<node id="3356542874">
+  <data key="d4">47.4084861</data>
+  <data key="d5">8.5395072</data>
+</node>
+<node id="3364638957">
+  <data key="d4">47.4125346</data>
+  <data key="d5">8.5377238</data>
+</node>
+<node id="3364638962">
+  <data key="d4">47.4130026</data>
+  <data key="d5">8.5382019</data>
+</node>
+<node id="4141732017">
+  <data key="d4">47.4118023</data>
+  <data key="d5">8.5250053</data>
+</node>
+<node id="4181840581">
+  <data key="d4">47.4134124</data>
+  <data key="d5">8.547863</data>
+</node>
+<node id="4186942802">
+  <data key="d4">47.4095325</data>
+  <data key="d5">8.5442305</data>
+</node>
+<node id="4216834519">
+  <data key="d4">47.4084021</data>
+  <data key="d5">8.5412997</data>
+</node>
+<node id="4408280437">
+  <data key="d4">47.4095796</data>
+  <data key="d5">8.5423085</data>
+</node>
+<node id="4408280449">
+  <data key="d4">47.4098252</data>
+  <data key="d5">8.5424849</data>
+</node>
+<node id="4426744447">
+  <data key="d4">47.4139452</data>
+  <data key="d5">8.5481008</data>
+</node>
+<node id="4564765549">
+  <data key="d4">47.4057238</data>
+  <data key="d5">8.5739359</data>
+</node>
+<node id="4667482636">
+  <data key="d4">47.4109189</data>
+  <data key="d5">8.5255497</data>
+</node>
+<node id="4667482641">
+  <data key="d4">47.4110894</data>
+  <data key="d5">8.5261926</data>
+</node>
+<node id="4838591611">
+  <data key="d4">47.4100816</data>
+  <data key="d5">8.5428862</data>
+</node>
+<node id="4945854899">
+  <data key="d4">47.409656</data>
+  <data key="d5">8.5430119</data>
+</node>
+<node id="4955708483">
+  <data key="d4">47.4088423</data>
+  <data key="d5">8.542823</data>
+</node>
+<node id="5109499517">
+  <data key="d4">47.4142137</data>
+  <data key="d5">8.545488</data>
+</node>
+<node id="5277479164">
+  <data key="d4">47.4083593</data>
+  <data key="d5">8.5389668</data>
+</node>
+<node id="5370500715">
+  <data key="d4">47.4111878</data>
+  <data key="d5">8.5253216</data>
+</node>
+<node id="5380840505">
+  <data key="d4">47.4136744</data>
+  <data key="d5">8.5394966</data>
+</node>
+<node id="5380840506">
+  <data key="d4">47.4134397</data>
+  <data key="d5">8.5388852</data>
+</node>
+<node id="5440398828">
+  <data key="d4">47.4040155</data>
+  <data key="d5">8.5421527</data>
+</node>
+<node id="5488472082">
+  <data key="d4">47.4096961</data>
+  <data key="d5">8.5438279</data>
+</node>
+<node id="6672594034">
+  <data key="d4">47.4127609</data>
+  <data key="d5">8.5264505</data>
+</node>
+<node id="6672594035">
+  <data key="d4">47.4126916</data>
+  <data key="d5">8.5258449</data>
+</node>
+<node id="6672594037">
+  <data key="d4">47.4125036</data>
+  <data key="d5">8.5262538</data>
+</node>
+<node id="7643486856">
+  <data key="d4">47.4117555</data>
+  <data key="d5">8.5251035</data>
+</node>
+<node id="7643486858">
+  <data key="d4">47.4115678</data>
+  <data key="d5">8.525466</data>
+</node>
+<node id="8009171055">
+  <data key="d4">47.4058189</data>
+  <data key="d5">8.5732573</data>
+</node>
+<node id="8009171057">
+  <data key="d4">47.4056838</data>
+  <data key="d5">8.5736813</data>
+</node>
+<node id="8009171058">
+  <data key="d4">47.4054826</data>
+  <data key="d5">8.5729614</data>
+</node>
+<node id="8009171065">
+  <data key="d4">47.4057885</data>
+  <data key="d5">8.5737579</data>
+</node>
+<node id="8009271458">
+  <data key="d4">47.4016702</data>
+  <data key="d5">8.5427355</data>
+</node>
+<node id="8173460809">
+  <data key="d4">47.4133619</data>
+  <data key="d5">8.547374</data>
+</node>
+<node id="8175436446">
+  <data key="d4">47.41374</data>
+  <data key="d5">8.5477396</data>
+</node>
+<node id="8175436447">
+  <data key="d4">47.4136949</data>
+  <data key="d5">8.5476506</data>
+</node>
+<node id="8175436449">
+  <data key="d4">47.4135794</data>
+  <data key="d5">8.5475083</data>
+</node>
+<node id="8176938887">
+  <data key="d4">47.4114714</data>
+  <data key="d5">8.5272346</data>
+</node>
+<node id="8538315050">
+  <data key="d4">47.4144257</data>
+  <data key="d5">8.5462991</data>
+</node>
+<node id="8538315054">
+  <data key="d4">47.4143256</data>
+  <data key="d5">8.54668</data>
+</node>
+<node id="8538315073">
+  <data key="d4">47.4146243</data>
+  <data key="d5">8.5466797</data>
+</node>
+<node id="8538315074">
+  <data key="d4">47.4143402</data>
+  <data key="d5">8.5472769</data>
+</node>
+<node id="8538315106">
+  <data key="d4">47.4143854</data>
+  <data key="d5">8.5471253</data>
+</node>
+<node id="8538315107">
+  <data key="d4">47.4145938</data>
+  <data key="d5">8.5470657</data>
+</node>
+<node id="8538315108">
+  <data key="d4">47.4145449</data>
+  <data key="d5">8.5472425</data>
+</node>
+<node id="8538315109">
+  <data key="d4">47.4143953</data>
+  <data key="d5">8.547265</data>
+</node>
+<node id="8538315111">
+  <data key="d4">47.4143968</data>
+  <data key="d5">8.5470666</data>
+</node>
+<node id="8538315113">
+  <data key="d4">47.4143995</data>
+  <data key="d5">8.5466781</data>
+</node>
+<node id="8538315126">
+  <data key="d4">47.4140623</data>
+  <data key="d5">8.5472269</data>
+</node>
+<node id="8538315127">
+  <data key="d4">47.4141446</data>
+  <data key="d5">8.5472075</data>
+</node>
+<node id="8538315129">
+  <data key="d4">47.414031</data>
+  <data key="d5">8.5472823</data>
+</node>
+<node id="8538355821">
+  <data key="d4">47.4136283</data>
+  <data key="d5">8.5448886</data>
+</node>
+<node id="8538355830">
+  <data key="d4">47.4139043</data>
+  <data key="d5">8.5445022</data>
+</node>
+<node id="8538355837">
+  <data key="d4">47.4134625</data>
+  <data key="d5">8.5454102</data>
+</node>
+<node id="8546868325">
+  <data key="d4">47.4135103</data>
+  <data key="d5">8.5451632</data>
+</node>
+<node id="8546868327">
+  <data key="d4">47.4135024</data>
+  <data key="d5">8.5454137</data>
+</node>
+<node id="9907419197">
+  <data key="d4">47.4117569</data>
+  <data key="d5">8.5272515</data>
+</node>
+<node id="9907419199">
+  <data key="d4">47.4115214</data>
+  <data key="d5">8.5269357</data>
+</node>
+<node id="10003073053">
+  <data key="d4">47.4120386</data>
+  <data key="d5">8.525607</data>
+</node>
+<node id="10003073054">
+  <data key="d4">47.4119599</data>
+  <data key="d5">8.52585</data>
+</node>
+<node id="10114138494">
+  <data key="d4">47.4082683</data>
+  <data key="d5">8.5395172</data>
+</node>
+<node id="10589288513">
+  <data key="d4">47.4116788</data>
+  <data key="d5">8.5378392</data>
+</node>
+<node id="10857644778">
+  <data key="d4">47.413158</data>
+  <data key="d5">8.5461736</data>
+</node>
+<node id="10857644780">
+  <data key="d4">47.413095</data>
+  <data key="d5">8.5464518</data>
+</node>
+<node id="10857644782">
+  <data key="d4">47.4131546</data>
+  <data key="d5">8.5460979</data>
+</node>
+<node id="10857644783">
+  <data key="d4">47.4131207</data>
+  <data key="d5">8.546022</data>
+</node>
+<node id="11528287251">
+  <data key="d4">47.4133512</data>
+  <data key="d5">8.5450371</data>
+</node>
+<node id="11582757254">
+  <data key="d4">47.41414</data>
+  <data key="d5">8.5473263</data>
+</node>
+<node id="11685335457">
+  <data key="d4">47.4134503</data>
+  <data key="d5">8.5388745</data>
+</node>
+<node id="12785332940">
+  <data key="d4">47.4090768</data>
+  <data key="d5">8.5441004</data>
+</node>
+<node id="12785332942">
+  <data key="d4">47.4090137</data>
+  <data key="d5">8.5440055</data>
+</node>
+<edge source="30064412" target="935831692" id="0">
+  <data key="d7">412844316</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">14.184561996855484</data>
+</edge>
+<edge source="30064412" target="4141732017" id="0">
+  <data key="d7">412844317</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">18.373668010539753</data>
+</edge>
+<edge source="60029742" target="419866099" id="0">
+  <data key="d7">[329575858, 9347419]</data>
+  <data key="d8">residential</data>
+  <data key="d10">50</data>
+  <data key="d11">Birchstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">['no', 'lane']</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">85.49249656063694</data>
+  <data key="d20">LINESTRING (8.5377791 47.4129349, 8.5377914 47.4130165, 8.5377951 47.4130431, 8.5378063 47.4131334, 8.537824 47.413293, 8.5378692 47.4137013)</data>
+</edge>
+<edge source="60029742" target="459985384" id="0">
+  <data key="d7">[536826452, 28567629]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">['2', '3']</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">96.76984472457438</data>
+  <data key="d13">lane</data>
+  <data key="d20">LINESTRING (8.5377791 47.4129349, 8.5375659 47.4129364, 8.5375318 47.4129386, 8.537498 47.4129408, 8.5368728 47.412972, 8.5364967 47.4129956)</data>
+</edge>
+<edge source="60029742" target="3364638962" id="0">
+  <data key="d7">406734437</data>
+  <data key="d8">secondary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">32.824018814680244</data>
+  <data key="d20">LINESTRING (8.5377791 47.4129349, 8.5379456 47.412951, 8.53795 47.4129514, 8.5379734 47.412954, 8.5380929 47.4129748, 8.5382019 47.4130026)</data>
+</edge>
+<edge source="60029742" target="3364638957" id="0">
+  <data key="d7">536826949</data>
+  <data key="d8">secondary</data>
+  <data key="d9">4</data>
+  <data key="d10">50</data>
+  <data key="d11">Birchstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">45.08133019110871</data>
+  <data key="d20">LINESTRING (8.5377791 47.4129349, 8.537739 47.4128617, 8.5377306 47.4127867, 8.5377291 47.4127417, 8.5377238 47.4125346)</data>
+</edge>
+<edge source="60029743" target="459985384" id="0">
+  <data key="d7">536826452</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">16.497332842535336</data>
+</edge>
+<edge source="60120449" target="935831692" id="0">
+  <data key="d7">8041279</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">54.68683839638433</data>
+  <data key="d20">LINESTRING (8.5256956 47.4117401, 8.5256008 47.4117564, 8.5252491 47.4118195, 8.5251928 47.4118296, 8.5249936 47.4118673)</data>
+</edge>
+<edge source="60120449" target="10003073054" id="0">
+  <data key="d7">556777354</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Hürststrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">27.06654501846105</data>
+  <data key="d20">LINESTRING (8.5256956 47.4117401, 8.5257465 47.4118177, 8.5257638 47.4118415, 8.52585 47.4119599)</data>
+</edge>
+<edge source="60120449" target="9907419199" id="0">
+  <data key="d7">[1169806739, 968722831]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">['2', '3']</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">96.43636901278975</data>
+  <data key="d13">lane</data>
+  <data key="d20">LINESTRING (8.5256956 47.4117401, 8.5258184 47.4117172, 8.5259172 47.4116995, 8.526192 47.4116502, 8.5264263 47.4116075, 8.5269357 47.4115214)</data>
+</edge>
+<edge source="60120454" target="60029725" id="0">
+  <data key="d7">8031689</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Zelglistrasse</data>
+  <data key="d12">True</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">228.67886257922436</data>
+  <data key="d20">LINESTRING (8.5260896 47.4122888, 8.5260235 47.4123116, 8.5254374 47.4125119, 8.5252748 47.4125828, 8.5250955 47.412671, 8.5248676 47.4127962, 8.5246649 47.4129286, 8.5241715 47.4132686, 8.5240663 47.4133484, 8.5239788 47.413441, 8.5239554 47.4134795, 8.5239162 47.4135411, 8.5238699 47.4136252)</data>
+</edge>
+<edge source="60120454" target="6672594037" id="0">
+  <data key="d7">556777354</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Hürststrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">26.89128523287114</data>
+  <data key="d20">LINESTRING (8.5260896 47.4122888, 8.5261284 47.4123396, 8.5262538 47.4125036)</data>
+</edge>
+<edge source="60120454" target="10003073054" id="0">
+  <data key="d7">556777354</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Hürststrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">40.77469287495307</data>
+  <data key="d20">LINESTRING (8.5260896 47.4122888, 8.5260445 47.4122268, 8.52585 47.4119599)</data>
+</edge>
+<edge source="60121167" target="60121168" id="0">
+  <data key="d7">[536836677, 143756158]</data>
+  <data key="d8">unclassified</data>
+  <data key="d9">['2', '4']</data>
+  <data key="d10">['50', '30']</data>
+  <data key="d11">Sophie-Taeuber-Strasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">143.54146338653757</data>
+  <data key="d20">LINESTRING (8.5395121 47.4124344, 8.5394123 47.4123952, 8.5385084 47.4120405, 8.5382601 47.4119549, 8.5381397 47.4119213, 8.5380353 47.4119004, 8.5378091 47.411874)</data>
+</edge>
+<edge source="60121168" target="60121167" id="0">
+  <data key="d7">[536836677, 143756158]</data>
+  <data key="d8">unclassified</data>
+  <data key="d9">['2', '4']</data>
+  <data key="d10">['50', '30']</data>
+  <data key="d11">Sophie-Taeuber-Strasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">143.54146338653757</data>
+  <data key="d20">LINESTRING (8.5378091 47.411874, 8.5380353 47.4119004, 8.5381397 47.4119213, 8.5382601 47.4119549, 8.5385084 47.4120405, 8.5394123 47.4123952, 8.5395121 47.4124344)</data>
+</edge>
+<edge source="60121168" target="3364638957" id="0">
+  <data key="d7">[1210783364, 536836676, 536826949]</data>
+  <data key="d8">secondary</data>
+  <data key="d9">['3', '4']</data>
+  <data key="d10">50</data>
+  <data key="d11">Birchstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">73.82357058399599</data>
+  <data key="d13">lane</data>
+  <data key="d22">excellent</data>
+  <data key="d20">LINESTRING (8.5378091 47.411874, 8.537733 47.4122854, 8.5377266 47.4123932, 8.5377238 47.4125346)</data>
+</edge>
+<edge source="60121168" target="459984795" id="0">
+  <data key="d7">[38783566, 561297485, 561297486]</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">91.19434354162357</data>
+  <data key="d25">building_passage</data>
+  <data key="d20">LINESTRING (8.5378091 47.411874, 8.5377232 47.4118635, 8.5376975 47.4118604, 8.5376558 47.4118566, 8.5375125 47.4118457, 8.5366092 47.4117595)</data>
+</edge>
+<edge source="60121168" target="10589288513" id="0">
+  <data key="d7">[1210783332, 1210783333]</data>
+  <data key="d8">secondary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Birchstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">21.824690903038274</data>
+  <data key="d20">LINESTRING (8.5378091 47.411874, 8.5378244 47.4117645, 8.537831 47.4117289, 8.5378392 47.4116788)</data>
+</edge>
+<edge source="60122773" target="1115823643" id="0">
+  <data key="d7">[1041992560, 8105799]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">['excellent', 'good']</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">36.31490374689289</data>
+  <data key="d26">no</data>
+  <data key="d21">lane</data>
+  <data key="d20">LINESTRING (8.5377107 47.4095627, 8.5379187 47.4094978, 8.5379305 47.4094945, 8.5379672 47.4094829, 8.5380321 47.4094624, 8.5381504 47.4094282)</data>
+</edge>
+<edge source="60733909" target="311412169" id="0">
+  <data key="d7">11986801</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">6.5</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">59.84587933155769</data>
+  <data key="d20">LINESTRING (8.5395534 47.4089731, 8.5396498 47.4089364, 8.5396978 47.4089208, 8.5402036 47.4087592, 8.5402688 47.4087384)</data>
+</edge>
+<edge source="60733909" target="5277479164" id="0">
+  <data key="d7">546093812</data>
+  <data key="d24">no</data>
+  <data key="d8">service</data>
+  <data key="d9">1</data>
+  <data key="d10">50</data>
+  <data key="d11">Hofwiesenstrasse</data>
+  <data key="d12">True</data>
+  <data key="d27">3</data>
+  <data key="d15">paved</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">81.42074054080184</data>
+  <data key="d20">LINESTRING (8.5395534 47.4089731, 8.5394109 47.4088526, 8.5392239 47.4086606, 8.5391374 47.4085601, 8.5390454 47.4084532, 8.5389668 47.4083593)</data>
+</edge>
+<edge source="60733909" target="5277479164" id="1">
+  <data key="d7">546093813</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">1</data>
+  <data key="d10">50</data>
+  <data key="d11">Hofwiesenstrasse</data>
+  <data key="d12">True</data>
+  <data key="d27">3.5</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">85.929235575305</data>
+  <data key="d20">LINESTRING (8.5395534 47.4089731, 8.5393489 47.4088875, 8.5391765 47.4087265, 8.5390581 47.4085995, 8.5389708 47.4084823, 8.5389405 47.4084419, 8.5389668 47.4083593)</data>
+</edge>
+<edge source="60733909" target="108191045" id="0">
+  <data key="d7">[1210782587, 368504820, 737675669]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">['2', '3']</data>
+  <data key="d10">50</data>
+  <data key="d11">Hofwiesenstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">85.30543588076594</data>
+  <data key="d23">no</data>
+  <data key="d22">good</data>
+  <data key="d20">LINESTRING (8.5395534 47.4089731, 8.539632 47.4090151, 8.5396587 47.409029, 8.5400074 47.4092194, 8.54017 47.4093158, 8.540425 47.4094634)</data>
+</edge>
+<edge source="60733909" target="148883145" id="0">
+  <data key="d7">[428899014, 1041992559, 1041992562, 561297558, 1210782681]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">['Regensbergbrücke', 'Regensbergstrasse']</data>
+  <data key="d12">False</data>
+  <data key="d23">['no', 'lane']</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">['asphalt', 'concrete:plates']</data>
+  <data key="d22">['excellent', 'good']</data>
+  <data key="d16">yes</data>
+  <data key="d17">[False, True]</data>
+  <data key="d18">105.87044850597194</data>
+  <data key="d27">3.5</data>
+  <data key="d28">yes</data>
+  <data key="d20">LINESTRING (8.5395534 47.4089731, 8.5394518 47.4090015, 8.5393528 47.4090294, 8.5393032 47.4090452, 8.5392422 47.4090665, 8.5391831 47.4090877, 8.5390837 47.4091223, 8.5389864 47.409155, 8.538597 47.4092818, 8.5382858 47.4093854)</data>
+</edge>
+<edge source="73543570" target="3364638962" id="0">
+  <data key="d7">[536823977, 561297487, 28567647]</data>
+  <data key="d8">secondary</data>
+  <data key="d9">['2', '4', '3']</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d26">lane</data>
+  <data key="d21">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">['excellent', 'good']</data>
+  <data key="d16">['24/7', 'yes']</data>
+  <data key="d17">False</data>
+  <data key="d18">278.54448899543524</data>
+  <data key="d13">lane</data>
+  <data key="d23">lane</data>
+  <data key="d20">LINESTRING (8.5415133 47.4140349, 8.5412471 47.4140445, 8.5412205 47.4140442, 8.5411847 47.4140416, 8.5410209 47.4140298, 8.5409271 47.4140157, 8.5408502 47.4140003, 8.5407825 47.413979, 8.5401239 47.4137328, 8.5394353 47.413463, 8.5387402 47.4131964, 8.5386677 47.4131709, 8.5383665 47.4130583, 8.5382019 47.4130026)</data>
+</edge>
+<edge source="78206053" target="10857644778" id="0">
+  <data key="d7">28193149</data>
+  <data key="d24">no</data>
+  <data key="d8">service</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Friesstrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">6</data>
+  <data key="d15">paved</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">83.28342070421316</data>
+  <data key="d20">LINESTRING (8.5466386 47.4138115, 8.5465443 47.4137678, 8.5464567 47.4137105, 8.5464153 47.4136782, 8.546396 47.4136554, 8.5463789 47.4136283, 8.5463639 47.4135983, 8.5463467 47.4135635, 8.5463287 47.4135236, 8.5462785 47.4134129, 8.5461886 47.4132042, 8.5461784 47.413181, 8.5461736 47.413158)</data>
+</edge>
+<edge source="78206053" target="385184791" id="0">
+  <data key="d7">[28193162, 549175732, 775871916]</data>
+  <data key="d8">secondary</data>
+  <data key="d9">['5', '4']</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">['16', '18.5']</data>
+  <data key="d26">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">82.32223141249149</data>
+  <data key="d21">no</data>
+  <data key="d20">LINESTRING (8.5466386 47.4138115, 8.5463319 47.4137933, 8.5462742 47.4137943, 8.546129 47.4137968, 8.5458959 47.4138126, 8.5457438 47.4138251, 8.5456847 47.41383, 8.5455498 47.4138426)</data>
+</edge>
+<edge source="78206053" target="8538315054" id="0">
+  <data key="d7">33689035</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Friesstrasse</data>
+  <data key="d12">True</data>
+  <data key="d19">4</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">57.368747751060624</data>
+  <data key="d20">LINESTRING (8.5466386 47.4138115, 8.5466577 47.4138859, 8.5466712 47.4139704, 8.5466809 47.4140676, 8.54668 47.4143256)</data>
+</edge>
+<edge source="78206053" target="2734047660" id="0">
+  <data key="d7">268045040</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">6</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">48.77577298366275</data>
+  <data key="d20">LINESTRING (8.5466386 47.4138115, 8.5468202 47.4138311, 8.5468886 47.4138361, 8.5472818 47.4138651)</data>
+</edge>
+<edge source="92572026" target="385184791" id="0">
+  <data key="d7">497887654</data>
+  <data key="d8">secondary</data>
+  <data key="d9">4</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d13">no</data>
+  <data key="d14">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">9.717494050369734</data>
+</edge>
+<edge source="92572026" target="1702655654" id="0">
+  <data key="d7">549175731</data>
+  <data key="d8">primary</data>
+  <data key="d9">1</data>
+  <data key="d10">50</data>
+  <data key="d11">Schaffhauserstrasse</data>
+  <data key="d12">True</data>
+  <data key="d19">4</data>
+  <data key="d27">3.5</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">9.600399926254436</data>
+</edge>
+<edge source="92572026" target="2055665881" id="0">
+  <data key="d7">1137249231</data>
+  <data key="d8">secondary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">22.175157725809758</data>
+  <data key="d20">LINESTRING (8.5454219 47.4138547, 8.5453311 47.4138585, 8.5452527 47.4138639, 8.5451281 47.41387)</data>
+</edge>
+<edge source="92575897" target="5109499517" id="0">
+  <data key="d7">1137249234</data>
+  <data key="d8">primary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Schaffhauserstrasse</data>
+  <data key="d12">True</data>
+  <data key="d19">4</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">84.05841085598387</data>
+  <data key="d20">LINESTRING (8.5455168 47.4149687, 8.5455228 47.4148579, 8.5455266 47.4147261, 8.5455282 47.4146504, 8.5455163 47.4145151, 8.545488 47.4142137)</data>
+</edge>
+<edge source="94899700" target="103035390" id="0">
+  <data key="d7">563803491</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Ringstrasse</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">119.39243888397638</data>
+  <data key="d20">LINESTRING (8.5408922 47.404344, 8.5409471 47.4042972, 8.5411032 47.4041643, 8.5413016 47.4039745, 8.5413344 47.4039423, 8.5413606 47.4039127, 8.5417259 47.4035005, 8.5417691 47.4034511)</data>
+</edge>
+<edge source="101372813" target="101372814" id="0">
+  <data key="d7">12092017</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Aehrenweg</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">159.88251834526787</data>
+  <data key="d20">LINESTRING (8.5350067 47.4089999, 8.5337402 47.4092288, 8.5333286 47.4093036, 8.533067 47.4093507, 8.5329795 47.4093667, 8.5329541 47.4093711)</data>
+</edge>
+<edge source="101372814" target="109497485" id="0">
+  <data key="d7">561809525</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Goldregenweg</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">40.75534157570024</data>
+</edge>
+<edge source="101372814" target="101372815" id="0">
+  <data key="d7">11971718</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Goldregenweg</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">186.3851554384379</data>
+  <data key="d20">LINESTRING (8.5329541 47.4093711, 8.5329191 47.4092831, 8.5328305 47.4090606, 8.5326681 47.4086525, 8.5325515 47.4083987, 8.5324139 47.4081799, 8.5323307 47.4080626, 8.5322396 47.4079342, 8.5321399 47.4077937)</data>
+</edge>
+<edge source="101372814" target="101372813" id="0">
+  <data key="d7">12092017</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Aehrenweg</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">159.88251834526787</data>
+  <data key="d20">LINESTRING (8.5329541 47.4093711, 8.5329795 47.4093667, 8.533067 47.4093507, 8.5333286 47.4093036, 8.5337402 47.4092288, 8.5350067 47.4089999)</data>
+</edge>
+<edge source="101372815" target="101372814" id="0">
+  <data key="d7">11971718</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Goldregenweg</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">186.3851554384379</data>
+  <data key="d20">LINESTRING (8.5321399 47.4077937, 8.5322396 47.4079342, 8.5323307 47.4080626, 8.5324139 47.4081799, 8.5325515 47.4083987, 8.5326681 47.4086525, 8.5328305 47.4090606, 8.5329191 47.4092831, 8.5329541 47.4093711)</data>
+</edge>
+<edge source="101376152" target="4186942802" id="0">
+  <data key="d7">[273650840, 1198933721]</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Schulstrasse</data>
+  <data key="d12">True</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">79.99197480526887</data>
+  <data key="d26">opposite_lane</data>
+  <data key="d21">no</data>
+  <data key="d20">LINESTRING (8.544394 47.4088501, 8.5443593 47.4089252, 8.5441553 47.4093992, 8.5441533 47.4094328, 8.5441673 47.4094636, 8.5441851 47.4094856, 8.5442305 47.4095325)</data>
+</edge>
+<edge source="101376152" target="12785332942" id="0">
+  <data key="d7">[504254096, 1198933720]</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Baumackerstrasse</data>
+  <data key="d12">True</data>
+  <data key="d23">opposite_lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">34.4332952227569</data>
+  <data key="d26">opposite_lane</data>
+  <data key="d21">no</data>
+  <data key="d20">LINESTRING (8.544394 47.4088501, 8.544296 47.4088914, 8.5440055 47.4090137)</data>
+</edge>
+<edge source="103035202" target="103035203" id="0">
+  <data key="d7">51272200</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Schürbungert</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">60.46610355438698</data>
+</edge>
+<edge source="103035203" target="103035202" id="0">
+  <data key="d7">51272200</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Schürbungert</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">60.46610355438698</data>
+</edge>
+<edge source="103035203" target="8009271458" id="0">
+  <data key="d7">11987374</data>
+  <data key="d8">living_street</data>
+  <data key="d10">20</data>
+  <data key="d11">Langfurren</data>
+  <data key="d12">True</data>
+  <data key="d13">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">193.68548459972578</data>
+  <data key="d20">LINESTRING (8.5410504 47.4029825, 8.5412043 47.4028807, 8.541326 47.4027749, 8.5418527 47.4023166, 8.5421455 47.4020712, 8.5424858 47.4018342, 8.5426523 47.401721, 8.5427355 47.4016702)</data>
+</edge>
+<edge source="103035203" target="103035390" id="0">
+  <data key="d7">51272200</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Schürbungert</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">76.62064875597802</data>
+  <data key="d20">LINESTRING (8.5410504 47.4029825, 8.5411581 47.403117, 8.5412132 47.4031665, 8.5412278 47.4031797, 8.5413779 47.4032774, 8.5417691 47.4034511)</data>
+</edge>
+<edge source="103035390" target="103035203" id="0">
+  <data key="d7">51272200</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Schürbungert</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">76.62064875597802</data>
+  <data key="d20">LINESTRING (8.5417691 47.4034511, 8.5413779 47.4032774, 8.5412278 47.4031797, 8.5412132 47.4031665, 8.5411581 47.403117, 8.5410504 47.4029825)</data>
+</edge>
+<edge source="103035390" target="108188703" id="0">
+  <data key="d7">113568247</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Ringstrasse</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">111.97527367699881</data>
+  <data key="d20">LINESTRING (8.5417691 47.4034511, 8.5419476 47.4032547, 8.5421981 47.4030364, 8.542458 47.4028531, 8.5427312 47.4026909)</data>
+</edge>
+<edge source="103035390" target="94899700" id="0">
+  <data key="d7">563803491</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Ringstrasse</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">119.39243888397638</data>
+  <data key="d20">LINESTRING (8.5417691 47.4034511, 8.5417259 47.4035005, 8.5413606 47.4039127, 8.5413344 47.4039423, 8.5413016 47.4039745, 8.5411032 47.4041643, 8.5409471 47.4042972, 8.5408922 47.404344)</data>
+</edge>
+<edge source="103065674" target="109497485" id="0">
+  <data key="d7">561809525</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Goldregenweg</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">73.27644856533843</data>
+  <data key="d20">LINESTRING (8.5333483 47.4103613, 8.5333233 47.4102985, 8.5332153 47.4100312, 8.533118 47.4097828, 8.533095 47.409725)</data>
+</edge>
+<edge source="107120442" target="695544023" id="0">
+  <data key="d7">122305198</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Herzogenmühlestrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">22.564278031753116</data>
+</edge>
+<edge source="107120442" target="1567061807" id="0">
+  <data key="d7">122305198</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Herzogenmühlestrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">206.04299088858153</data>
+  <data key="d20">LINESTRING (8.5730273 47.406175, 8.5729359 47.4065678, 8.5728143 47.4070169, 8.5727865 47.4071319, 8.5727722 47.4071911, 8.5727469 47.4072757, 8.572685 47.407545, 8.5726522 47.4076739, 8.5725673 47.4080015)</data>
+</edge>
+<edge source="107120442" target="145868442" id="0">
+  <data key="d7">572011142</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Glattstegweg</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">120.29276162726492</data>
+  <data key="d20">LINESTRING (8.5730273 47.406175, 8.5731762 47.4061964, 8.573242 47.4062241, 8.5733274 47.4063115, 8.5734491 47.4064225, 8.5735343 47.4064796, 8.5736752 47.4066269, 8.5737452 47.4067163, 8.5737742 47.4067819, 8.5738409 47.4069064, 8.5738841 47.4069461, 8.5739245 47.4070163)</data>
+</edge>
+<edge source="108188703" target="103035390" id="0">
+  <data key="d7">113568247</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Ringstrasse</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">111.97527367699881</data>
+  <data key="d20">LINESTRING (8.5427312 47.4026909, 8.542458 47.4028531, 8.5421981 47.4030364, 8.5419476 47.4032547, 8.5417691 47.4034511)</data>
+</edge>
+<edge source="108188703" target="108188704" id="0">
+  <data key="d7">[564738749, 11986910]</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Malvenstrasse</data>
+  <data key="d12">True</data>
+  <data key="d13">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">81.67910135405393</data>
+  <data key="d23">opposite</data>
+  <data key="d20">LINESTRING (8.5427312 47.4026909, 8.5427834 47.4027379, 8.5432815 47.4031864, 8.5433924 47.4032731)</data>
+</edge>
+<edge source="108188704" target="5440398828" id="0">
+  <data key="d7">[564738746, 13870842, 564738741]</data>
+  <data key="d8">['residential', 'service']</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Eschenweg</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">['no', 'yes']</data>
+  <data key="d17">False</data>
+  <data key="d18">128.11469214243562</data>
+  <data key="d29">driveway</data>
+  <data key="d20">LINESTRING (8.5433924 47.4032731, 8.5432079 47.4033172, 8.5430615 47.4033639, 8.5429277 47.4034243, 8.5427406 47.4035377, 8.54244 47.4037469, 8.5423547 47.4038327, 8.5422905 47.4039327, 8.5422466 47.403945, 8.5421527 47.4040155)</data>
+</edge>
+<edge source="108190107" target="5488472082" id="0">
+  <data key="d7">762115122</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">5.261116669667191</data>
+</edge>
+<edge source="108190107" target="251228621" id="0">
+  <data key="d7">11391981</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Gubelhangstrasse</data>
+  <data key="d12">True</data>
+  <data key="d26">opposite_lane</data>
+  <data key="d21">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">60.39193218810249</data>
+  <data key="d20">LINESTRING (8.5438878 47.4096717, 8.543835 47.4096231, 8.54342 47.409296, 8.5433726 47.4092555)</data>
+</edge>
+<edge source="108190107" target="108190383" id="0">
+  <data key="d7">762115123</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">20.24528796116992</data>
+  <data key="d20">LINESTRING (8.5438878 47.4096717, 8.5439789 47.4096346, 8.544119 47.4095786)</data>
+</edge>
+<edge source="108190383" target="4186942802" id="0">
+  <data key="d7">443206642</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">9.832511004627408</data>
+</edge>
+<edge source="108190383" target="109434662" id="0">
+  <data key="d7">42729362</data>
+  <data key="d8">living_street</data>
+  <data key="d10">20</data>
+  <data key="d11">Querstrasse</data>
+  <data key="d12">False</data>
+  <data key="d14">yes</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">40.784873308417446</data>
+  <data key="d20">LINESTRING (8.544119 47.4095786, 8.5441636 47.4096221, 8.5442792 47.4096656, 8.5445907 47.4097423)</data>
+</edge>
+<edge source="108190383" target="108190107" id="0">
+  <data key="d7">762115123</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">20.24528796116992</data>
+  <data key="d20">LINESTRING (8.544119 47.4095786, 8.5439789 47.4096346, 8.5438878 47.4096717)</data>
+</edge>
+<edge source="108191045" target="2184891282" id="0">
+  <data key="d7">368504820</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Hofwiesenstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">80.84068238436525</data>
+</edge>
+<edge source="108191045" target="1023304230" id="0">
+  <data key="d7">131494896</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Gubelstrasse</data>
+  <data key="d12">True</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">84.11006900940538</data>
+  <data key="d20">LINESTRING (8.540425 47.4094634, 8.5404918 47.4094485, 8.5406464 47.4094088, 8.5414712 47.4091973)</data>
+</edge>
+<edge source="108191045" target="60733909" id="0">
+  <data key="d7">[1210782587, 368504820, 737675669]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">['2', '3']</data>
+  <data key="d10">50</data>
+  <data key="d11">Hofwiesenstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">85.30543588076593</data>
+  <data key="d20">LINESTRING (8.540425 47.4094634, 8.54017 47.4093158, 8.5400074 47.4092194, 8.5396587 47.409029, 8.539632 47.4090151, 8.5395534 47.4089731)</data>
+</edge>
+<edge source="108220523" target="108221043" id="0">
+  <data key="d7">576429034</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d26">lane</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">28.713707681357555</data>
+</edge>
+<edge source="108220523" target="4667482641" id="0">
+  <data key="d7">576429034</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d26">lane</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">22.237853529850153</data>
+</edge>
+<edge source="108220523" target="4667482636" id="0">
+  <data key="d7">472554842</data>
+  <data key="d8">service</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">47.321407673170356</data>
+  <data key="d20">LINESTRING (8.5259807 47.4112288, 8.5259253 47.4111889, 8.5255497 47.4109189)</data>
+</edge>
+<edge source="108221043" target="108220523" id="0">
+  <data key="d7">576429034</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d26">lane</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">28.713707681357555</data>
+</edge>
+<edge source="108221043" target="5370500715" id="0">
+  <data key="d7">11988608</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Althoossteig</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">38.02276426708723</data>
+  <data key="d20">LINESTRING (8.5257071 47.4114088, 8.5256632 47.4113817, 8.5256504 47.4113738, 8.5253216 47.4111878)</data>
+</edge>
+<edge source="108221043" target="7643486858" id="0">
+  <data key="d7">[576429034, 28687383]</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d26">lane</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">[False, True]</data>
+  <data key="d18">25.332462690902364</data>
+  <data key="d23">no</data>
+  <data key="d13">no</data>
+  <data key="d20">LINESTRING (8.5257071 47.4114088, 8.5255729 47.4114974, 8.525466 47.4115678)</data>
+</edge>
+<edge source="109434662" target="108190383" id="0">
+  <data key="d7">42729362</data>
+  <data key="d8">living_street</data>
+  <data key="d10">20</data>
+  <data key="d11">Querstrasse</data>
+  <data key="d12">False</data>
+  <data key="d14">yes</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">40.784873308417446</data>
+  <data key="d20">LINESTRING (8.5445907 47.4097423, 8.5442792 47.4096656, 8.5441636 47.4096221, 8.544119 47.4095786)</data>
+</edge>
+<edge source="109497485" target="101372814" id="0">
+  <data key="d7">561809525</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Goldregenweg</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">40.75534157570024</data>
+</edge>
+<edge source="109497485" target="2497683926" id="0">
+  <data key="d7">242256349</data>
+  <data key="d8">service</data>
+  <data key="d11">Jasminweg</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">63.58684790754238</data>
+  <data key="d20">LINESTRING (8.533095 47.409725, 8.5331354 47.4097179, 8.5331478 47.4097157, 8.5334778 47.4096576, 8.5338814 47.4095867, 8.5339128 47.4095811)</data>
+</edge>
+<edge source="109497485" target="103065674" id="0">
+  <data key="d7">561809525</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Goldregenweg</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">73.27644856533841</data>
+  <data key="d20">LINESTRING (8.533095 47.409725, 8.533118 47.4097828, 8.5332153 47.4100312, 8.5333233 47.4102985, 8.5333483 47.4103613)</data>
+</edge>
+<edge source="145868442" target="107120442" id="0">
+  <data key="d7">572011142</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Glattstegweg</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">120.29276162726491</data>
+  <data key="d20">LINESTRING (8.5739245 47.4070163, 8.5738841 47.4069461, 8.5738409 47.4069064, 8.5737742 47.4067819, 8.5737452 47.4067163, 8.5736752 47.4066269, 8.5735343 47.4064796, 8.5734491 47.4064225, 8.5733274 47.4063115, 8.573242 47.4062241, 8.5731762 47.4061964, 8.5730273 47.406175)</data>
+</edge>
+<edge source="148883145" target="1115823643" id="0">
+  <data key="d7">1041992561</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d26">no</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">11.245765805804524</data>
+</edge>
+<edge source="148883145" target="60733909" id="0">
+  <data key="d7">[428899014, 1041992559, 1041992562, 561297558, 1210782681]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">['Regensbergbrücke', 'Regensbergstrasse']</data>
+  <data key="d12">False</data>
+  <data key="d23">['no', 'lane']</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">['asphalt', 'concrete:plates']</data>
+  <data key="d22">['excellent', 'good']</data>
+  <data key="d16">yes</data>
+  <data key="d17">[False, True]</data>
+  <data key="d18">105.87044850597192</data>
+  <data key="d28">yes</data>
+  <data key="d27">3.5</data>
+  <data key="d20">LINESTRING (8.5382858 47.4093854, 8.538597 47.4092818, 8.5389864 47.409155, 8.5390837 47.4091223, 8.5391831 47.4090877, 8.5392422 47.4090665, 8.5393032 47.4090452, 8.5393528 47.4090294, 8.5394518 47.4090015, 8.5395534 47.4089731)</data>
+</edge>
+<edge source="251228621" target="4955708483" id="0">
+  <data key="d7">11391981</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Gubelhangstrasse</data>
+  <data key="d12">True</data>
+  <data key="d26">opposite_lane</data>
+  <data key="d21">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">61.88741805558804</data>
+  <data key="d20">LINESTRING (8.5433726 47.4092555, 8.5433167 47.4092098, 8.5429034 47.4088898, 8.542823 47.4088423)</data>
+</edge>
+<edge source="251228621" target="4408280437" id="0">
+  <data key="d7">148713713</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Baumackerstrasse</data>
+  <data key="d12">True</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">87.9419889607826</data>
+  <data key="d20">LINESTRING (8.5433726 47.4092555, 8.5432861 47.4092708, 8.543258 47.4092763, 8.5426191 47.4094779, 8.5423085 47.4095796)</data>
+</edge>
+<edge source="256333710" target="256333814" id="0">
+  <data key="d7">23659180</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Ruchackerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">96.54749621572245</data>
+  <data key="d20">LINESTRING (8.5270942 47.412913, 8.5269657 47.4128306, 8.5268629 47.4127361, 8.5267924 47.4126347, 8.5264795 47.4121953, 8.5264594 47.4121671)</data>
+</edge>
+<edge source="256333710" target="426976909" id="0">
+  <data key="d7">23659193</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Zelgmatt</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">no</data>
+  <data key="d17">False</data>
+  <data key="d18">129.8128830395666</data>
+  <data key="d20">LINESTRING (8.5270942 47.412913, 8.5278984 47.4122445, 8.5279613 47.4121864, 8.5279761 47.4121376, 8.5279584 47.4119873, 8.5279545 47.4119546)</data>
+</edge>
+<edge source="256333814" target="256333710" id="0">
+  <data key="d7">23659180</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Ruchackerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">96.54749621572245</data>
+  <data key="d20">LINESTRING (8.5264594 47.4121671, 8.5264795 47.4121953, 8.5267924 47.4126347, 8.5268629 47.4127361, 8.5269657 47.4128306, 8.5270942 47.412913)</data>
+</edge>
+<edge source="256333814" target="60120454" id="0">
+  <data key="d7">561809510</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Zelglistrasse</data>
+  <data key="d12">True</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">30.94267366512601</data>
+  <data key="d20">LINESTRING (8.5264594 47.4121671, 8.5261566 47.4122667, 8.5260896 47.4122888)</data>
+</edge>
+<edge source="307742552" target="148883145" id="0">
+  <data key="d7">15090675</data>
+  <data key="d8">living_street</data>
+  <data key="d9">1</data>
+  <data key="d10">20</data>
+  <data key="d11">Oleanderstrasse</data>
+  <data key="d12">True</data>
+  <data key="d27">7</data>
+  <data key="d23">opposite</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">119.47882700287592</data>
+  <data key="d20">LINESTRING (8.5393216 47.4101974, 8.5388269 47.4098278, 8.5383239 47.409436, 8.5382858 47.4093854)</data>
+</edge>
+<edge source="311412169" target="4216834519" id="0">
+  <data key="d7">11986801</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">6.5</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">86.12073164002196</data>
+  <data key="d20">LINESTRING (8.5402688 47.4087384, 8.5403395 47.4087153, 8.5412997 47.4084021)</data>
+</edge>
+<edge source="311412169" target="60733909" id="0">
+  <data key="d7">11986801</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">6.5</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">59.84587933155768</data>
+  <data key="d20">LINESTRING (8.5402688 47.4087384, 8.5402036 47.4087592, 8.5396978 47.4089208, 8.5396498 47.4089364, 8.5395534 47.4089731)</data>
+</edge>
+<edge source="311412169" target="1714475518" id="0">
+  <data key="d7">28354832</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Azurstrasse</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">71.64442255121686</data>
+  <data key="d20">LINESTRING (8.5402688 47.4087384, 8.5402299 47.4086807, 8.5398579 47.4081572)</data>
+</edge>
+<edge source="370130823" target="11685335457" id="0">
+  <data key="d7">124939759</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">1.8259647510681656</data>
+</edge>
+<edge source="370130823" target="11685335457" id="1">
+  <data key="d7">558005600</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">1.8259647510681656</data>
+</edge>
+<edge source="370130823" target="5380840506" id="0">
+  <data key="d7">124939759</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">376.3272100144347</data>
+  <data key="d20">LINESTRING (8.5388609 47.4134639, 8.5384469 47.4134884, 8.5381549 47.4135045, 8.5382326 47.4141532, 8.5382396 47.4142118, 8.5382513 47.414309, 8.5380327 47.4143207, 8.538032 47.4143145, 8.5379329 47.4134548, 8.5379131 47.4131788, 8.5379129 47.4131411, 8.5379175 47.4131246, 8.5379273 47.4131073, 8.5379593 47.4131088, 8.53808 47.4131369, 8.5382364 47.413192, 8.5385483 47.413311, 8.5386019 47.4133311, 8.5386317 47.413343, 8.5386606 47.413354, 8.5388852 47.4134397)</data>
+</edge>
+<edge source="370130823" target="370130884" id="0">
+  <data key="d7">558005600</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">73.86466427084422</data>
+  <data key="d20">LINESTRING (8.5388609 47.4134639, 8.5388881 47.4136927, 8.5388928 47.4137315, 8.5394755 47.4136971)</data>
+</edge>
+<edge source="370130884" target="370130823" id="0">
+  <data key="d7">558005600</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">73.86466427084422</data>
+  <data key="d20">LINESTRING (8.5394755 47.4136971, 8.5388928 47.4137315, 8.5388881 47.4136927, 8.5388609 47.4134639)</data>
+</edge>
+<edge source="385184791" target="92572026" id="0">
+  <data key="d7">497887654</data>
+  <data key="d8">secondary</data>
+  <data key="d9">4</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d13">no</data>
+  <data key="d14">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">9.717494050369734</data>
+</edge>
+<edge source="385184791" target="10857644782" id="0">
+  <data key="d7">497887655</data>
+  <data key="d24">no</data>
+  <data key="d8">service</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Schaffhauserstrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">6</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">87.06926963870183</data>
+  <data key="d20">LINESTRING (8.5455498 47.4138426, 8.5455889 47.4137779, 8.5456403 47.4136922, 8.5457398 47.4135613, 8.545854 47.4134347, 8.5460299 47.4132344, 8.5460979 47.4131546)</data>
+</edge>
+<edge source="385184791" target="78206053" id="0">
+  <data key="d7">[775871916, 549175732, 28193162]</data>
+  <data key="d8">secondary</data>
+  <data key="d9">['5', '4']</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">['16', '18.5']</data>
+  <data key="d26">lane</data>
+  <data key="d21">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">82.32223141249148</data>
+  <data key="d22">excellent</data>
+  <data key="d20">LINESTRING (8.5455498 47.4138426, 8.5456847 47.41383, 8.5457438 47.4138251, 8.5458959 47.4138126, 8.546129 47.4137968, 8.5462742 47.4137943, 8.5463319 47.4137933, 8.5466386 47.4138115)</data>
+</edge>
+<edge source="385184791" target="5109499517" id="0">
+  <data key="d7">1137249235</data>
+  <data key="d24">no</data>
+  <data key="d8">service</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Schaffhauserstrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">41.643828014056034</data>
+  <data key="d20">LINESTRING (8.5455498 47.4138426, 8.5455198 47.4139459, 8.5455146 47.4139954, 8.5455117 47.4140964, 8.5455092 47.4141321, 8.545488 47.4142137)</data>
+</edge>
+<edge source="419866099" target="60029742" id="0">
+  <data key="d7">[329575858, 9347419]</data>
+  <data key="d8">residential</data>
+  <data key="d10">50</data>
+  <data key="d11">Birchstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">['no', 'lane']</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">85.49249656063695</data>
+  <data key="d20">LINESTRING (8.5378692 47.4137013, 8.537824 47.413293, 8.5378063 47.4131334, 8.5377951 47.4130431, 8.5377914 47.4130165, 8.5377791 47.4129349)</data>
+</edge>
+<edge source="426976909" target="256333710" id="0">
+  <data key="d7">23659193</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Zelgmatt</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">no</data>
+  <data key="d17">True</data>
+  <data key="d18">129.8128830395666</data>
+  <data key="d20">LINESTRING (8.5279545 47.4119546, 8.5279584 47.4119873, 8.5279761 47.4121376, 8.5279613 47.4121864, 8.5278984 47.4122445, 8.5270942 47.412913)</data>
+</edge>
+<edge source="426976909" target="256333814" id="0">
+  <data key="d7">561809510</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Zelglistrasse</data>
+  <data key="d12">True</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">115.32331127444716</data>
+  <data key="d20">LINESTRING (8.5279545 47.4119546, 8.5276576 47.4119748, 8.527366 47.4120079, 8.5267766 47.4120932, 8.526607 47.4121276, 8.5264594 47.4121671)</data>
+</edge>
+<edge source="459984795" target="60121168" id="0">
+  <data key="d7">[561297486, 561297485, 38783566]</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">91.19434354162357</data>
+  <data key="d25">building_passage</data>
+  <data key="d20">LINESTRING (8.5366092 47.4117595, 8.5375125 47.4118457, 8.5376558 47.4118566, 8.5376975 47.4118604, 8.5377232 47.4118635, 8.5378091 47.411874)</data>
+</edge>
+<edge source="459984795" target="459985384" id="0">
+  <data key="d7">38783759</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">139.77306461187516</data>
+  <data key="d20">LINESTRING (8.5366092 47.4117595, 8.5364062 47.4128281, 8.5364214 47.412849, 8.5364492 47.4128874, 8.5364651 47.4129094, 8.5364732 47.4129218, 8.5364751 47.4129302, 8.5364967 47.4129956)</data>
+</edge>
+<edge source="459985384" target="60029743" id="0">
+  <data key="d7">536826452</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">16.497332842535336</data>
+</edge>
+<edge source="459985384" target="459984795" id="0">
+  <data key="d7">38783759</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">139.77306461187516</data>
+  <data key="d20">LINESTRING (8.5364967 47.4129956, 8.5364751 47.4129302, 8.5364732 47.4129218, 8.5364651 47.4129094, 8.5364492 47.4128874, 8.5364214 47.412849, 8.5364062 47.4128281, 8.5366092 47.4117595)</data>
+</edge>
+<edge source="459985384" target="60029742" id="0">
+  <data key="d7">[536826452, 28567629]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">['2', '3']</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">96.7698447245744</data>
+  <data key="d21">lane</data>
+  <data key="d20">LINESTRING (8.5364967 47.4129956, 8.5368728 47.412972, 8.537498 47.4129408, 8.5375318 47.4129386, 8.5375659 47.4129364, 8.5377791 47.4129349)</data>
+</edge>
+<edge source="537553767" target="5488472082" id="0">
+  <data key="d7">10595667</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Schulstrasse</data>
+  <data key="d12">True</data>
+  <data key="d26">lane</data>
+  <data key="d21">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">79.00209051441689</data>
+  <data key="d20">LINESTRING (8.5435898 47.410366, 8.5437641 47.410041, 8.5438705 47.409849, 8.543878 47.4097935, 8.5438649 47.4097484, 8.5438279 47.4096961)</data>
+</edge>
+<edge source="537553767" target="4838591611" id="0">
+  <data key="d7">[491775021, 491775022, 491775023]</data>
+  <data key="d8">service</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">62.56093851181785</data>
+  <data key="d24">private</data>
+  <data key="d25">building_passage</data>
+  <data key="d20">LINESTRING (8.5435898 47.410366, 8.5435569 47.4103555, 8.5435215 47.4103407, 8.5431961 47.4102467, 8.5429553 47.4101412, 8.5429282 47.4101246, 8.5428862 47.4100816)</data>
+</edge>
+<edge source="695544021" target="8009171058" id="0">
+  <data key="d7">[161487968, 122305198]</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Herzogenmühlestrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">29.81843103647202</data>
+  <data key="d20">LINESTRING (8.5728791 47.4052203, 8.5729394 47.4054182, 8.5729614 47.4054826)</data>
+</edge>
+<edge source="695544023" target="107120442" id="0">
+  <data key="d7">122305198</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Herzogenmühlestrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">22.564278031753116</data>
+</edge>
+<edge source="695544023" target="8009171065" id="0">
+  <data key="d7">14776466</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Heerenwiesen</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">57.84583663417334</data>
+  <data key="d20">LINESTRING (8.5730574 47.4059731, 8.573192 47.4059773, 8.5732602 47.4059689, 8.5737579 47.4057885)</data>
+</edge>
+<edge source="695544023" target="8009171058" id="0">
+  <data key="d7">122305198</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Herzogenmühlestrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">55.202747353847045</data>
+  <data key="d20">LINESTRING (8.5730574 47.4059731, 8.5730585 47.4058464, 8.5730325 47.4057317, 8.5729614 47.4054826)</data>
+</edge>
+<edge source="935831692" target="30064412" id="0">
+  <data key="d7">412844316</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">14.184561996855484</data>
+</edge>
+<edge source="935831692" target="60120449" id="0">
+  <data key="d7">8041279</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">54.68683839638433</data>
+  <data key="d20">LINESTRING (8.5249936 47.4118673, 8.5251928 47.4118296, 8.5252491 47.4118195, 8.5256008 47.4117564, 8.5256956 47.4117401)</data>
+</edge>
+<edge source="935831692" target="935831697" id="0">
+  <data key="d7">80204529</data>
+  <data key="d8">service</data>
+  <data key="d12">True</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d15">asphalt</data>
+  <data key="d17">False</data>
+  <data key="d18">115.20813919003513</data>
+  <data key="d20">LINESTRING (8.5249936 47.4118673, 8.5249735 47.4119791, 8.5249641 47.4120314, 8.5240923 47.412398, 8.5240628 47.4123789, 8.523972 47.4123295, 8.5238916 47.4122859)</data>
+</edge>
+<edge source="1023032052" target="4955708483" id="0">
+  <data key="d7">379514076</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Gubelhangstrasse</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">20.639729226926633</data>
+  <data key="d20">LINESTRING (8.5426365 47.4087062, 8.5427442 47.4087848, 8.542823 47.4088423)</data>
+</edge>
+<edge source="1023304230" target="4955708483" id="0">
+  <data key="d7">131494896</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Gubelstrasse</data>
+  <data key="d12">True</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">109.14954768680019</data>
+  <data key="d20">LINESTRING (8.5414712 47.4091973, 8.5415546 47.4091759, 8.5426969 47.408883, 8.5427344 47.4088713, 8.542823 47.4088423)</data>
+</edge>
+<edge source="1115823643" target="148883145" id="0">
+  <data key="d7">1041992561</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d26">no</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">11.245765805804524</data>
+</edge>
+<edge source="1115823643" target="2052812467" id="0">
+  <data key="d7">96261487</data>
+  <data key="d8">service</data>
+  <data key="d15">asphalt</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">102.04324022642028</data>
+  <data key="d20">LINESTRING (8.5381504 47.4094282, 8.5381128 47.4093724, 8.537761 47.4088622, 8.5374348 47.4089498, 8.5373581 47.4089704)</data>
+</edge>
+<edge source="1115823643" target="60122773" id="0">
+  <data key="d7">[1041992560, 8105799]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d26">no</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">['excellent', 'good']</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">36.31490374689289</data>
+  <data key="d13">no</data>
+  <data key="d20">LINESTRING (8.5381504 47.4094282, 8.5380321 47.4094624, 8.5379672 47.4094829, 8.5379305 47.4094945, 8.5379187 47.4094978, 8.5377107 47.4095627)</data>
+</edge>
+<edge source="1269193169" target="4186942802" id="0">
+  <data key="d7">[194211946, 1210733820, 1210709733]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">40.48974974295105</data>
+  <data key="d20">LINESTRING (8.5446895 47.4093425, 8.5444596 47.4094375, 8.5443016 47.4095026, 8.5442305 47.4095325)</data>
+</edge>
+<edge source="1567061807" target="107120442" id="0">
+  <data key="d7">122305198</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Herzogenmühlestrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">206.0429908885815</data>
+  <data key="d20">LINESTRING (8.5725673 47.4080015, 8.5726522 47.4076739, 8.572685 47.407545, 8.5727469 47.4072757, 8.5727722 47.4071911, 8.5727865 47.4071319, 8.5728143 47.4070169, 8.5729359 47.4065678, 8.5730273 47.406175)</data>
+</edge>
+<edge source="1702655654" target="8546868327" id="0">
+  <data key="d7">13775030</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Wattstrasse</data>
+  <data key="d12">True</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">30.03941563827201</data>
+  <data key="d20">LINESTRING (8.5454532 47.413771, 8.5454261 47.4136422, 8.5454137 47.4135024)</data>
+</edge>
+<edge source="1702655654" target="10857644783" id="0">
+  <data key="d7">549175731</data>
+  <data key="d8">primary</data>
+  <data key="d9">1</data>
+  <data key="d10">50</data>
+  <data key="d11">Schaffhauserstrasse</data>
+  <data key="d12">True</data>
+  <data key="d19">4</data>
+  <data key="d27">3.5</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">84.05007120732468</data>
+  <data key="d20">LINESTRING (8.5454532 47.413771, 8.5455441 47.413654, 8.5459486 47.4132033, 8.546022 47.4131207)</data>
+</edge>
+<edge source="1714475518" target="10114138494" id="0">
+  <data key="d7">159337834</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">28.459938010048155</data>
+</edge>
+<edge source="1714475518" target="311412169" id="0">
+  <data key="d7">28354832</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Azurstrasse</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">71.64442255121686</data>
+  <data key="d20">LINESTRING (8.5398579 47.4081572, 8.5402299 47.4086807, 8.5402688 47.4087384)</data>
+</edge>
+<edge source="2052812467" target="1115823643" id="0">
+  <data key="d7">96261487</data>
+  <data key="d8">service</data>
+  <data key="d15">asphalt</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">102.04324022642028</data>
+  <data key="d20">LINESTRING (8.5373581 47.4089704, 8.5374348 47.4089498, 8.537761 47.4088622, 8.5381128 47.4093724, 8.5381504 47.4094282)</data>
+</edge>
+<edge source="2055665881" target="8538355830" id="0">
+  <data key="d7">142304936</data>
+  <data key="d8">secondary</data>
+  <data key="d9">4</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">intermediate</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">47.25051932357053</data>
+  <data key="d20">LINESTRING (8.5451281 47.41387, 8.5449436 47.4138807, 8.5445022 47.4139043)</data>
+</edge>
+<edge source="2055665881" target="8538355821" id="0">
+  <data key="d7">919312963</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">43.98572028844151</data>
+  <data key="d20">LINESTRING (8.5451281 47.41387, 8.545119 47.4138059, 8.5450949 47.4136156, 8.5448886 47.4136283)</data>
+</edge>
+<edge source="2055665881" target="92572026" id="0">
+  <data key="d7">1137249231</data>
+  <data key="d8">secondary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">22.175157725809758</data>
+  <data key="d20">LINESTRING (8.5451281 47.41387, 8.5452527 47.4138639, 8.5453311 47.4138585, 8.5454219 47.4138547)</data>
+</edge>
+<edge source="2184891282" target="108191045" id="0">
+  <data key="d7">368504820</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Hofwiesenstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">80.84068238436525</data>
+</edge>
+<edge source="2497683926" target="109497485" id="0">
+  <data key="d7">242256349</data>
+  <data key="d8">service</data>
+  <data key="d11">Jasminweg</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">63.58684790754238</data>
+  <data key="d20">LINESTRING (8.5339128 47.4095811, 8.5338814 47.4095867, 8.5334778 47.4096576, 8.5331478 47.4097157, 8.5331354 47.4097179, 8.533095 47.409725)</data>
+</edge>
+<edge source="2734047660" target="2734047661" id="0">
+  <data key="d7">268045039</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">6</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">18</data>
+  <data key="d26">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">31.677687299643242</data>
+</edge>
+<edge source="2734047660" target="78206053" id="0">
+  <data key="d7">268045040</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">6</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">48.77577298366275</data>
+  <data key="d20">LINESTRING (8.5472818 47.4138651, 8.5468886 47.4138361, 8.5468202 47.4138311, 8.5466386 47.4138115)</data>
+</edge>
+<edge source="2734047660" target="8538315129" id="0">
+  <data key="d7">919307615</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">18.451729496443814</data>
+  <data key="d20">LINESTRING (8.5472818 47.4138651, 8.5472795 47.4139677, 8.5472823 47.414031)</data>
+</edge>
+<edge source="2734047661" target="2734047660" id="0">
+  <data key="d7">268045039</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">6</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">18</data>
+  <data key="d26">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">31.677687299643242</data>
+</edge>
+<edge source="2734047661" target="4426744447" id="0">
+  <data key="d7">536756111</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">6</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">18</data>
+  <data key="d26">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">30.588790729144883</data>
+</edge>
+<edge source="2734047661" target="8175436446" id="0">
+  <data key="d7">12162574</data>
+  <data key="d8">unclassified</data>
+  <data key="d11">Hüttisstrasse</data>
+  <data key="d13">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">18.626688271455418</data>
+  <data key="d20">LINESTRING (8.5476986 47.4139052, 8.5477362 47.4137537, 8.5477396 47.41374)</data>
+</edge>
+<edge source="3356542874" target="10114138494" id="0">
+  <data key="d7">159337834</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">32.679482577848134</data>
+  <data key="d20">LINESTRING (8.5395072 47.4084861, 8.5393833 47.4083119, 8.5395172 47.4082683)</data>
+</edge>
+<edge source="3364638957" target="3364638962" id="0">
+  <data key="d7">329575857</data>
+  <data key="d8">service</data>
+  <data key="d9">1</data>
+  <data key="d12">True</data>
+  <data key="d29">driveway</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">68.92417699449581</data>
+  <data key="d20">LINESTRING (8.5377238 47.4125346, 8.5379772 47.4126345, 8.5380144 47.4127153, 8.5380589 47.4127707, 8.5381032 47.4128258, 8.5382227 47.4129079, 8.5382019 47.4130026)</data>
+</edge>
+<edge source="3364638957" target="60029742" id="0">
+  <data key="d7">536826949</data>
+  <data key="d8">secondary</data>
+  <data key="d9">4</data>
+  <data key="d10">50</data>
+  <data key="d11">Birchstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">45.08133019110871</data>
+  <data key="d20">LINESTRING (8.5377238 47.4125346, 8.5377291 47.4127417, 8.5377306 47.4127867, 8.537739 47.4128617, 8.5377791 47.4129349)</data>
+</edge>
+<edge source="3364638957" target="60121168" id="0">
+  <data key="d7">[1210783364, 536826949, 536836676]</data>
+  <data key="d8">secondary</data>
+  <data key="d9">['3', '4']</data>
+  <data key="d10">50</data>
+  <data key="d11">Birchstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">73.823570583996</data>
+  <data key="d23">lane</data>
+  <data key="d20">LINESTRING (8.5377238 47.4125346, 8.5377266 47.4123932, 8.537733 47.4122854, 8.5378091 47.411874)</data>
+</edge>
+<edge source="3364638962" target="60029742" id="0">
+  <data key="d7">406734437</data>
+  <data key="d8">secondary</data>
+  <data key="d9">3</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">32.824018814680244</data>
+  <data key="d20">LINESTRING (8.5382019 47.4130026, 8.5380929 47.4129748, 8.5379734 47.412954, 8.53795 47.4129514, 8.5379456 47.412951, 8.5377791 47.4129349)</data>
+</edge>
+<edge source="3364638962" target="73543570" id="0">
+  <data key="d7">[536823977, 28567647, 561297487]</data>
+  <data key="d8">secondary</data>
+  <data key="d9">['2', '3', '4']</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">['excellent', 'good']</data>
+  <data key="d16">['24/7', 'yes']</data>
+  <data key="d17">True</data>
+  <data key="d18">278.5444889954352</data>
+  <data key="d13">lane</data>
+  <data key="d26">lane</data>
+  <data key="d21">no</data>
+  <data key="d20">LINESTRING (8.5382019 47.4130026, 8.5383665 47.4130583, 8.5386677 47.4131709, 8.5387402 47.4131964, 8.5394353 47.413463, 8.5401239 47.4137328, 8.5407825 47.413979, 8.5408502 47.4140003, 8.5409271 47.4140157, 8.5410209 47.4140298, 8.5411847 47.4140416, 8.5412205 47.4140442, 8.5412471 47.4140445, 8.5415133 47.4140349)</data>
+</edge>
+<edge source="4141732017" target="7643486856" id="0">
+  <data key="d7">28687383</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d23">no</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">9.03792502357291</data>
+</edge>
+<edge source="4141732017" target="30064412" id="0">
+  <data key="d7">412844317</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">18.373668010539753</data>
+</edge>
+<edge source="4141732017" target="935831692" id="0">
+  <data key="d7">412844318</data>
+  <data key="d8">service</data>
+  <data key="d12">True</data>
+  <data key="d15">asphalt</data>
+  <data key="d17">False</data>
+  <data key="d18">7.281104257865579</data>
+</edge>
+<edge source="4181840581" target="8175436446" id="0">
+  <data key="d7">12162574</data>
+  <data key="d8">unclassified</data>
+  <data key="d11">Hüttisstrasse</data>
+  <data key="d13">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">37.98898400284342</data>
+  <data key="d20">LINESTRING (8.547863 47.4134124, 8.5478465 47.413422, 8.5478373 47.4134312, 8.5478233 47.41348, 8.5477396 47.41374)</data>
+</edge>
+<edge source="4186942802" target="108190383" id="0">
+  <data key="d7">443206642</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">9.832511004627408</data>
+</edge>
+<edge source="4186942802" target="1269193169" id="0">
+  <data key="d7">[194211946, 1210733820, 1210709733]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">40.48974974295105</data>
+  <data key="d20">LINESTRING (8.5442305 47.4095325, 8.5443016 47.4095026, 8.5444596 47.4094375, 8.5446895 47.4093425)</data>
+</edge>
+<edge source="4216834519" target="311412169" id="0">
+  <data key="d7">11986801</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">6.5</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">86.12073164002196</data>
+  <data key="d20">LINESTRING (8.5412997 47.4084021, 8.5403395 47.4087153, 8.5402688 47.4087384)</data>
+</edge>
+<edge source="4408280437" target="4408280449" id="0">
+  <data key="d7">[504419633, 443206636, 443206638]</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d15">paved</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">30.368358827732468</data>
+  <data key="d25">yes</data>
+  <data key="d20">LINESTRING (8.5423085 47.4095796, 8.542357 47.4096468, 8.5423675 47.4096613, 8.5424584 47.4097914, 8.5424849 47.4098252)</data>
+</edge>
+<edge source="4408280449" target="4945854899" id="0">
+  <data key="d7">443206639</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d15">paved</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">43.894068658191685</data>
+</edge>
+<edge source="4408280449" target="4408280437" id="0">
+  <data key="d7">[504419633, 443206636, 443206638]</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d15">paved</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">30.368358827732465</data>
+  <data key="d25">yes</data>
+  <data key="d20">LINESTRING (8.5424849 47.4098252, 8.5424584 47.4097914, 8.5423675 47.4096613, 8.542357 47.4096468, 8.5423085 47.4095796)</data>
+</edge>
+<edge source="4426744447" target="2734047661" id="0">
+  <data key="d7">536756111</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">6</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">18</data>
+  <data key="d26">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">30.588790729144883</data>
+</edge>
+<edge source="4564765549" target="8009171065" id="0">
+  <data key="d7">14776466</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Heerenwiesen</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">15.20541184433859</data>
+</edge>
+<edge source="4667482636" target="108220523" id="0">
+  <data key="d7">472554842</data>
+  <data key="d8">service</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">47.321407673170356</data>
+  <data key="d20">LINESTRING (8.5255497 47.4109189, 8.5259253 47.4111889, 8.5259807 47.4112288)</data>
+</edge>
+<edge source="4667482641" target="108220523" id="0">
+  <data key="d7">576429034</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d26">lane</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">22.237853529850153</data>
+</edge>
+<edge source="4838591611" target="5488472082" id="0">
+  <data key="d7">[443206640, 608360048, 1210733821]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">82.83007707895814</data>
+  <data key="d23">no</data>
+  <data key="d20">LINESTRING (8.5428862 47.4100816, 8.5434845 47.409836, 8.5435619 47.4098045, 8.5436842 47.4097582, 8.5438279 47.4096961)</data>
+</edge>
+<edge source="4838591611" target="537553767" id="0">
+  <data key="d7">[491775021, 491775022, 491775023]</data>
+  <data key="d8">service</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">62.56093851181785</data>
+  <data key="d24">private</data>
+  <data key="d25">building_passage</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d20">LINESTRING (8.5428862 47.4100816, 8.5429282 47.4101246, 8.5429553 47.4101412, 8.5431961 47.4102467, 8.5435215 47.4103407, 8.5435569 47.4103555, 8.5435898 47.410366)</data>
+</edge>
+<edge source="4945854899" target="4408280449" id="0">
+  <data key="d7">443206639</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d15">paved</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">43.894068658191685</data>
+</edge>
+<edge source="4955708483" target="1023031900" id="0">
+  <data key="d7">379514075</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Gubelstrasse</data>
+  <data key="d12">True</data>
+  <data key="d26">opposite</data>
+  <data key="d21">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">60.37877493973059</data>
+  <data key="d20">LINESTRING (8.542823 47.4088423, 8.542932 47.4088086, 8.5435226 47.4085771)</data>
+</edge>
+<edge source="4955708483" target="1023032052" id="0">
+  <data key="d7">379514076</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Gubelhangstrasse</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">20.639729226926633</data>
+  <data key="d20">LINESTRING (8.542823 47.4088423, 8.5427442 47.4087848, 8.5426365 47.4087062)</data>
+</edge>
+<edge source="5109499517" target="92572026" id="0">
+  <data key="d7">1137249233</data>
+  <data key="d8">primary</data>
+  <data key="d9">1</data>
+  <data key="d10">50</data>
+  <data key="d11">Schaffhauserstrasse</data>
+  <data key="d12">True</data>
+  <data key="d19">4</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">40.34267333232515</data>
+  <data key="d20">LINESTRING (8.545488 47.4142137, 8.5454592 47.4141302, 8.5454311 47.4139851, 8.5454239 47.4139476, 8.5454219 47.4138547)</data>
+</edge>
+<edge source="5109499517" target="385184791" id="0">
+  <data key="d7">1137249235</data>
+  <data key="d24">no</data>
+  <data key="d8">service</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Schaffhauserstrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">41.64382801405604</data>
+  <data key="d20">LINESTRING (8.545488 47.4142137, 8.5455092 47.4141321, 8.5455117 47.4140964, 8.5455146 47.4139954, 8.5455198 47.4139459, 8.5455498 47.4138426)</data>
+</edge>
+<edge source="5277479164" target="60733909" id="0">
+  <data key="d7">546093814</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">1</data>
+  <data key="d10">50</data>
+  <data key="d11">Hofwiesenstrasse</data>
+  <data key="d12">True</data>
+  <data key="d27">3</data>
+  <data key="d21">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">82.35485392377056</data>
+  <data key="d20">LINESTRING (8.5389668 47.4083593, 8.539036 47.4083847, 8.5391026 47.4084333, 8.5393367 47.4087178, 8.5393931 47.4087724, 8.5394524 47.4088297, 8.5395019 47.408899, 8.5395534 47.4089731)</data>
+</edge>
+<edge source="5370500715" target="108221043" id="0">
+  <data key="d7">11988608</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Althoossteig</data>
+  <data key="d12">False</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">38.02276426708723</data>
+  <data key="d20">LINESTRING (8.5253216 47.4111878, 8.5256504 47.4113738, 8.5256632 47.4113817, 8.5257071 47.4114088)</data>
+</edge>
+<edge source="5380840505" target="5380840506" id="0">
+  <data key="d7">558005600</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">52.89260241651174</data>
+  <data key="d20">LINESTRING (8.5394966 47.4136744, 8.5393435 47.4136159, 8.539316 47.4136054, 8.5392843 47.4135928, 8.5390844 47.4135167, 8.5388852 47.4134397)</data>
+</edge>
+<edge source="5380840506" target="11685335457" id="0">
+  <data key="d7">124939759</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">1.427409217183689</data>
+</edge>
+<edge source="5380840506" target="11685335457" id="1">
+  <data key="d7">558005600</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">1.427409217183689</data>
+</edge>
+<edge source="5380840506" target="370130823" id="0">
+  <data key="d7">124939759</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">376.3272100144346</data>
+  <data key="d20">LINESTRING (8.5388852 47.4134397, 8.5386606 47.413354, 8.5386317 47.413343, 8.5386019 47.4133311, 8.5385483 47.413311, 8.5382364 47.413192, 8.53808 47.4131369, 8.5379593 47.4131088, 8.5379273 47.4131073, 8.5379175 47.4131246, 8.5379129 47.4131411, 8.5379131 47.4131788, 8.5379329 47.4134548, 8.538032 47.4143145, 8.5380327 47.4143207, 8.5382513 47.414309, 8.5382396 47.4142118, 8.5382326 47.4141532, 8.5381549 47.4135045, 8.5384469 47.4134884, 8.5388609 47.4134639)</data>
+</edge>
+<edge source="5380840506" target="5380840505" id="0">
+  <data key="d7">558005600</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">52.89260241651174</data>
+  <data key="d20">LINESTRING (8.5388852 47.4134397, 8.5390844 47.4135167, 8.5392843 47.4135928, 8.539316 47.4136054, 8.5393435 47.4136159, 8.5394966 47.4136744)</data>
+</edge>
+<edge source="5440398828" target="108188704" id="0">
+  <data key="d7">[564738746, 13870842, 564738741]</data>
+  <data key="d8">['residential', 'service']</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">128.11469214243562</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Eschenweg</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">['no', 'yes']</data>
+  <data key="d20">LINESTRING (8.5421527 47.4040155, 8.5422466 47.403945, 8.5422905 47.4039327, 8.5423547 47.4038327, 8.54244 47.4037469, 8.5427406 47.4035377, 8.5429277 47.4034243, 8.5430615 47.4033639, 8.5432079 47.4033172, 8.5433924 47.4032731)</data>
+</edge>
+<edge source="5488472082" target="108190107" id="0">
+  <data key="d7">762115122</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">5.261116669667191</data>
+</edge>
+<edge source="5488472082" target="4838591611" id="0">
+  <data key="d7">[608360048, 443206640, 1210733821]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">30</data>
+  <data key="d11">Franklinstrasse</data>
+  <data key="d12">False</data>
+  <data key="d23">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">82.83007707895813</data>
+  <data key="d20">LINESTRING (8.5438279 47.4096961, 8.5436842 47.4097582, 8.5435619 47.4098045, 8.5434845 47.409836, 8.5428862 47.4100816)</data>
+</edge>
+<edge source="6672594034" target="6672594037" id="0">
+  <data key="d7">556777354</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Hürststrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">32.21232518634321</data>
+</edge>
+<edge source="6672594035" target="6672594037" id="0">
+  <data key="d7">709795044</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">38.28801814119471</data>
+  <data key="d20">LINESTRING (8.5258449 47.4126916, 8.5259118 47.4126186, 8.5262538 47.4125036)</data>
+</edge>
+<edge source="6672594037" target="6672594034" id="0">
+  <data key="d7">556777354</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Hürststrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">32.21232518634321</data>
+</edge>
+<edge source="6672594037" target="60120454" id="0">
+  <data key="d7">556777354</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Hürststrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">26.89128523287114</data>
+  <data key="d20">LINESTRING (8.5262538 47.4125036, 8.5261284 47.4123396, 8.5260896 47.4122888)</data>
+</edge>
+<edge source="6672594037" target="6672594035" id="0">
+  <data key="d7">709795044</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">38.28801814119471</data>
+  <data key="d20">LINESTRING (8.5262538 47.4125036, 8.5259118 47.4126186, 8.5258449 47.4126916)</data>
+</edge>
+<edge source="7643486856" target="4141732017" id="0">
+  <data key="d7">28687383</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d23">no</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">9.03792502357291</data>
+</edge>
+<edge source="7643486856" target="7643486858" id="0">
+  <data key="d7">28687383</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d23">no</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">34.354949674633986</data>
+  <data key="d20">LINESTRING (8.5251035 47.4117555, 8.5251273 47.4117439, 8.5251781 47.4117187, 8.5252907 47.4116628, 8.5254125 47.4115973, 8.525466 47.4115678)</data>
+</edge>
+<edge source="7643486856" target="7643486858" id="1">
+  <data key="d7">818454829</data>
+  <data key="d8">service</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">49.211771414099566</data>
+  <data key="d20">LINESTRING (8.5251035 47.4117555, 8.5250758 47.4116954, 8.5250667 47.4116614, 8.5250833 47.4116267, 8.5252843 47.4115174, 8.5253266 47.4115212, 8.5253808 47.4115393, 8.525466 47.4115678)</data>
+</edge>
+<edge source="7643486858" target="108221043" id="0">
+  <data key="d7">[576429034, 28687383]</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d23">no</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">[False, True]</data>
+  <data key="d18">25.332462690902364</data>
+  <data key="d26">lane</data>
+  <data key="d21">lane</data>
+  <data key="d22">good</data>
+  <data key="d20">LINESTRING (8.525466 47.4115678, 8.5255729 47.4114974, 8.5257071 47.4114088)</data>
+</edge>
+<edge source="7643486858" target="7643486856" id="0">
+  <data key="d7">28687383</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Wehntalerstrasse</data>
+  <data key="d12">False</data>
+  <data key="d19">17</data>
+  <data key="d23">no</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">34.354949674633986</data>
+  <data key="d20">LINESTRING (8.525466 47.4115678, 8.5254125 47.4115973, 8.5252907 47.4116628, 8.5251781 47.4117187, 8.5251273 47.4117439, 8.5251035 47.4117555)</data>
+</edge>
+<edge source="7643486858" target="7643486856" id="1">
+  <data key="d7">818454829</data>
+  <data key="d8">service</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">49.21177141409956</data>
+  <data key="d20">LINESTRING (8.525466 47.4115678, 8.5253808 47.4115393, 8.5253266 47.4115212, 8.5252843 47.4115174, 8.5250833 47.4116267, 8.5250667 47.4116614, 8.5250758 47.4116954, 8.5251035 47.4117555)</data>
+</edge>
+<edge source="8009171055" target="8009171057" id="0">
+  <data key="d7">859213754</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">intermediate</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">35.34962983408616</data>
+  <data key="d20">LINESTRING (8.5732573 47.4058189, 8.5733975 47.4057853, 8.5736813 47.4056838)</data>
+</edge>
+<edge source="8009171057" target="8009171055" id="0">
+  <data key="d7">859213754</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">intermediate</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">35.34962983408616</data>
+  <data key="d20">LINESTRING (8.5736813 47.4056838, 8.5733975 47.4057853, 8.5732573 47.4058189)</data>
+</edge>
+<edge source="8009171057" target="8009171058" id="0">
+  <data key="d7">[859213755, 940385510]</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d15">asphalt</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">67.64290220591039</data>
+  <data key="d20">LINESTRING (8.5736813 47.4056838, 8.5735906 47.4055597, 8.573496 47.4055089, 8.5733914 47.4054726, 8.5733505 47.4054699, 8.5733036 47.4054381, 8.5730322 47.4054738, 8.5729614 47.4054826)</data>
+</edge>
+<edge source="8009171057" target="8009171065" id="0">
+  <data key="d7">859213755</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d15">asphalt</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">12.99118229770688</data>
+  <data key="d20">LINESTRING (8.5736813 47.4056838, 8.5737341 47.4057559, 8.5737579 47.4057885)</data>
+</edge>
+<edge source="8009171058" target="695544023" id="0">
+  <data key="d7">122305198</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Herzogenmühlestrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">55.202747353847045</data>
+  <data key="d20">LINESTRING (8.5729614 47.4054826, 8.5730325 47.4057317, 8.5730585 47.4058464, 8.5730574 47.4059731)</data>
+</edge>
+<edge source="8009171058" target="695544021" id="0">
+  <data key="d7">[161487968, 122305198]</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Herzogenmühlestrasse</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">29.81843103647202</data>
+  <data key="d20">LINESTRING (8.5729614 47.4054826, 8.5729394 47.4054182, 8.5728791 47.4052203)</data>
+</edge>
+<edge source="8009171058" target="8009171057" id="0">
+  <data key="d7">[859213755, 940385510]</data>
+  <data key="d8">service</data>
+  <data key="d15">asphalt</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">67.64290220591039</data>
+  <data key="d29">driveway</data>
+  <data key="d20">LINESTRING (8.5729614 47.4054826, 8.5730322 47.4054738, 8.5733036 47.4054381, 8.5733505 47.4054699, 8.5733914 47.4054726, 8.573496 47.4055089, 8.5735906 47.4055597, 8.5736813 47.4056838)</data>
+</edge>
+<edge source="8009171065" target="4564765549" id="0">
+  <data key="d7">14776466</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Heerenwiesen</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">15.20541184433859</data>
+</edge>
+<edge source="8009171065" target="695544023" id="0">
+  <data key="d7">14776466</data>
+  <data key="d8">residential</data>
+  <data key="d9">1</data>
+  <data key="d10">30</data>
+  <data key="d11">Heerenwiesen</data>
+  <data key="d12">False</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">57.84583663417334</data>
+  <data key="d20">LINESTRING (8.5737579 47.4057885, 8.5732602 47.4059689, 8.573192 47.4059773, 8.5730574 47.4059731)</data>
+</edge>
+<edge source="8009171065" target="8009171057" id="0">
+  <data key="d7">859213755</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d15">asphalt</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">12.99118229770688</data>
+  <data key="d20">LINESTRING (8.5737579 47.4057885, 8.5737341 47.4057559, 8.5736813 47.4056838)</data>
+</edge>
+<edge source="8173460809" target="8175436447" id="0">
+  <data key="d7">878785001</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">42.67403541975472</data>
+  <data key="d20">LINESTRING (8.547374 47.4133619, 8.5475771 47.4135885, 8.5476223 47.4136333, 8.5476506 47.4136949)</data>
+</edge>
+<edge source="8175436446" target="8175436447" id="0">
+  <data key="d7">878785002</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">8.366433806089804</data>
+</edge>
+<edge source="8175436446" target="4181840581" id="0">
+  <data key="d7">12162574</data>
+  <data key="d8">unclassified</data>
+  <data key="d11">Hüttisstrasse</data>
+  <data key="d13">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">37.98898400284342</data>
+  <data key="d20">LINESTRING (8.5477396 47.41374, 8.5478233 47.41348, 8.5478373 47.4134312, 8.5478465 47.413422, 8.547863 47.4134124)</data>
+</edge>
+<edge source="8175436446" target="2734047661" id="0">
+  <data key="d7">12162574</data>
+  <data key="d8">unclassified</data>
+  <data key="d11">Hüttisstrasse</data>
+  <data key="d13">no</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">18.626688271455418</data>
+  <data key="d20">LINESTRING (8.5477396 47.41374, 8.5477362 47.4137537, 8.5476986 47.4139052)</data>
+</edge>
+<edge source="8175436447" target="8175436446" id="0">
+  <data key="d7">878785002</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">8.366433806089804</data>
+</edge>
+<edge source="8175436447" target="8173460809" id="0">
+  <data key="d7">878785001</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">42.674035419754716</data>
+  <data key="d20">LINESTRING (8.5476506 47.4136949, 8.5476223 47.4136333, 8.5475771 47.4135885, 8.547374 47.4133619)</data>
+</edge>
+<edge source="8175436447" target="8175436449" id="0">
+  <data key="d7">878785002</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">16.78590068739976</data>
+  <data key="d20">LINESTRING (8.5476506 47.4136949, 8.5475804 47.4136482, 8.5475083 47.4135794)</data>
+</edge>
+<edge source="8175436449" target="8175436447" id="0">
+  <data key="d7">878785002</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">16.78590068739976</data>
+  <data key="d20">LINESTRING (8.5475083 47.4135794, 8.5475804 47.4136482, 8.5476506 47.4136949)</data>
+</edge>
+<edge source="8176938887" target="9907419199" id="0">
+  <data key="d7">968722831</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">23.169339310403988</data>
+  <data key="d20">LINESTRING (8.5272346 47.4114714, 8.5270923 47.4114959, 8.5269357 47.4115214)</data>
+</edge>
+<edge source="8538315050" target="8538315054" id="0">
+  <data key="d7">919307595</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d15">asphalt</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">38.064845845155546</data>
+  <data key="d20">LINESTRING (8.5462991 47.4144257, 8.5463003 47.4143471, 8.5463674 47.4143215, 8.5465983 47.4143232, 8.54668 47.4143256)</data>
+</edge>
+<edge source="8538315054" target="8538315113" id="0">
+  <data key="d7">33689035</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Friesstrasse</data>
+  <data key="d12">True</data>
+  <data key="d19">4</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">8.218560247741122</data>
+</edge>
+<edge source="8538315054" target="8538315050" id="0">
+  <data key="d7">919307595</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d15">asphalt</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">38.064845845155546</data>
+  <data key="d20">LINESTRING (8.54668 47.4143256, 8.5465983 47.4143232, 8.5463674 47.4143215, 8.5463003 47.4143471, 8.5462991 47.4144257)</data>
+</edge>
+<edge source="8538315074" target="8538315109" id="0">
+  <data key="d7">919307601</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">6.19193376162007</data>
+</edge>
+<edge source="8538315106" target="8538315111" id="0">
+  <data key="d7">919307612</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">4.595167796366446</data>
+</edge>
+<edge source="8538315106" target="8538315127" id="0">
+  <data key="d7">[919307610, 919307614, 919307607]</data>
+  <data key="d8">['path', 'service']</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">[False, True]</data>
+  <data key="d18">30.449627974494454</data>
+  <data key="d20">LINESTRING (8.5471253 47.4143854, 8.5471288 47.4142813, 8.547151 47.414274, 8.5471534 47.414254, 8.5471962 47.4142476, 8.5472075 47.4141446)</data>
+</edge>
+<edge source="8538315106" target="8538315109" id="0">
+  <data key="d7">919307612</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">10.577420313513393</data>
+  <data key="d20">LINESTRING (8.5471253 47.4143854, 8.5472053 47.4143892, 8.547265 47.4143953)</data>
+</edge>
+<edge source="8538315107" target="8538315111" id="0">
+  <data key="d7">919307611</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">21.905536170577914</data>
+</edge>
+<edge source="8538315108" target="8538315109" id="0">
+  <data key="d7">919307612</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">16.72071522229965</data>
+</edge>
+<edge source="8538315109" target="8538315074" id="0">
+  <data key="d7">919307601</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">6.19193376162007</data>
+</edge>
+<edge source="8538315109" target="8538315108" id="0">
+  <data key="d7">919307612</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">16.72071522229965</data>
+</edge>
+<edge source="8538315109" target="8538315106" id="0">
+  <data key="d7">919307612</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">10.577420313513393</data>
+  <data key="d20">LINESTRING (8.547265 47.4143953, 8.5472053 47.4143892, 8.5471253 47.4143854)</data>
+</edge>
+<edge source="8538315111" target="8538315107" id="0">
+  <data key="d7">919307611</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">21.905536170577914</data>
+</edge>
+<edge source="8538315111" target="8538315106" id="0">
+  <data key="d7">919307612</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">4.595167796366446</data>
+</edge>
+<edge source="8538315111" target="8538315113" id="0">
+  <data key="d7">919307612</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">29.235195598062727</data>
+  <data key="d20">LINESTRING (8.5470666 47.4143968, 8.5467353 47.4143983, 8.5466781 47.4143995)</data>
+</edge>
+<edge source="8538315113" target="8538315073" id="0">
+  <data key="d7">33689035</data>
+  <data key="d8">primary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Friesstrasse</data>
+  <data key="d12">True</data>
+  <data key="d19">4</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">24.996944739160412</data>
+</edge>
+<edge source="8538315113" target="8538315111" id="0">
+  <data key="d7">919307612</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">29.235195598062727</data>
+  <data key="d20">LINESTRING (8.5466781 47.4143995, 8.5467353 47.4143983, 8.5470666 47.4143968)</data>
+</edge>
+<edge source="8538315126" target="8538315127" id="0">
+  <data key="d7">1245931890</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">9.26704870457239</data>
+</edge>
+<edge source="8538315127" target="8538315126" id="0">
+  <data key="d7">1245931890</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">9.26704870457239</data>
+</edge>
+<edge source="8538315127" target="8538315106" id="0">
+  <data key="d7">[919307610, 919307614, 919307607]</data>
+  <data key="d8">['path', 'service']</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">[False, True]</data>
+  <data key="d18">30.44962797449445</data>
+  <data key="d20">LINESTRING (8.5472075 47.4141446, 8.5471962 47.4142476, 8.5471534 47.414254, 8.547151 47.414274, 8.5471288 47.4142813, 8.5471253 47.4143854)</data>
+</edge>
+<edge source="8538315127" target="8538315129" id="0">
+  <data key="d7">[1245931890, 919307615]</data>
+  <data key="d8">service</data>
+  <data key="d29">['parking_aisle', 'driveway']</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">17.773855966237896</data>
+  <data key="d20">LINESTRING (8.5472075 47.4141446, 8.5472727 47.4141465, 8.5472823 47.414031)</data>
+</edge>
+<edge source="8538315129" target="8538315127" id="0">
+  <data key="d7">[1245931890, 919307615]</data>
+  <data key="d8">service</data>
+  <data key="d29">['parking_aisle', 'driveway']</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">17.773855966237896</data>
+  <data key="d20">LINESTRING (8.5472823 47.414031, 8.5472727 47.4141465, 8.5472075 47.4141446)</data>
+</edge>
+<edge source="8538315129" target="2734047660" id="0">
+  <data key="d7">919307615</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">18.451729496443814</data>
+  <data key="d20">LINESTRING (8.5472823 47.414031, 8.5472795 47.4139677, 8.5472818 47.4138651)</data>
+</edge>
+<edge source="8538315129" target="11582757254" id="0">
+  <data key="d7">1245931891</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">12.846727666032297</data>
+  <data key="d20">LINESTRING (8.5472823 47.414031, 8.5473137 47.4140653, 8.5473263 47.41414)</data>
+</edge>
+<edge source="8538355821" target="2055665881" id="0">
+  <data key="d7">919312963</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">43.98572028844151</data>
+  <data key="d20">LINESTRING (8.5448886 47.4136283, 8.5450949 47.4136156, 8.545119 47.4138059, 8.5451281 47.41387)</data>
+</edge>
+<edge source="8538355830" target="2055665881" id="0">
+  <data key="d7">142304936</data>
+  <data key="d8">secondary</data>
+  <data key="d9">4</data>
+  <data key="d10">50</data>
+  <data key="d11">Binzmühlestrasse</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">intermediate</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">47.25051932357053</data>
+  <data key="d20">LINESTRING (8.5445022 47.4139043, 8.5449436 47.4138807, 8.5451281 47.41387)</data>
+</edge>
+<edge source="8538355837" target="1840633302" id="0">
+  <data key="d7">13775030</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Wattstrasse</data>
+  <data key="d12">True</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">30.399725544499137</data>
+</edge>
+<edge source="8538355837" target="11528287251" id="0">
+  <data key="d7">[919312969, 1240787206]</data>
+  <data key="d24">private</data>
+  <data key="d8">['path', 'service']</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">[False, True]</data>
+  <data key="d18">40.944083421322254</data>
+  <data key="d20">LINESTRING (8.5454102 47.4134625, 8.5453529 47.4134646, 8.5450501 47.4134751, 8.5450392 47.4133702, 8.5450371 47.4133512)</data>
+</edge>
+<edge source="8546868325" target="8546868327" id="0">
+  <data key="d7">920536463</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">18.870729752806113</data>
+  <data key="d20">LINESTRING (8.5451632 47.4135103, 8.5453571 47.4135034, 8.5454137 47.4135024)</data>
+</edge>
+<edge source="8546868327" target="8538355837" id="0">
+  <data key="d7">13775030</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Wattstrasse</data>
+  <data key="d12">True</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">4.44449350827218</data>
+</edge>
+<edge source="8546868327" target="8546868325" id="0">
+  <data key="d7">920536463</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">18.870729752806113</data>
+  <data key="d20">LINESTRING (8.5454137 47.4135024, 8.5453571 47.4135034, 8.5451632 47.4135103)</data>
+</edge>
+<edge source="9907419197" target="9907419199" id="0">
+  <data key="d7">1080929475</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">47.87299877274888</data>
+  <data key="d20">LINESTRING (8.5272515 47.4117569, 8.5270336 47.4117923, 8.5269575 47.4115816, 8.5269357 47.4115214)</data>
+</edge>
+<edge source="9907419199" target="60120449" id="0">
+  <data key="d7">[1169806739, 968722831]</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">['2', '3']</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">96.43636901278978</data>
+  <data key="d23">no</data>
+  <data key="d22">good</data>
+  <data key="d20">LINESTRING (8.5269357 47.4115214, 8.5264263 47.4116075, 8.526192 47.4116502, 8.5259172 47.4116995, 8.5258184 47.4117172, 8.5256956 47.4117401)</data>
+</edge>
+<edge source="9907419199" target="8176938887" id="0">
+  <data key="d7">968722831</data>
+  <data key="d8">tertiary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Regensbergstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">23.169339310403988</data>
+  <data key="d20">LINESTRING (8.5269357 47.4115214, 8.5270923 47.4114959, 8.5272346 47.4114714)</data>
+</edge>
+<edge source="9907419199" target="9907419197" id="0">
+  <data key="d7">1080929475</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">47.872998772748886</data>
+  <data key="d20">LINESTRING (8.5269357 47.4115214, 8.5269575 47.4115816, 8.5270336 47.4117923, 8.5272515 47.4117569)</data>
+</edge>
+<edge source="10003073053" target="10003073054" id="0">
+  <data key="d7">1092219988</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">20.271483067222412</data>
+</edge>
+<edge source="10003073054" target="10003073053" id="0">
+  <data key="d7">1092219988</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">20.271483067222412</data>
+</edge>
+<edge source="10003073054" target="60120454" id="0">
+  <data key="d7">556777354</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Hürststrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">40.77469287495307</data>
+  <data key="d20">LINESTRING (8.52585 47.4119599, 8.5260445 47.4122268, 8.5260896 47.4122888)</data>
+</edge>
+<edge source="10003073054" target="60120449" id="0">
+  <data key="d7">556777354</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Hürststrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">27.06654501846105</data>
+  <data key="d20">LINESTRING (8.52585 47.4119599, 8.5257638 47.4118415, 8.5257465 47.4118177, 8.5256956 47.4117401)</data>
+</edge>
+<edge source="10114138494" target="1714475518" id="0">
+  <data key="d7">159337834</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">28.459938010048155</data>
+</edge>
+<edge source="10114138494" target="3356542874" id="0">
+  <data key="d7">159337834</data>
+  <data key="d24">private</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">32.679482577848134</data>
+  <data key="d20">LINESTRING (8.5395172 47.4082683, 8.5393833 47.4083119, 8.5395072 47.4084861)</data>
+</edge>
+<edge source="10589288513" target="60121168" id="0">
+  <data key="d7">[1210783332, 1210783333]</data>
+  <data key="d8">secondary</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Birchstrasse</data>
+  <data key="d12">False</data>
+  <data key="d13">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">21.824690903038274</data>
+  <data key="d20">LINESTRING (8.5378392 47.4116788, 8.537831 47.4117289, 8.5378244 47.4117645, 8.5378091 47.411874)</data>
+</edge>
+<edge source="10857644778" target="78206053" id="0">
+  <data key="d7">28193149</data>
+  <data key="d24">no</data>
+  <data key="d8">service</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Friesstrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">6</data>
+  <data key="d15">paved</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">83.28342070421317</data>
+  <data key="d20">LINESTRING (8.5461736 47.413158, 8.5461784 47.413181, 8.5461886 47.4132042, 8.5462785 47.4134129, 8.5463287 47.4135236, 8.5463467 47.4135635, 8.5463639 47.4135983, 8.5463789 47.4136283, 8.546396 47.4136554, 8.5464153 47.4136782, 8.5464567 47.4137105, 8.5465443 47.4137678, 8.5466386 47.4138115)</data>
+</edge>
+<edge source="10857644778" target="10857644782" id="0">
+  <data key="d7">1167503444</data>
+  <data key="d8">cycleway</data>
+  <data key="d12">True</data>
+  <data key="d27">3</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">6.422828695865657</data>
+  <data key="d20">LINESTRING (8.5461736 47.413158, 8.5461459 47.4131653, 8.5461309 47.4131693, 8.5461133 47.4131615, 8.5460979 47.4131546)</data>
+</edge>
+<edge source="10857644780" target="78206053" id="0">
+  <data key="d7">[502124715, 549175734, 10595999]</data>
+  <data key="d8">primary</data>
+  <data key="d9">['3', '1']</data>
+  <data key="d10">50</data>
+  <data key="d11">['Friesstrasse', 'Schaffhauserstrasse']</data>
+  <data key="d12">True</data>
+  <data key="d19">4</data>
+  <data key="d26">no</data>
+  <data key="d21">lane</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">83.00042177003144</data>
+  <data key="d22">excellent</data>
+  <data key="d27">11</data>
+  <data key="d20">LINESTRING (8.5464518 47.413095, 8.5464351 47.4131516, 8.5463914 47.4132591, 8.5464251 47.4133321, 8.5465545 47.4136122, 8.5465627 47.41363, 8.5465725 47.4136512, 8.5466386 47.4138115)</data>
+</edge>
+<edge source="10857644780" target="10857644778" id="0">
+  <data key="d7">1167503444</data>
+  <data key="d8">cycleway</data>
+  <data key="d12">True</data>
+  <data key="d27">3</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">22.097284954644508</data>
+  <data key="d20">LINESTRING (8.5464518 47.413095, 8.5463037 47.4131238, 8.5461995 47.4131512, 8.5461736 47.413158)</data>
+</edge>
+<edge source="10857644782" target="10857644783" id="0">
+  <data key="d7">1167503444</data>
+  <data key="d8">cycleway</data>
+  <data key="d12">True</data>
+  <data key="d27">3</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">good</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">6.843036746914146</data>
+</edge>
+<edge source="10857644782" target="385184791" id="0">
+  <data key="d7">497887655</data>
+  <data key="d24">no</data>
+  <data key="d8">service</data>
+  <data key="d9">2</data>
+  <data key="d10">50</data>
+  <data key="d11">Schaffhauserstrasse</data>
+  <data key="d12">False</data>
+  <data key="d27">6</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">True</data>
+  <data key="d18">87.06926963870183</data>
+  <data key="d20">LINESTRING (8.5460979 47.4131546, 8.5460299 47.4132344, 8.545854 47.4134347, 8.5457398 47.4135613, 8.5456403 47.4136922, 8.5455889 47.4137779, 8.5455498 47.4138426)</data>
+</edge>
+<edge source="11528287251" target="8538355837" id="0">
+  <data key="d7">[919312969, 1240787206]</data>
+  <data key="d8">['path', 'service']</data>
+  <data key="d12">False</data>
+  <data key="d17">[False, True]</data>
+  <data key="d18">40.944083421322254</data>
+  <data key="d24">private</data>
+  <data key="d29">parking_aisle</data>
+  <data key="d20">LINESTRING (8.5450371 47.4133512, 8.5450392 47.4133702, 8.5450501 47.4134751, 8.5453529 47.4134646, 8.5454102 47.4134625)</data>
+</edge>
+<edge source="11582757254" target="8538315129" id="0">
+  <data key="d7">1245931891</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">12.846727666032297</data>
+  <data key="d20">LINESTRING (8.5473263 47.41414, 8.5473137 47.4140653, 8.5472823 47.414031)</data>
+</edge>
+<edge source="11685335457" target="370130823" id="0">
+  <data key="d7">124939759</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">1.8259647510681656</data>
+</edge>
+<edge source="11685335457" target="370130823" id="1">
+  <data key="d7">558005600</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">1.8259647510681656</data>
+</edge>
+<edge source="11685335457" target="5380840506" id="0">
+  <data key="d7">124939759</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">1.427409217183689</data>
+</edge>
+<edge source="11685335457" target="5380840506" id="1">
+  <data key="d7">558005600</data>
+  <data key="d30">yes</data>
+  <data key="d8">pedestrian</data>
+  <data key="d15">asphalt</data>
+  <data key="d22">excellent</data>
+  <data key="d16">yes</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">1.427409217183689</data>
+</edge>
+<edge source="12785332940" target="12785332942" id="0">
+  <data key="d7">1381061278</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">True</data>
+  <data key="d18">10.681999760020615</data>
+  <data key="d20">LINESTRING (8.5441004 47.4090768, 8.5440461 47.4090637, 8.5440254 47.4090382, 8.5440055 47.4090137)</data>
+</edge>
+<edge source="12785332942" target="251228621" id="0">
+  <data key="d7">1198933720</data>
+  <data key="d8">residential</data>
+  <data key="d10">30</data>
+  <data key="d11">Baumackerstrasse</data>
+  <data key="d12">True</data>
+  <data key="d26">opposite_lane</data>
+  <data key="d21">no</data>
+  <data key="d14">use_sidepath</data>
+  <data key="d15">asphalt</data>
+  <data key="d16">yes</data>
+  <data key="d17">False</data>
+  <data key="d18">54.92265741403972</data>
+  <data key="d20">LINESTRING (8.5440055 47.4090137, 8.5435091 47.4092226, 8.5434251 47.4092466, 8.5433726 47.4092555)</data>
+</edge>
+<edge source="12785332942" target="12785332940" id="0">
+  <data key="d7">1381061278</data>
+  <data key="d8">service</data>
+  <data key="d29">driveway</data>
+  <data key="d12">False</data>
+  <data key="d17">False</data>
+  <data key="d18">10.681999760020615</data>
+  <data key="d20">LINESTRING (8.5440055 47.4090137, 8.5440254 47.4090382, 8.5440461 47.4090637, 8.5441004 47.4090768)</data>
+</edge>
+</graph></graphml>

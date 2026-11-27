@@ -126,8 +126,8 @@ class Serializable:
         objects[str(self.oid)] = self
         return objects
     
-    def log(self, *args):
-        if self.is_verbose: print(*args)
+    def log(self, *args, end="\n"):
+        if self.is_verbose: print(*args, end=end)
 
     def is_verbose(self):
         if not hasattr(self, "verbose"):
